@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj": {}
+    "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj": {}
   },
   "projects": {
-    "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj": {
+    "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj",
+        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj",
         "projectName": "AutoBotCleanArchitecture.Api",
-        "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj",
+        "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj",
         "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-        "outputPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\obj\\",
+        "outputPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,11 +32,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj": {
-                "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj"
+              "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj": {
+                "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj"
               },
-              "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj": {
-                "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj"
+              "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj": {
+                "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj"
               }
             }
           }
@@ -121,14 +121,14 @@
         }
       }
     },
-    "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj": {
+    "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",
+        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",
         "projectName": "AutoBotCleanArchitecture.Application",
-        "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",
+        "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",
         "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-        "outputPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\obj\\",
+        "outputPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -149,8 +149,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj": {
-                "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj"
+              "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj": {
+                "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj"
               }
             }
           }
@@ -200,14 +200,14 @@
         }
       }
     },
-    "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj": {
+    "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
+        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
         "projectName": "AutoBotCleanArchitecture.Domain",
-        "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
+        "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
         "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-        "outputPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\obj\\",
+        "outputPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -265,14 +265,14 @@
         }
       }
     },
-    "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj": {
+    "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj",
+        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj",
         "projectName": "AutoBotCleanArchitecture.Infrastructure",
-        "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj",
+        "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-        "outputPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\obj\\",
+        "outputPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -293,11 +293,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj": {
-                "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj"
+              "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj": {
+                "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj"
               },
-              "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj": {
-                "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj"
+              "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj": {
+                "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj"
               }
             }
           }
@@ -347,14 +347,14 @@
         }
       }
     },
-    "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj": {
+    "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj",
+        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj",
         "projectName": "AutoBotCleanArchitecture.Persistence",
-        "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj",
+        "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj",
         "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-        "outputPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\obj\\",
+        "outputPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -375,8 +375,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj": {
-                "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj"
+              "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj": {
+                "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj"
               }
             }
           }

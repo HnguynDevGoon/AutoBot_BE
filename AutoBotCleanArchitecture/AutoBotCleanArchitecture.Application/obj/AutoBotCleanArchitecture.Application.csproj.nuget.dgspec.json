@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj": {}
+    "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj": {}
   },
   "projects": {
-    "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj": {
+    "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",
+        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",
         "projectName": "AutoBotCleanArchitecture.Application",
-        "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",
+        "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",
         "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-        "outputPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\obj\\",
+        "outputPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj": {
-                "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj"
+              "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj": {
+                "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj"
               }
             }
           }
@@ -83,14 +83,14 @@
         }
       }
     },
-    "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj": {
+    "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
+        "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
         "projectName": "AutoBotCleanArchitecture.Domain",
-        "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
+        "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
         "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-        "outputPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\obj\\",
+        "outputPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

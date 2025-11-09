@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
+      "projectUniqueName": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
       "projectName": "AutoBotCleanArchitecture.Domain",
-      "projectPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
+      "projectPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj",
       "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-      "outputPath": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\obj\\",
+      "outputPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
