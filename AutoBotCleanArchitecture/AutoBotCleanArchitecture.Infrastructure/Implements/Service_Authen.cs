@@ -1,10 +1,12 @@
 ﻿using AutoBotCleanArchitecture.Application.Converters;
 using AutoBotCleanArchitecture.Application.DTOs;
+using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Requests.User;
 using AutoBotCleanArchitecture.Application.Responses;
+using AutoBotCleanArchitecture.Domain.Constants;
 using AutoBotCleanArchitecture.Domain.Entities;
-using AutoBotCleanArchitecture.Persistence.DBContext;
 using AutoBotCleanArchitecture.Handle;
+using AutoBotCleanArchitecture.Persistence.DBContext;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +19,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using AutoBotCleanArchitecture.Application.Interfaces;
 
 namespace AutoBotCleanArchitecture.Infrastructure.Implements
 {
@@ -188,6 +189,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 PassWord = BCrypt.Net.BCrypt.HashPassword(request.PassWord),
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,
+                BirthDay = request.BirthDay,
+                RoleId = DefaultRoles.USER_ID,
             };
 
             string UrlAvt = null;
@@ -390,5 +393,152 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             // nên (AccessFailedCount = 0) cũng sẽ được lưu.
             return responseObjectToken.responseObjectSuccess("Đăng nhập thành công", GenerateAccessToken(user));
         }
+
+        public ResponseBase ForgotPassword(string email)
+        {
+            var user = dbContext.users.FirstOrDefault(x => x.Email == email);
+            if (user == null)
+            {
+                return responseBase.ResponseError(StatusCodes.Status404NotFound, "Email này chưa tạo tài khoản !");
+            }
+
+            Random r = new Random();
+            int code = r.Next(100000, 999999);
+            var emailTo = new EmailTo();
+            emailTo.Mail = email;
+            emailTo.Subject = "Nhận mã";
+            emailTo.Content = $"Mã xác nhận của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
+            emailTo.SendEmailAsync(emailTo);
+
+            var confirmEmail = new ConfirmEmail();
+            confirmEmail.Code = code.ToString();
+            confirmEmail.Message = "Xác nhận mã";
+            confirmEmail.Starttime = DateTime.Now;
+            confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
+            confirmEmail.UserId = user.Id;
+            dbContext.confirmEmails.Add(confirmEmail);
+            dbContext.SaveChanges();
+
+            return responseBase.ResponseSuccess("Mã OTP đang gửi vào email của bạn !");
+
+        }
+
+        public ResponseBase UpdatePassAfterOtp(Guid userId, string newPass, string confirmPass)
+        {
+            if (string.IsNullOrEmpty(newPass) || string.IsNullOrEmpty(confirmPass))
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mật khẩu không được để trống !");
+            }
+
+            var user = dbContext.users.FirstOrDefault(x => x.Id == userId);
+            if (user == null)
+            {
+                return responseBase.ResponseError(StatusCodes.Status404NotFound, "Không có user nào được tìm thấy !");
+            }
+
+            string checkPassword = CheckInput.IsPassWord(newPass);
+            if (checkPassword != newPass)
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, checkPassword);
+            }
+
+            if (confirmPass != newPass)
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Xác nhận mật khẩu sai !");
+            }
+
+            user.PassWord = BCrypt.Net.BCrypt.HashPassword(newPass);
+
+            dbContext.users.Update(user);
+            dbContext.SaveChanges();
+
+            return responseBase.ResponseSuccess("Đổi mật khẩu thành công !");
+        }
+
+        public ResponseBase ChangePassword(Guid userId, string oldPass, string newPass)
+        {
+            if (string.IsNullOrWhiteSpace(oldPass) || string.IsNullOrWhiteSpace(newPass))
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ");
+            }
+
+            var user = dbContext.users.FirstOrDefault(x => x.Id == userId);
+            if (user == null)
+            {
+                return responseBase.ResponseError(StatusCodes.Status404NotFound, "Người dùng không tồn tại!");
+            }
+
+            string checkPassword = CheckInput.IsPassWord(newPass);
+            if (checkPassword != newPass)
+            {
+                return responseBase.ResponseError(400, checkPassword);
+            }
+
+            if (BCrypt.Net.BCrypt.Verify(oldPass, user.PassWord))
+            {
+                user.PassWord = BCrypt.Net.BCrypt.HashPassword(newPass);
+                dbContext.users.Update(user);
+                dbContext.SaveChanges();
+
+                return responseBase.ResponseSuccess("Đổi mật khẩu thành công!");
+            }
+
+            return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Sai mật khẩu cũ!");
+        }
+
+        public IQueryable<DTO_User> GetListUser(int pageSize, int pageNumber)
+        {
+            return dbContext.users.Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(x => converter_Authen.EntityToDTO(x));
+        }
+
+        public ResponseObject<DTO_User> GetUserById(Guid userId)
+        {
+            var searchUserId = dbContext.users.FirstOrDefault(x => x.Id == userId);
+            if (searchUserId == null)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy user", null);
+            }
+
+            // Chuyển đổi role entity thành DTO
+            var userDto = converter_Authen.EntityToDTO(searchUserId);
+
+            return responseObject.responseObjectSuccess("Tìm user thành công", userDto);
+        }
+
+        public ResponseObject<DTO_User> DeleteUser(Guid userId)
+        {
+            var searchUserId = dbContext.users.FirstOrDefault(x => x.Id == userId);
+            if (searchUserId == null)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "User không tồn tại", null);
+            }
+            dbContext.users.Remove(searchUserId);
+            dbContext.SaveChanges();
+            return responseObject.responseObjectSuccess("Xóa thành công !", null);
+        }
+
+        public ResponseObject<DTO_User> UpdateAvatar(Request_UpdateAvatar request)
+        {
+            var user = dbContext.users.FirstOrDefault(x => x.Id == request.Id);
+            if (user == null)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy user", null);
+            }
+
+            if (request.UrlAvatar != null)
+            {
+                CloudinaryService cloudinaryService = new CloudinaryService();
+                user.UrlAvatar = cloudinaryService.UploadImage(request.UrlAvatar);
+            }
+
+            dbContext.users.Update(user);
+            dbContext.SaveChanges();
+
+            var userDto = converter_Authen.EntityToDTO(user);
+            return responseObject.responseObjectSuccess("Cập nhật ảnh đại diện thành công!", userDto);
+        }
+
     }
 }

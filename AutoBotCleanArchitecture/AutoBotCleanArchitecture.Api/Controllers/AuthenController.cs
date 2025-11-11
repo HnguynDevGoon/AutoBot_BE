@@ -28,16 +28,52 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(service_Authen.UserLogin(request));
         }
 
-        //[HttpPost("CheckOtp")]
-        //public IActionResult CheckOtp(int otp)
-        //{
-        //    return Ok(service_Authen.CheckOtp(otp));
-        //}
-
         [HttpPut("AccountVerification")]
         public IActionResult AccountVerification(string code)
         {
             return Ok(service_Authen.AccountVerification(code));
+        }
+
+        [HttpGet("GetListUser")]
+        public IActionResult GetListUser(int pageSize = 10, int pageNumber = 1)
+        {
+            return Ok(service_Authen.GetListUser(pageSize, pageNumber));
+        }
+
+        [HttpGet("GetUserById")]
+        public IActionResult GetUserById(Guid userId)
+        {
+            return Ok(service_Authen.GetUserById(userId));
+        }
+
+        [HttpDelete("DeleteUser")]
+        public IActionResult DeleteUser(Guid userId)
+        {
+            return Ok(service_Authen.DeleteUser(userId));
+        }
+
+        [HttpPut("UpdateAvatar")]
+        public IActionResult UpdateAvatar(Request_UpdateAvatar? request)
+        {
+            return Ok(service_Authen.UpdateAvatar(request));
+        }
+
+        [HttpPut("ChangePassword")]
+        public IActionResult ChangePassword(Guid userId, string oldPass, string newPass)
+        {
+            return Ok(service_Authen.ChangePassword(userId, oldPass, newPass));
+        }
+
+        [HttpPost("ForgotPassword")]
+        public IActionResult ForgotPassword(string email)
+        {
+            return Ok(service_Authen.ForgotPassword(email));
+        }
+
+        [HttpPut("UpdatePassAfterOtp")]
+        public IActionResult UpdatePassAfterOtp(Guid userId, string newPass, string confirmPass)
+        {
+            return Ok(service_Authen.UpdatePassAfterOtp(userId, newPass, confirmPass));
         }
     }
 

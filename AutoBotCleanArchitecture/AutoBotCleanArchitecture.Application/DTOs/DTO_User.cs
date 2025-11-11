@@ -15,6 +15,10 @@ namespace AutoBotCleanArchitecture.Application.DTOs
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string UrlAvatar { get; set; }
+        public DateOnly? BirthDay { get; set; }
+        public DateTime LockoutEnd { get; set; }
+        public bool? LockoutEnable { get; set; }
+        public int AccessFailedCount { get; set; }
         public bool? IsActive { get; set; }
     }
 }

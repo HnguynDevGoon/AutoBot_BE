@@ -14,6 +14,7 @@ namespace AutoBotCleanArchitecture.Application.Requests.User
         public string FullName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public DateOnly? BirthDay { get; set; }
         //public bool IsActive { get; set; }
         public IFormFile? UrlAvatar { get; set; }
     }

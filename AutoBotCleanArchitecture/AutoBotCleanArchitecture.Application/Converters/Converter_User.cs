@@ -15,12 +15,17 @@ namespace AutoBotCleanArchitecture.Application.Converters
             return new DTO_User
             {
                 Id = user.Id,
+                FullName = user.FullName,
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 //PassWord = user.PassWord,
                 UrlAvatar = user.UrlAvatar,
+                BirthDay = user.BirthDay,
                 IsActive = user.IsActive,
+                AccessFailedCount = user.AccessFailedCount,
+                LockoutEnable = user.LockoutEnable,
+                LockoutEnd = user.LockoutEnd,
             };
         }
     }
