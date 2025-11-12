@@ -23,6 +23,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         public ResponseObject<DTO_User> DeleteUser(Guid userId);
         public ResponseObject<DTO_User> UpdateAvatar(Request_UpdateAvatar request);
         public ResponseBase VerifyResetOtp(Request_VerifyResetOtp request);
+        public ResponseBase ValidateAccount(Request_ValidateAccount request);
 
     }
 }

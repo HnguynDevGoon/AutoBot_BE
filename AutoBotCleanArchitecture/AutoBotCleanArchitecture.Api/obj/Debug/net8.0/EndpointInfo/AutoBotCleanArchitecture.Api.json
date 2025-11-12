@@ -213,7 +213,7 @@
       }
     },
     "/api/Authen/UpdateAvatar": {
-      "put": {
+      "post": {
         "tags": [
           "Authen"
         ],
@@ -255,7 +255,7 @@
       }
     },
     "/api/Authen/ChangePassword": {
-      "put": {
+      "post": {
         "tags": [
           "Authen"
         ],
@@ -322,7 +322,7 @@
       }
     },
     "/api/Authen/UpdatePassAfterOtp": {
-      "put": {
+      "post": {
         "tags": [
           "Authen"
         ],
@@ -350,6 +350,37 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Authen/VerifyResetOtp": {
+      "post": {
+        "tags": [
+          "Authen"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_VerifyResetOtp"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_VerifyResetOtp"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_VerifyResetOtp"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -550,6 +581,16 @@
             "nullable": true
           },
           "passWord": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Request_VerifyResetOtp": {
+        "type": "object",
+        "properties": {
+          "otp": {
             "type": "string",
             "nullable": true
           }

@@ -19,7 +19,7 @@
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
     "Method": "ChangePassword",
     "RelativePath": "api/Authen/ChangePassword",
-    "HttpMethod": "PUT",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -160,7 +160,7 @@
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
     "Method": "UpdateAvatar",
     "RelativePath": "api/Authen/UpdateAvatar",
-    "HttpMethod": "PUT",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -181,7 +181,7 @@
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
     "Method": "UpdatePassAfterOtp",
     "RelativePath": "api/Authen/UpdatePassAfterOtp",
-    "HttpMethod": "PUT",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -214,6 +214,22 @@
       {
         "Name": "request",
         "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_UserLogin",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
+    "Method": "VerifyResetOtp",
+    "RelativePath": "api/Authen/VerifyResetOtp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_VerifyResetOtp",
         "IsRequired": true
       }
     ],

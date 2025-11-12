@@ -560,5 +560,32 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return responseBase.ResponseSuccess($"{user.Id}");
         }
 
+        public ResponseBase ValidateAccount(Request_ValidateAccount request)
+        {
+            if (dbContext.users.Any(x => x.UserName == request.UserName))
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Tên đăng nhập đã tồn tại");
+            }
+
+            string checkUsername = CheckInput.IsValidUsername(request.UserName);
+            if (checkUsername != request.UserName)
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, checkUsername);
+            }
+
+            bool checkEmail = CheckInput.IsValiEmail(request.Email);
+            if (!checkEmail)
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Email không hợp lệ !");
+            }
+
+            int emailCount = dbContext.users.Count(x => x.Email == request.Email);
+            if (emailCount >= 1)
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest,
+                                                "Email đã có quá 1 tài khoản đăng ký. Vui lòng chọn email khác !");
+            }
+            return responseBase.ResponseSuccess("Thông tin hợp lệ.");
+        }
     }
 }
