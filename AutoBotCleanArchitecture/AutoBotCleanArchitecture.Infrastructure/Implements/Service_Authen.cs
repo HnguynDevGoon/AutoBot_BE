@@ -560,7 +560,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return responseBase.ResponseSuccess($"{user.Id}");
         }
 
-        public ResponseBase ValidateAccounStepOne(Request_ValidateAccounStepOne request)
+        public ResponseBase ValidateAccountStepOne(Request_ValidateAccountStepOne request)
         {
             if (dbContext.users.Any(x => x.UserName == request.UserName))
             {

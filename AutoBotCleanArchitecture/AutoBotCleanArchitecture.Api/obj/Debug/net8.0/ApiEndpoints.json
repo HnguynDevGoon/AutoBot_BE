@@ -158,6 +158,22 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
+    "Method": "ValidateAccount",
+    "RelativePath": "api/Authen/Request_ValidateAccounStepOne",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ValidateAccounStepOne",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
     "Method": "UpdateAvatar",
     "RelativePath": "api/Authen/UpdateAvatar",
     "HttpMethod": "POST",
