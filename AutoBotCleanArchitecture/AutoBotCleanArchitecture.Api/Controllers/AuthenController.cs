@@ -83,7 +83,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("Request_ValidateAccountStepOne")]
-        public IActionResult ValidateAccount(Request_ValidateAccountStepOne request)
+        public IActionResult Request_ValidateAccountStepOne(Request_ValidateAccountStepOne request)
         {
             return Ok(service_Authen.ValidateAccountStepOne(request));
         }
