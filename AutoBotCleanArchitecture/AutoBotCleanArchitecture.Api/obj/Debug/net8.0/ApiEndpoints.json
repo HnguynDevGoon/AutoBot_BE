@@ -158,15 +158,15 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
-    "Method": "ValidateAccount",
-    "RelativePath": "api/Authen/Request_ValidateAccounStepOne",
+    "Method": "Request_ValidateAccountStepOne",
+    "RelativePath": "api/Authen/Request_ValidateAccountStepOne",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ValidateAccounStepOne",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ValidateAccountStepOne",
         "IsRequired": true
       }
     ],

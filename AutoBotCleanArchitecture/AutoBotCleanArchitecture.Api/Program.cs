@@ -1,4 +1,4 @@
-using AutoBotCleanArchitecture.Application.Converters;
+﻿using AutoBotCleanArchitecture.Application.Converters;
 using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Responses;
@@ -10,10 +10,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Th�m CORS
+// Thêm CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -27,12 +28,12 @@ builder.Services.AddCors(options =>
 
 // Connect with database
 
-//---D�ng SQL Server ---
+//---Dùng SQL Server ---
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"))
 );
 
-// --- D�ng Postgres ---
+// --- Dùng Postgres ---
 //builder.Services.AddDbContext<AppDbContext>(opt =>
 //   opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresCon"))
 //);
@@ -42,7 +43,7 @@ builder.Services.AddSwaggerGen(x =>
     x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Swagger eShop Solution", Version = "v1" });
     x.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
-        Description = "L�m theo m?u n�y. Example: Bearer {Token} ",
+        Description = "Làm theo m?u này. Example: Bearer {Token} ",
         Name = "Authorization",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
         Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
@@ -77,6 +78,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuer = false,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
             builder.Configuration.GetSection("AppSettings:SecretKey").Value!))
+    };
+
+    // --- BẮT ĐẦU PHẦN THÊM ĐỂ BÁO LỖI 401 ---
+    options.Events = new JwtBearerEvents
+    {
+        OnChallenge = async context =>
+        {
+            // Dừng response mặc định
+            context.HandleResponse();
+
+            // Thiết lập response
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/json";
+
+            // Tạo object lỗi tùy chỉnh
+            var response = new
+            {
+                StatusCode = 401,
+                Message = "Vui lòng làm theo mẫu Bearer {token}" // <-- Lỗi của bạn đây
+            };
+
+            // Ghi lỗi ra response
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        }
     };
 });
 

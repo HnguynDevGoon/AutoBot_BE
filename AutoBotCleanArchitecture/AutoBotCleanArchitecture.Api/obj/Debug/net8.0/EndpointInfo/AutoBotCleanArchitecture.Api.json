@@ -388,7 +388,7 @@
         }
       }
     },
-    "/api/Authen/Request_ValidateAccounStepOne": {
+    "/api/Authen/Request_ValidateAccountStepOne": {
       "post": {
         "tags": [
           "Authen"
@@ -397,17 +397,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Request_ValidateAccounStepOne"
+                "$ref": "#/components/schemas/Request_ValidateAccountStepOne"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Request_ValidateAccounStepOne"
+                "$ref": "#/components/schemas/Request_ValidateAccountStepOne"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Request_ValidateAccounStepOne"
+                "$ref": "#/components/schemas/Request_ValidateAccountStepOne"
               }
             }
           }
@@ -618,7 +618,7 @@
         },
         "additionalProperties": false
       },
-      "Request_ValidateAccounStepOne": {
+      "Request_ValidateAccountStepOne": {
         "type": "object",
         "properties": {
           "userName": {

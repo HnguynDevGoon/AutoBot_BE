@@ -1,5 +1,6 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Requests.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,30 +36,37 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpGet("GetListUser")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetListUser(int pageSize = 10, int pageNumber = 1)
         {
             return Ok(service_Authen.GetListUser(pageSize, pageNumber));
         }
 
         [HttpGet("GetUserById")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetUserById(Guid userId)
         {
             return Ok(service_Authen.GetUserById(userId));
         }
 
         [HttpDelete("DeleteUser")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteUser(Guid userId)
         {
             return Ok(service_Authen.DeleteUser(userId));
         }
 
         [HttpPost("UpdateAvatar")]
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User")]
         public IActionResult UpdateAvatar(Request_UpdateAvatar? request)
         {
             return Ok(service_Authen.UpdateAvatar(request));
         }
 
         [HttpPost("ChangePassword")]
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User")]
         public IActionResult ChangePassword(Guid userId, string oldPass, string newPass)
         {
             return Ok(service_Authen.ChangePassword(userId, oldPass, newPass));
