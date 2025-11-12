@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoBotCleanArchitecture.Application.Requests.User
 {
-    public class Request_ValidateAccount
+    public class Request_ValidateAccounStepOne
     {
         public string UserName { get; set; }
         public string Email { get; set; }

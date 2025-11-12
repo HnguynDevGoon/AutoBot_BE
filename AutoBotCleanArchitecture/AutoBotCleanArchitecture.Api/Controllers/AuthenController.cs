@@ -82,10 +82,10 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(service_Authen.VerifyResetOtp(request));  
         }
 
-        [HttpPost("ValidateAccount")]
-        public IActionResult ValidateAccount(Request_ValidateAccount request)
+        [HttpPost("Request_ValidateAccounStepOne")]
+        public IActionResult ValidateAccount(Request_ValidateAccounStepOne request)
         {
-            return Ok(service_Authen.ValidateAccount(request));
+            return Ok(service_Authen.ValidateAccounStepOne(request));
         }
     }
 
