@@ -3,14 +3,14 @@
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
     "Method": "AccountVerification",
     "RelativePath": "api/Authen/AccountVerification",
-    "HttpMethod": "PUT",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "code",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_AccountVerification",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -112,9 +112,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "email",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ForgotPassword",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

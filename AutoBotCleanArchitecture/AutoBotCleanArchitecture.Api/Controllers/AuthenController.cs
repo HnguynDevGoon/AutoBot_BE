@@ -17,7 +17,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("CreateUser")]
-        public IActionResult CreateUser(Request_CreateUser request)
+        public IActionResult CreateUser([FromForm] Request_CreateUser request)
         {
             return Ok(service_Authen.CreateUser(request));
         }
@@ -28,10 +28,10 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(service_Authen.UserLogin(request));
         }
 
-        [HttpPut("AccountVerification")]
-        public IActionResult AccountVerification(string code)
+        [HttpPost("AccountVerification")]
+        public IActionResult AccountVerification(Request_AccountVerification request)
         {
-            return Ok(service_Authen.AccountVerification(code));
+            return Ok(service_Authen.AccountVerification(request));
         }
 
         [HttpGet("GetListUser")]
@@ -65,9 +65,9 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("ForgotPassword")]
-        public IActionResult ForgotPassword(string email)
+        public IActionResult ForgotPassword(Request_ForgotPassword request)
         {
-            return Ok(service_Authen.ForgotPassword(email));
+            return Ok(service_Authen.ForgotPassword(request));
         }
 
         [HttpPut("UpdatePassAfterOtp")]

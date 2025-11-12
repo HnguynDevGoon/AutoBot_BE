@@ -237,16 +237,16 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return responseObject.responseObjectSuccess("Đăng ký tài khoản thành công !", null);
         }
 
-        public ResponseBase AccountVerification(string code)
+        public ResponseBase AccountVerification(Request_AccountVerification request)
         {
-            // Tìm mã (Giống cả 2 hàm)
+            var code = request.Code;
+
             var confirmEmail = dbContext.confirmEmails.FirstOrDefault(x => x.Code.Equals(code));
             if (confirmEmail == null)
             {
                 return responseBase.ResponseError(400, "Mã xác thực không đúng !");
             }
 
-            // CHECK HẾT HẠN
             if (DateTime.Now > confirmEmail.Expiredtime)
             {
                 // dbContext.confirmEmails.Remove(confirmEmail);
