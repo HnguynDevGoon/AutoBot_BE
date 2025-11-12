@@ -52,13 +52,13 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(service_Authen.DeleteUser(userId));
         }
 
-        [HttpPut("UpdateAvatar")]
+        [HttpPost("UpdateAvatar")]
         public IActionResult UpdateAvatar(Request_UpdateAvatar? request)
         {
             return Ok(service_Authen.UpdateAvatar(request));
         }
 
-        [HttpPut("ChangePassword")]
+        [HttpPost("ChangePassword")]
         public IActionResult ChangePassword(Guid userId, string oldPass, string newPass)
         {
             return Ok(service_Authen.ChangePassword(userId, oldPass, newPass));
@@ -70,7 +70,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(service_Authen.ForgotPassword(request));
         }
 
-        [HttpPut("UpdatePassAfterOtp")]
+        [HttpPost("UpdatePassAfterOtp")]
         public IActionResult UpdatePassAfterOtp(Guid userId, string newPass, string confirmPass)
         {
             return Ok(service_Authen.UpdatePassAfterOtp(userId, newPass, confirmPass));
