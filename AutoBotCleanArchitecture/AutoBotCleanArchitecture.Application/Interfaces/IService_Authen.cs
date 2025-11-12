@@ -15,7 +15,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         ResponseObject<DTO_User> CreateUser(Request_CreateUser request);
         Task<ResponseObject<DTO_Token>> UserLogin(Request_UserLogin request);
         public ResponseBase AccountVerification(string code);
-        public ResponseBase ForgotPassword(string email);
+        public ResponseBase ForgotPassword(Request_ForgotPassword request);
         public ResponseBase UpdatePassAfterOtp(Guid userId, string newPass, string confirmPass);
         public ResponseBase ChangePassword(Guid userId, string oldPass, string newPass);
         public IQueryable<DTO_User> GetListUser(int pageSize, int pageNumber);

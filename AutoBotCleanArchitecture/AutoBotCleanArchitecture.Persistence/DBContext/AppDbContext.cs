@@ -18,7 +18,8 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
         public DbSet<Role> roles { get; set; }
         public DbSet<ConfirmEmail> confirmEmails { get; set; }
         public DbSet<RefreshToken> refreshTokens { get; set; }
-
+        public DbSet<BotTrading> botTradings { get; set; }
+        public DbSet<PriceBot> priceBots { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -57,6 +58,14 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
                     RoleId = DefaultRoles.ADMIN_ID
                 }
             );
+
+            // --- THÊM CÁI NÀY VÀO ---
+            // Mặc dù Id (Guid) là Khóa chính, 
+            // ta thêm một Ràng buộc Duy nhất (Unique Index)
+            // cho cặp (Month, BotTradingId) để đảm bảo logic.
+            builder.Entity<PriceBot>()
+                .HasIndex(pb => new { pb.Month, pb.BotTradingId })
+                .IsUnique();
         }
     }
 }

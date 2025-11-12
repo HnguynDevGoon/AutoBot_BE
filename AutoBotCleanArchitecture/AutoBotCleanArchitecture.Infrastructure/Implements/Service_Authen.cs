@@ -394,9 +394,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return responseObjectToken.responseObjectSuccess("Đăng nhập thành công", GenerateAccessToken(user));
         }
 
-        public ResponseBase ForgotPassword(string email)
+        public ResponseBase ForgotPassword(Request_ForgotPassword request)
         {
-            var user = dbContext.users.FirstOrDefault(x => x.Email == email);
+            var user = dbContext.users.FirstOrDefault(x => x.Email == request.Email);
             if (user == null)
             {
                 return responseBase.ResponseError(StatusCodes.Status404NotFound, "Email này chưa tạo tài khoản !");
@@ -405,7 +405,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             Random r = new Random();
             int code = r.Next(100000, 999999);
             var emailTo = new EmailTo();
-            emailTo.Mail = email;
+            emailTo.Mail = request.Email;
             emailTo.Subject = "Nhận mã";
             emailTo.Content = $"Mã xác nhận của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
             emailTo.SendEmailAsync(emailTo);
