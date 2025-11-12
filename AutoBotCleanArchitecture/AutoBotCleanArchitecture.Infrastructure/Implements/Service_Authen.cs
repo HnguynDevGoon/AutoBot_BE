@@ -540,5 +540,25 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return responseObject.responseObjectSuccess("Cập nhật ảnh đại diện thành công!", userDto);
         }
 
+        public ResponseBase VerifyResetOtp(Request_VerifyResetOtp request)
+        {
+            var otp = request.Otp;
+
+            var confirmEmail = dbContext.confirmEmails.FirstOrDefault(x => x.Code == otp);
+            if (confirmEmail == null)
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mã OTP không hợp lệ !");
+            }
+
+            if (DateTime.Now > confirmEmail.Expiredtime)
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mã OTP đã hết hạn !");
+            }
+
+            var user = dbContext.users.FirstOrDefault(x => x.Id == confirmEmail.UserId);
+
+            return responseBase.ResponseSuccess($"{user.Id}");
+        }
+
     }
 }

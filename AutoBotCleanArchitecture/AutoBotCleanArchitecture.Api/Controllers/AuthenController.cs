@@ -75,6 +75,12 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         {
             return Ok(service_Authen.UpdatePassAfterOtp(userId, newPass, confirmPass));
         }
+
+        [HttpPost("VerifyResetOtp")]
+        public IActionResult VerifyResetOtp(Request_VerifyResetOtp request)
+        {
+            return Ok(service_Authen.VerifyResetOtp(request));  
+        }
     }
 
 }
