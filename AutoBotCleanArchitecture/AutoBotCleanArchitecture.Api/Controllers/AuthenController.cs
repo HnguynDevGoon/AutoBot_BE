@@ -36,21 +36,21 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpGet("GetListUser")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult GetListUser(int pageSize = 10, int pageNumber = 1)
         {
             return Ok(service_Authen.GetListUser(pageSize, pageNumber));
         }
 
         [HttpGet("GetUserById")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult GetUserById(Guid userId)
         {
             return Ok(service_Authen.GetUserById(userId));
         }
 
         [HttpDelete("DeleteUser")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult DeleteUser(Guid userId)
         {
             return Ok(service_Authen.DeleteUser(userId));

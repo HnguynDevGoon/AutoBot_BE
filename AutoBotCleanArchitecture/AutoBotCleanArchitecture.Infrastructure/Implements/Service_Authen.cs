@@ -106,12 +106,12 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 Subject = new ClaimsIdentity(new[]
                 {
              new Claim("Id", user.Id.ToString()),
-             new Claim(ClaimTypes.Email, user.Email),
-             new Claim("Username", user.UserName),
-             new Claim("RoleId", user.RoleId.ToString()),
+             //new Claim(ClaimTypes.Email, user.Email),
+             //new Claim("Username", user.UserName),
+             //new Claim("RoleId", user.RoleId.ToString()),
              
-             new Claim("UrlAvatar", user.UrlAvatar.ToString()),
-             new Claim("FullName", user.FullName.ToString()),
+             //new Claim("UrlAvatar", user.UrlAvatar.ToString()),
+             //new Claim("FullName", user.FullName.ToString()),
              new Claim(ClaimTypes.Role, decentralization?.RoleName ?? "")
          }),
                 Expires = DateTime.UtcNow.AddHours(4),
