@@ -36,37 +36,33 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpGet("GetListUser")]
-        //[Authorize(Roles = "Admin")]
         public IActionResult GetListUser(int pageSize = 10, int pageNumber = 1)
         {
             return Ok(service_Authen.GetListUser(pageSize, pageNumber));
         }
 
         [HttpGet("GetUserById")]
-        //[Authorize(Roles = "Admin")]
         public IActionResult GetUserById(Guid userId)
         {
             return Ok(service_Authen.GetUserById(userId));
         }
 
         [HttpDelete("DeleteUser")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteUser(Guid userId)
         {
             return Ok(service_Authen.DeleteUser(userId));
         }
 
         [HttpPost("UpdateAvatar")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin,User")]
         public IActionResult UpdateAvatar(Request_UpdateAvatar? request)
         {
             return Ok(service_Authen.UpdateAvatar(request));
         }
 
         [HttpPost("ChangePassword")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin,User")]
         public IActionResult ChangePassword(Guid userId, string oldPass, string newPass)
         {
             return Ok(service_Authen.ChangePassword(userId, oldPass, newPass));

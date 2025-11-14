@@ -15,6 +15,7 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         public string PhoneNumber { get; set; }
         public string UrlAvatar { get; set; }
         public DateOnly? BirthDay { get; set; }
+        public DateTime CreatedDate { get; set; }
         public bool? IsActive { get; set; } = false;
         public DateTime LockoutEnd { get; set; }
         public bool? LockoutEnable { get; set; }
@@ -25,5 +26,7 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         //--------------------------
         public ICollection<ConfirmEmail>? ConfirmEmails { get; set; }
         public ICollection<RefreshToken>? RefreshTokens { get; set; }
+        public ICollection<LogHistory>? LogHistorys { get; set; }
+
     }
 }

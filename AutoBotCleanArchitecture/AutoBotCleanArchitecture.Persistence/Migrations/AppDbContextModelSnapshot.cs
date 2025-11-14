@@ -79,6 +79,44 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.ToTable("confirmEmails");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.LogHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsSL")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NumberContract")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PriceBuy")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Profit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ProfitPointTP")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Signal")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("logHistories");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.PriceBot", b =>
                 {
                     b.Property<Guid>("Id")
@@ -173,6 +211,9 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Property<DateOnly?>("BirthDay")
                         .HasColumnType("date");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -221,6 +262,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,
@@ -241,6 +283,15 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.LogHistory", b =>
+                {
+                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.User", "User")
+                        .WithMany("LogHistorys")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -289,6 +340,8 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.User", b =>
                 {
                     b.Navigation("ConfirmEmails");
+
+                    b.Navigation("LogHistorys");
 
                     b.Navigation("RefreshTokens");
                 });

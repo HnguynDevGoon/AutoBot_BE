@@ -190,13 +190,14 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,
                 BirthDay = request.BirthDay,
+                CreatedDate = DateTime.UtcNow,
                 RoleId = DefaultRoles.USER_ID,
             };
 
             string UrlAvt = null;
             if (request.UrlAvatar == null)
             {
-                UrlAvt = "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=";
+                UrlAvt = "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg";
             }
             else
             {

@@ -20,6 +20,7 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
         public DbSet<RefreshToken> refreshTokens { get; set; }
         public DbSet<BotTrading> botTradings { get; set; }
         public DbSet<PriceBot> priceBots { get; set; }
+        public DbSet<LogHistory> logHistories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

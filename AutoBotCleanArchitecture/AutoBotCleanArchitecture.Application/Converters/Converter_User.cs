@@ -22,6 +22,7 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 //PassWord = user.PassWord,
                 UrlAvatar = user.UrlAvatar,
                 BirthDay = user.BirthDay,
+                CreatedDate = user.CreatedDate,
                 IsActive = user.IsActive,
                 AccessFailedCount = user.AccessFailedCount,
                 LockoutEnable = user.LockoutEnable,

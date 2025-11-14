@@ -114,14 +114,21 @@ builder.Services.AddScoped<ResponseBase>();
 builder.Services.AddScoped<ResponseObject<DTO_Role>>();
 builder.Services.AddScoped<ResponseObject<DTO_User>>();
 builder.Services.AddScoped<ResponseObject<DTO_Token>>();
+builder.Services.AddScoped<ResponseObject<DTO_LogHistory>>();
+builder.Services.AddScoped<ResponseObject<IList<DTO_LogHistory>>>();
+
 
 // Converter
 builder.Services.AddScoped<Converter_Role>();
 builder.Services.AddScoped<Converter_User>();
+builder.Services.AddScoped<Converter_LogHistory>();
+
 
 // IService, Service
 builder.Services.AddScoped<IService_Role, Service_Role>();
 builder.Services.AddScoped<IService_Authen, Service_Authen>();
+builder.Services.AddScoped<IService_LogHistory, Service_LogHistory>();
+
 
 
 builder.Services.AddControllers();
