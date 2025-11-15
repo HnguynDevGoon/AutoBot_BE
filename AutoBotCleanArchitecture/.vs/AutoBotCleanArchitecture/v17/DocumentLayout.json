@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\Migrations\\20251114084834_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:AutoBotCleanArchitecture.Persistence\\Migrations\\20251114084834_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\implements\\service_authen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|solutionrelative:autobotcleanarchitecture.infrastructure\\implements\\service_authen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B253F17C-D519-402E-8FE1-151DC254BC3E}|AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.persistence\\migrations\\20251114084834_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B253F17C-D519-402E-8FE1-151DC254BC3E}|AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj|solutionrelative:autobotcleanarchitecture.persistence\\migrations\\20251114084834_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\converters\\converter_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -196,17 +196,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 30,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Service_Authen.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
               "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
-              "ViewState": "AgIAAOEBAAAAAAAAAAAIwPIBAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAL0BAAAAAAAAAAAuwJwBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-08T05:30:46.097Z",
               "IsPinned": true,
@@ -223,8 +223,7 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-08T03:53:35.928Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
@@ -340,7 +339,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "20251114084834_init.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\Migrations\\20251114084834_init.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Persistence\\Migrations\\20251114084834_init.cs",
@@ -348,8 +347,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Persistence\\Migrations\\20251114084834_init.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-14T08:48:34.322Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-14T08:48:34.322Z"
             },
             {
               "$type": "Document",
@@ -361,8 +359,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_LogHistory.cs",
               "ViewState": "AgIAACoAAAAAAAAAAAAowEUAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:02:50.107Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T13:02:50.107Z"
             },
             {
               "$type": "Document",
@@ -374,8 +371,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_LogHistory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwBQAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:21:22.298Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T13:21:22.298Z"
             },
             {
               "$type": "Document",
@@ -387,8 +383,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\LogHistory\\Request_LogHistory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:48:25.752Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T13:48:25.752Z"
             },
             {
               "$type": "Document",
@@ -400,8 +395,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\User.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:30:50.853Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:30:50.853Z"
             },
             {
               "$type": "Document",
@@ -413,8 +407,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_User.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAAAqwBIAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T04:01:12.496Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T04:01:12.496Z"
             },
             {
               "$type": "Document",
@@ -426,8 +419,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_LogHistory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAABXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:41:28.205Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T13:41:28.205Z"
             },
             {
               "$type": "Document",
@@ -439,8 +431,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_User.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAqwBgAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T04:01:39.245Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T04:01:39.245Z"
             },
             {
               "$type": "Document",
@@ -452,8 +443,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\AuthenController.cs",
               "ViewState": "AgIAACcAAAAAAAAAAADwvzAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:07:06.781Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:07:06.781Z"
             },
             {
               "$type": "Document",
@@ -465,8 +455,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\RoleController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:33:04.062Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:33:04.062Z"
             },
             {
               "$type": "Document",
@@ -478,8 +467,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\LogHistoryController.cs",
               "ViewState": "AgIAADEAAAAAAAAAAAAcwE8AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T14:24:09.558Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T14:24:09.558Z"
             },
             {
               "$type": "Document",
@@ -491,8 +479,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Role.cs",
               "ViewState": "AgIAAC0AAAAAAAAAAAAowDkAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:33:39.344Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:33:39.344Z"
             },
             {
               "$type": "Document",
@@ -504,8 +491,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Program.cs",
               "ViewState": "AgIAAGEAAAAAAAAAAAAIwG8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T10:19:02.896Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T10:19:02.896Z"
             },
             {
               "$type": "Document",
@@ -517,8 +503,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_Role.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:35:54.522Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:35:54.522Z"
             },
             {
               "$type": "Document",
@@ -530,8 +515,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_LogHistory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-14T07:57:26.181Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-14T07:57:26.181Z"
             },
             {
               "$type": "Document",
