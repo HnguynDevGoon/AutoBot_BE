@@ -12,19 +12,19 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
     public interface IService_Authen
     {
         Task<ResponseObject<DTO_Token>> RenewAccessToken(DTO_Token request);
-        ResponseObject<DTO_User> CreateUser(Request_CreateUser request);
+        Task<ResponseObject<DTO_User>> CreateUser(Request_CreateUser request); // Sửa
         Task<ResponseObject<DTO_Token>> UserLogin(Request_UserLogin request);
-        public ResponseBase AccountVerification(Request_AccountVerification request);
-        public ResponseBase ForgotPassword(Request_ForgotPassword request);
-        public ResponseBase UpdatePassAfterOtp(Request_UpdatePassAfterOtp request);
-        public ResponseBase ChangePassword(Request_ChangePassword request);
-        public IQueryable<DTO_User> GetListUser(int pageSize, int pageNumber);
-        public ResponseObject<DTO_User> GetUserById(Guid userId);
-        public ResponseObject<DTO_User> DeleteUser(Guid userId);
-        public ResponseObject<DTO_User> UpdateAvatar(Request_UpdateAvatar request);
-        public ResponseBase VerifyResetOtp(Request_VerifyResetOtp request);
-        public Task<ResponseObject<DTO_Token>> VerifyTwoStep(Request_VerifyTwoStep request);
-        public ResponseBase ValidateAccountStepOne(Request_ValidateAccountStepOne request);
-
+        Task<ResponseBase> AccountVerification(Request_AccountVerification request); // Sửa
+        Task<ResponseBase> ForgotPassword(Request_ForgotPassword request); // Sửa
+        Task<ResponseBase> UpdatePassAfterOtp(Request_UpdatePassAfterOtp request); // Sửa
+        Task<ResponseBase> ChangePassword(Request_ChangePassword request); // Sửa
+        IQueryable<DTO_User> GetListUser(int pageSize, int pageNumber);
+        Task<ResponseObject<DTO_User>> GetUserById(Guid userId);
+        Task<ResponseObject<DTO_User>> DeleteUser(Guid userId); // Sửa
+        Task<ResponseObject<DTO_User>> UpdateAvatar(Request_UpdateAvatar request); // Sửa
+        Task<ResponseBase> VerifyResetOtp(Request_VerifyResetOtp request); // Sửa
+        Task<ResponseObject<DTO_Token>> VerifyTwoStep(Request_VerifyTwoStep request);
+        Task<ResponseObject<DTO_Token>> GoogleLogin(Request_GoogleLogin request); // Đổi tên (hoặc LoginWithGoogle)
+        Task<ResponseBase> ValidateAccountStepOne(Request_ValidateAccountStepOne request); // Sửa
     }
 }

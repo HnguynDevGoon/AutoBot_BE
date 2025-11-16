@@ -3,6 +3,8 @@ using AutoBotCleanArchitecture.Application.Requests.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System; 
+using System.Threading.Tasks;
 
 namespace AutoBotCleanArchitecture.Api.Controllers
 {
@@ -18,21 +20,21 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("CreateUser")]
-        public IActionResult CreateUser([FromForm] Request_CreateUser request)
+        public async Task<IActionResult> CreateUser([FromForm] Request_CreateUser request)
         {
-            return Ok(service_Authen.CreateUser(request));
+            return Ok(await service_Authen.CreateUser(request));
         }
 
         [HttpPost("UserLogin")]
-        public IActionResult UserLogin(Request_UserLogin request)
+        public async Task<IActionResult> UserLogin(Request_UserLogin request) 
         {
-            return Ok(service_Authen.UserLogin(request));
+            return Ok(await service_Authen.UserLogin(request));
         }
 
         [HttpPost("AccountVerification")]
-        public IActionResult AccountVerification(Request_AccountVerification request)
+        public async Task<IActionResult> AccountVerification(Request_AccountVerification request) 
         {
-            return Ok(service_Authen.AccountVerification(request));
+            return Ok(await service_Authen.AccountVerification(request));
         }
 
         [HttpGet("GetListUser")]
@@ -42,60 +44,66 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpGet("GetUserById")]
-        public IActionResult GetUserById(Guid userId)
+        public async Task<IActionResult> GetUserById(Guid userId)
         {
-            return Ok(service_Authen.GetUserById(userId));
+            return Ok(await service_Authen.GetUserById(userId));
         }
 
         [HttpDelete("DeleteUser")]
         [Authorize(Roles = "Admin")]
-        public IActionResult DeleteUser(Guid userId)
+        public async Task<IActionResult> DeleteUser(Guid userId) 
         {
-            return Ok(service_Authen.DeleteUser(userId));
+            return Ok(await service_Authen.DeleteUser(userId));
         }
 
         [HttpPost("UpdateAvatar")]
         [Authorize(Roles = "Admin,User")]
-        public IActionResult UpdateAvatar(Request_UpdateAvatar? request)
+        public async Task<IActionResult> UpdateAvatar(Request_UpdateAvatar? request)
         {
-            return Ok(service_Authen.UpdateAvatar(request));
+            return Ok(await service_Authen.UpdateAvatar(request));
         }
 
         [HttpPost("ChangePassword")]
         [Authorize(Roles = "Admin,User")]
-        public IActionResult ChangePassword(Request_ChangePassword request)
+        public async Task<IActionResult> ChangePassword(Request_ChangePassword request) 
         {
-            return Ok(service_Authen.ChangePassword(request));
+            return Ok(await service_Authen.ChangePassword(request));
         }
 
         [HttpPost("ForgotPassword")]
-        public IActionResult ForgotPassword(Request_ForgotPassword request)
+        public async Task<IActionResult> ForgotPassword(Request_ForgotPassword request) 
         {
-            return Ok(service_Authen.ForgotPassword(request));
+            return Ok(await service_Authen.ForgotPassword(request));
         }
 
         [HttpPost("UpdatePassAfterOtp")]
-        public IActionResult UpdatePassAfterOtp(Request_UpdatePassAfterOtp request)
+        public async Task<IActionResult> UpdatePassAfterOtp(Request_UpdatePassAfterOtp request) 
         {
-            return Ok(service_Authen.UpdatePassAfterOtp(request));
+            return Ok(await service_Authen.UpdatePassAfterOtp(request));
         }
 
         [HttpPost("VerifyResetOtp")]
-        public IActionResult VerifyResetOtp(Request_VerifyResetOtp request)
+        public async Task<IActionResult> VerifyResetOtp(Request_VerifyResetOtp request) 
         {
-            return Ok(service_Authen.VerifyResetOtp(request));  
+            return Ok(await service_Authen.VerifyResetOtp(request));
         }
 
         [HttpPost("VerifyTwoStep")]
-        public IActionResult VerifyTwoStep(Request_VerifyTwoStep request)
+        public async Task<IActionResult> VerifyTwoStep(Request_VerifyTwoStep request) 
         {
-            return Ok(service_Authen.VerifyTwoStep(request));
+            return Ok(await service_Authen.VerifyTwoStep(request));
         }
 
         [HttpPost("ValidateAccountStepOne")]
-        public IActionResult Request_ValidateAccountStepOne(Request_ValidateAccountStepOne request)
+        public async Task<IActionResult> Request_ValidateAccountStepOne(Request_ValidateAccountStepOne request)
         {
-            return Ok(service_Authen.ValidateAccountStepOne(request));
+            return Ok(await service_Authen.ValidateAccountStepOne(request));
+        }
+
+        [HttpPost("GoogleLogin")]
+        public async Task<IActionResult> GoogleLogin(Request_GoogleLogin request)
+        {
+            return Ok(await service_Authen.GoogleLogin(request));
         }
     }
 

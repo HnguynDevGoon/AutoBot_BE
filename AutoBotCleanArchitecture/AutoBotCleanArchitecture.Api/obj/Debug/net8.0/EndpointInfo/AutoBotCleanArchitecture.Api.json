@@ -409,7 +409,7 @@
         }
       }
     },
-    "/api/Authen/Request_ValidateAccountStepOne": {
+    "/api/Authen/ValidateAccountStepOne": {
       "post": {
         "tags": [
           "Authen"
@@ -429,6 +429,37 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/Request_ValidateAccountStepOne"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Authen/GoogleLogin": {
+      "post": {
+        "tags": [
+          "Authen"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_GoogleLogin"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_GoogleLogin"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_GoogleLogin"
               }
             }
           }
@@ -865,6 +896,16 @@
         "type": "object",
         "properties": {
           "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Request_GoogleLogin": {
+        "type": "object",
+        "properties": {
+          "idToken": {
             "type": "string",
             "nullable": true
           }

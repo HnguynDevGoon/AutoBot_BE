@@ -1,9 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\AutoBotCleanArchitecture.Api",
+    "\\AutoBotCleanArchitecture.Api\\Controllers",
     "\\AutoBotCleanArchitecture.Infrastructure",
     "\\AutoBotCleanArchitecture.Infrastructure\\Implements"
   ],
-  "SelectedNode": "\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
+  "SelectedNode": "\\AutoBotCleanArchitecture.Api\\Controllers\\AuthenController.cs",
   "PreviewInSolutionExplorer": false
 }

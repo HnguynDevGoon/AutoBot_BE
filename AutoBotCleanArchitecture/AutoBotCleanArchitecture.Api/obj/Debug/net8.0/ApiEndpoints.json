@@ -148,15 +148,15 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
-    "Method": "Request_ValidateAccountStepOne",
-    "RelativePath": "api/Authen/Request_ValidateAccountStepOne",
+    "Method": "GoogleLogin",
+    "RelativePath": "api/Authen/GoogleLogin",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ValidateAccountStepOne",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_GoogleLogin",
         "IsRequired": true
       }
     ],
@@ -210,6 +210,22 @@
       {
         "Name": "request",
         "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_UserLogin",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
+    "Method": "Request_ValidateAccountStepOne",
+    "RelativePath": "api/Authen/ValidateAccountStepOne",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ValidateAccountStepOne",
         "IsRequired": true
       }
     ],

@@ -49,13 +49,15 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
                     UserName = "Admin",
                     Email = "huynhnguyen13122005@gmail.com",
                     FullName = "Quản Trị Viên",
-                    PhoneNumber = "0908119698",
+                    PhoneNumber = "0123456789",
                     BirthDay = new DateOnly(2000, 1, 1),
-                    PassWord = "$2a$11$GdB5Yf5PMum9VAkLAoJDZuf4dTTqdMuYOdwzZKCnKVMKWroqP3dzG",
+                    PassWord = "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a",
                     IsActive = true,
+                    CreatedDate = DateTime.UtcNow,
                     LockoutEnable = false,
                     AccessFailedCount = 0,
-                    UrlAvatar = "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=",
+                    UrlAvatar = "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg",
+                    TwoStep = true,
                     RoleId = DefaultRoles.ADMIN_ID
                 }
             );

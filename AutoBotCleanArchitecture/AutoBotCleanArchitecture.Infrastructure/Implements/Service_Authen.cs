@@ -7,6 +7,7 @@ using AutoBotCleanArchitecture.Domain.Constants;
 using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Handle;
 using AutoBotCleanArchitecture.Persistence.DBContext;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -66,16 +67,17 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 {
                     return responseObjectToken.responseObjectError(StatusCodes.Status404NotFound, "RefreshToken không tồn tại trong database", null);
                 }
-                if (refreshToken.Exprited < DateTime.Now)
+                if (refreshToken.Exprited < DateTime.Now) 
                 {
-                    return responseObjectToken.responseObjectError(StatusCodes.Status401Unauthorized, "Token chưa hết hạn", null);
+                    return responseObjectToken.responseObjectError(StatusCodes.Status401Unauthorized, "Token đã hết hạn", null); 
                 }
-                var user = dbContext.users.FirstOrDefault(x => x.Id == refreshToken.UserId);
+
+                var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == refreshToken.UserId);
                 if (user == null)
                 {
                     return responseObjectToken.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
                 }
-                var newToken = GenerateAccessToken(user);
+                var newToken = await GenerateAccessToken(user);
 
                 return responseObjectToken.responseObjectSuccess("Làm mới token thành công", newToken);
             }
@@ -94,26 +96,27 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        private DTO_Token GenerateAccessToken(User user)
+        private async Task<DTO_Token> GenerateAccessToken(User user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var secretKeyBytes = System.Text.Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings:SecretKey").Value);
 
-            var decentralization = dbContext.roles.FirstOrDefault(x => x.Id == user.RoleId);
+
+            var decentralization = await dbContext.roles.FirstOrDefaultAsync(x => x.Id == user.RoleId);
 
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-             new Claim("Id", user.Id.ToString()),
-             //new Claim(ClaimTypes.Email, user.Email),
-             //new Claim("Username", user.UserName),
-             //new Claim("RoleId", user.RoleId.ToString()),
-             
-             //new Claim("UrlAvatar", user.UrlAvatar.ToString()),
-             //new Claim("FullName", user.FullName.ToString()),
-             new Claim(ClaimTypes.Role, decentralization?.RoleName ?? "")
-         }),
+                        new Claim("Id", user.Id.ToString()),
+                        //new Claim(ClaimTypes.Email, user.Email),
+                        //new Claim("Username", user.UserName),
+                        //new Claim("RoleId", user.RoleId.ToString()),
+                        
+                        //new Claim("UrlAvatar", user.UrlAvatar.ToString()),
+                        //new Claim("FullName", user.FullName.ToString()),
+                        new Claim(ClaimTypes.Role, decentralization?.RoleName ?? "") // Giữ nguyên RoleName của bạn
+                }),
                 Expires = DateTime.UtcNow.AddHours(4),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeyBytes), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -123,13 +126,14 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
             RefreshToken rf = new RefreshToken
             {
+                Id = Guid.NewGuid(),
                 Token = refreshToken,
-                Exprited = DateTime.UtcNow.AddHours(7),
+                Exprited = DateTime.UtcNow.AddHours(7), 
                 UserId = user.Id
             };
 
-            dbContext.refreshTokens.Add(rf);
-            dbContext.SaveChanges();
+            await dbContext.refreshTokens.AddAsync(rf); 
+            await dbContext.SaveChangesAsync(); 
 
             DTO_Token tokenDTO = new DTO_Token
             {
@@ -139,9 +143,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return tokenDTO;
         }
 
-        public ResponseObject<DTO_User> CreateUser(Request_CreateUser request)
+        public async Task<ResponseObject<DTO_User>> CreateUser(Request_CreateUser request)
         {
-            if (dbContext.users.Any(x => x.UserName == request.UserName))
+            if (await dbContext.users.AnyAsync(x => x.UserName == request.UserName))
             {
                 return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Tên đăng nhập đã tồn tại", null);
             }
@@ -163,11 +167,11 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Email không hợp lệ !", null);
             }
 
-            int emailCount = dbContext.users.Count(x => x.Email == request.Email);
+            int emailCount = await dbContext.users.CountAsync(x => x.Email == request.Email);
             if (emailCount >= 1)
             {
                 return responseObject.responseObjectError(StatusCodes.Status400BadRequest,
-                                                "Email đã có quá 1 tài khoản đăng ký. Vui lòng chọn email khác !", null);
+                                                        "Email đã có quá 1 tài khoản đăng ký. Vui lòng chọn email khác !", null);
             }
 
             if (string.IsNullOrEmpty(request.PhoneNumber))
@@ -175,11 +179,11 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Số điện thoại là bắt buộc !", null);
             }
 
-            int phoneCount = dbContext.users.Count(x => x.PhoneNumber == request.PhoneNumber);
+            int phoneCount = await dbContext.users.CountAsync(x => x.PhoneNumber == request.PhoneNumber);
             if (phoneCount >= 1)
             {
                 return responseObject.responseObjectError(StatusCodes.Status400BadRequest,
-                                            "Số điện thoại đã được đăng ký. Vui lòng chọn số khác !", null);
+                                                        "Số điện thoại đã được đăng ký. Vui lòng chọn số khác !", null);
             }
 
             var userAccount = new User()
@@ -212,8 +216,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             userAccount.UrlAvatar = UrlAvt;
 
 
-            dbContext.users.Add(userAccount);
-            dbContext.SaveChanges();
+            await dbContext.users.AddAsync(userAccount);
+            await dbContext.SaveChangesAsync(); 
 
             //Email To
             Random r = new Random();
@@ -225,24 +229,24 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             emailTo.SendEmailAsync(emailTo);
 
             //ConfirmEmail
-           var confirmEmail = new ConfirmEmail();
+            var confirmEmail = new ConfirmEmail();
             confirmEmail.Code = code.ToString();
             confirmEmail.Message = "Xác nhận đăng kí !";
             confirmEmail.Starttime = DateTime.Now;
             confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
             confirmEmail.UserId = userAccount.Id;
-            dbContext.confirmEmails.Add(confirmEmail);
-            dbContext.SaveChanges();
+            await dbContext.confirmEmails.AddAsync(confirmEmail); 
+            await dbContext.SaveChangesAsync(); 
 
 
             return responseObject.responseObjectSuccess("Đăng ký tài khoản thành công !", null);
         }
 
-        public ResponseBase AccountVerification(Request_AccountVerification request)
+        public async Task<ResponseBase> AccountVerification(Request_AccountVerification request)
         {
             var code = request.Code;
 
-            var confirmEmail = dbContext.confirmEmails.FirstOrDefault(x => x.Code.Equals(code));
+            var confirmEmail = await dbContext.confirmEmails.FirstOrDefaultAsync(x => x.Code.Equals(code));
             if (confirmEmail == null)
             {
                 return responseBase.ResponseError(400, "Mã xác thực không đúng !");
@@ -256,9 +260,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
 
             // 3. Nếu mọi thứ OK, kích hoạt tài khoản
-            var nguoiDung = dbContext.users.FirstOrDefault(x => x.Id == confirmEmail.UserId);
+            var nguoiDung = await dbContext.users.FirstOrDefaultAsync(x => x.Id == confirmEmail.UserId);
 
-            // Check xem đã active chưa, nếu rồi thì thôi
             if (nguoiDung.IsActive == true)
             {
                 return responseBase.ResponseSuccess("Tài khoản này đã được kích hoạt trước đó !");
@@ -269,7 +272,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
             // dbContext.confirmEmails.Remove(confirmEmail);
 
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync(); 
             return responseBase.ResponseSuccess("Xác thực tài khoản thành công !");
         }
 
@@ -280,13 +283,12 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return responseObjectToken.responseObjectError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ", null);
             }
 
-            // Đổi tên biến request cho khớp với code cũ
             var requestUsernameOrEmail = request.LoginIdentifier;
 
-            var user = dbContext.users
-                .FirstOrDefault(x => x.UserName == requestUsernameOrEmail ||
-                                     x.Email == requestUsernameOrEmail ||
-                                     x.PhoneNumber == requestUsernameOrEmail);
+            var user = await dbContext.users
+                .FirstOrDefaultAsync(x => x.UserName == requestUsernameOrEmail ||
+                                        x.Email == requestUsernameOrEmail ||
+                                        x.PhoneNumber == requestUsernameOrEmail);
 
             if (user == null)
             {
@@ -294,14 +296,14 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
 
             // --- (1) LOGIC CHECK KHÓA TÀI KHOẢN ---
-            if (user.LockoutEnable == true) 
+            if (user.LockoutEnable == true)
             {
 
                 if (user.LockoutEnd > DateTime.UtcNow)
                 {
                     var secondsLeft = Math.Ceiling(user.LockoutEnd.Subtract(DateTime.UtcNow).TotalSeconds);
                     return responseObjectToken.responseObjectError(
-                        StatusCodes.Status423Locked, 
+                        StatusCodes.Status423Locked,
                         $"Tài khoản đang bị khóa. Vui lòng thử lại sau {secondsLeft} giây.",
                         null
                     );
@@ -327,9 +329,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 if (user.AccessFailedCount >= 5)
                 {
                     user.LockoutEnd = DateTime.UtcNow.AddMinutes(1);
-                    user.LockoutEnable = true; 
+                    user.LockoutEnable = true;
                 }
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync(); // SỬA: Phải dùng await
 
                 return responseObjectToken.responseObjectError(StatusCodes.Status400BadRequest, "Tên tài khoản hoặc mật khẩu không hợp lệ!", null);
             }
@@ -337,7 +339,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
             // --- (3) LOGIC XỬ LÝ ĐÚNG MẬT KHẨU ---
             // (Nếu code chạy tới đây, tức là pass đúng)
-
             // Nếu trước đó có đăng nhập sai (AccessFailedCount > 0), thì giờ reset về 0
             if (user.AccessFailedCount > 0)
             {
@@ -345,7 +346,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 // (Không cần SaveChanges() ở đây vội, 
                 // vì 2 block code bên dưới (IsActive hoặc GenerateToken) cũng sẽ Save)
             }
-
 
             // --- CHECK ISACTIVE 
             if (user.IsActive != true)
@@ -369,10 +369,10 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 confirmEmail.Starttime = DateTime.Now;
                 confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
                 confirmEmail.UserId = user.Id;
-                dbContext.confirmEmails.Add(confirmEmail);
+                await dbContext.confirmEmails.AddAsync(confirmEmail); // SỬA: Phải dùng await + Async
 
                 // Dòng này sẽ lưu (AccessFailedCount = 0) VÀ (mã confirm mới)
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync(); // SỬA: Phải dùng await
 
                 return responseObjectToken.responseObjectError(
                     StatusCodes.Status401Unauthorized,
@@ -395,8 +395,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     Expiredtime = DateTime.Now.AddMinutes(2),
                     UserId = user.Id
                 };
-                dbContext.confirmEmails.Add(confirm);
-                dbContext.SaveChanges();
+                await dbContext.confirmEmails.AddAsync(confirm); 
+                await dbContext.SaveChangesAsync(); 
 
                 var emailTo = new EmailTo
                 {
@@ -414,12 +414,13 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
 
             // Đăng nhập thành công (pass đúng VÀ đã active)
-            return responseObjectToken.responseObjectSuccess("Đăng nhập thành công", GenerateAccessToken(user));
+            var dtoToken = await GenerateAccessToken(user);
+            return responseObjectToken.responseObjectSuccess("Đăng nhập thành công", dtoToken);
         }
 
-        public ResponseBase ForgotPassword(Request_ForgotPassword request)
+        public async Task<ResponseBase> ForgotPassword(Request_ForgotPassword request)
         {
-            var user = dbContext.users.FirstOrDefault(x => x.Email == request.Email);
+            var user = await dbContext.users.FirstOrDefaultAsync(x => x.Email == request.Email);
             if (user == null)
             {
                 return responseBase.ResponseError(StatusCodes.Status404NotFound, "Email này chưa tạo tài khoản !");
@@ -439,21 +440,21 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             confirmEmail.Starttime = DateTime.Now;
             confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
             confirmEmail.UserId = user.Id;
-            dbContext.confirmEmails.Add(confirmEmail);
-            dbContext.SaveChanges();
+            await dbContext.confirmEmails.AddAsync(confirmEmail); 
+            await dbContext.SaveChangesAsync(); 
 
             return responseBase.ResponseSuccess("Mã OTP đang gửi vào email của bạn !");
 
         }
 
-        public ResponseBase UpdatePassAfterOtp(Request_UpdatePassAfterOtp request)
+        public async Task<ResponseBase> UpdatePassAfterOtp(Request_UpdatePassAfterOtp request)
         {
             if (string.IsNullOrEmpty(request.NewPassword) || string.IsNullOrEmpty(request.ConfirmPassword))
             {
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mật khẩu không được để trống !");
             }
 
-            var user = dbContext.users.FirstOrDefault(x => x.Id == request.Id);
+            var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (user == null)
             {
                 return responseBase.ResponseError(StatusCodes.Status404NotFound, "Không có user nào được tìm thấy !");
@@ -473,19 +474,19 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             user.PassWord = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
 
             dbContext.users.Update(user);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync(); 
 
             return responseBase.ResponseSuccess("Đổi mật khẩu thành công !");
         }
 
-        public ResponseBase ChangePassword(Request_ChangePassword request)
+        public async Task<ResponseBase> ChangePassword(Request_ChangePassword request)
         {
             if (string.IsNullOrWhiteSpace(request.OldPassword) || string.IsNullOrWhiteSpace(request.NewPassword))
             {
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ");
             }
 
-            var user = dbContext.users.FirstOrDefault(x => x.Id == request.Id);
+            var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (user == null)
             {
                 return responseBase.ResponseError(StatusCodes.Status404NotFound, "Người dùng không tồn tại!");
@@ -501,7 +502,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             {
                 user.PassWord = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
                 dbContext.users.Update(user);
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync(); 
 
                 return responseBase.ResponseSuccess("Đổi mật khẩu thành công!");
             }
@@ -516,9 +517,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 .Select(x => converter_Authen.EntityToDTO(x));
         }
 
-        public ResponseObject<DTO_User> GetUserById(Guid userId)
+        public async Task<ResponseObject<DTO_User>> GetUserById(Guid userId)
         {
-            var searchUserId = dbContext.users.FirstOrDefault(x => x.Id == userId);
+            var searchUserId = await dbContext.users.FirstOrDefaultAsync(x => x.Id == userId);
             if (searchUserId == null)
             {
                 return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy user", null);
@@ -530,21 +531,21 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return responseObject.responseObjectSuccess("Tìm user thành công", userDto);
         }
 
-        public ResponseObject<DTO_User> DeleteUser(Guid userId)
+        public async Task<ResponseObject<DTO_User>> DeleteUser(Guid userId)
         {
-            var searchUserId = dbContext.users.FirstOrDefault(x => x.Id == userId);
+            var searchUserId = await dbContext.users.FirstOrDefaultAsync(x => x.Id == userId);
             if (searchUserId == null)
             {
                 return responseObject.responseObjectError(StatusCodes.Status404NotFound, "User không tồn tại", null);
             }
             dbContext.users.Remove(searchUserId);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync(); 
             return responseObject.responseObjectSuccess("Xóa thành công !", null);
         }
 
-        public ResponseObject<DTO_User> UpdateAvatar(Request_UpdateAvatar request)
+        public async Task<ResponseObject<DTO_User>> UpdateAvatar(Request_UpdateAvatar request)
         {
-            var user = dbContext.users.FirstOrDefault(x => x.Id == request.Id);
+            var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (user == null)
             {
                 return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy user", null);
@@ -557,17 +558,17 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
 
             dbContext.users.Update(user);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync(); 
 
             var userDto = converter_Authen.EntityToDTO(user);
             return responseObject.responseObjectSuccess("Cập nhật ảnh đại diện thành công!", userDto);
         }
 
-        public ResponseBase VerifyResetOtp(Request_VerifyResetOtp request)
+        public async Task<ResponseBase> VerifyResetOtp(Request_VerifyResetOtp request)
         {
             var otp = request.Otp;
 
-            var confirmEmail = dbContext.confirmEmails.FirstOrDefault(x => x.Code == otp);
+            var confirmEmail = await dbContext.confirmEmails.FirstOrDefaultAsync(x => x.Code == otp);
             if (confirmEmail == null)
             {
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mã OTP không hợp lệ !");
@@ -578,7 +579,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mã OTP đã hết hạn !");
             }
 
-            var user = dbContext.users.FirstOrDefault(x => x.Id == confirmEmail.UserId);
+            var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == confirmEmail.UserId);
 
             return responseBase.ResponseSuccess($"{user.Id}");
         }
@@ -587,9 +588,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             var otp = request.Otp;
 
-            var confirmEmail = dbContext.confirmEmails
+            var confirmEmail = await dbContext.confirmEmails
                 .OrderByDescending(x => x.Starttime)
-                .FirstOrDefault(x => x.Code == otp && x.Message == "Xác thực 2 bước đăng nhập");
+                .FirstOrDefaultAsync(x => x.Code == otp && x.Message == "Xác thực 2 bước đăng nhập");
 
             if (confirmEmail == null)
             {
@@ -609,7 +610,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 );
             }
 
-            var user = dbContext.users.FirstOrDefault(x => x.Id == confirmEmail.UserId);
+            var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == confirmEmail.UserId);
 
             if (user == null)
             {
@@ -621,9 +622,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
 
             dbContext.confirmEmails.Remove(confirmEmail);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync(); 
 
-            var token = GenerateAccessToken(user);
+            var token = await GenerateAccessToken(user);
 
             return responseObjectToken.responseObjectSuccess(
                 "Xác thực 2 bước thành công!",
@@ -631,9 +632,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             );
         }
 
-        public ResponseBase ValidateAccountStepOne(Request_ValidateAccountStepOne request)
+        public async Task<ResponseBase> ValidateAccountStepOne(Request_ValidateAccountStepOne request)
         {
-            if (dbContext.users.Any(x => x.UserName == request.UserName))
+            if (await dbContext.users.AnyAsync(x => x.UserName == request.UserName))
             {
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Tên đăng nhập đã tồn tại");
             }
@@ -650,13 +651,85 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Email không hợp lệ !");
             }
 
-            int emailCount = dbContext.users.Count(x => x.Email == request.Email);
+            int emailCount = await dbContext.users.CountAsync(x => x.Email == request.Email);
             if (emailCount >= 1)
             {
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest,
                                                 "Email đã có quá 1 tài khoản đăng ký. Vui lòng chọn email khác !");
             }
             return responseBase.ResponseSuccess("Thông tin hợp lệ.");
+        }
+
+        public async Task<ResponseObject<DTO_Token>> GoogleLogin(Request_GoogleLogin request)
+        {
+            try
+            {
+                var googleClientId = configuration["Google:ClientId"];
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new[] { googleClientId }
+                };
+
+                // 1. Xác thực idToken với Google (bắt buộc async)
+                var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken, settings);
+
+                // 2. Tìm user trong DB (dùng async)
+                var user = await dbContext.users
+                                .Include(u => u.Role) 
+                                .FirstOrDefaultAsync(u => u.Email == payload.Email);
+
+                // 3. Nếu User chưa tồn tại -> Tạo mới (dùng async)
+                if (user == null)
+                {
+                    var defaultRole = await dbContext.roles.FirstOrDefaultAsync(r => r.RoleName == "User");
+                    if (defaultRole == null)
+                    {
+                        defaultRole = await dbContext.roles.FindAsync(DefaultRoles.USER_ID);
+                        if (defaultRole == null)
+                        {
+                            return responseObjectToken.responseObjectError(500, "Lỗi hệ thống: Không tìm thấy Role 'User'.", null);
+                        }
+                    }
+
+                    user = new User
+                    {
+                        Id = Guid.NewGuid(),
+                        Email = payload.Email,
+                        FullName = payload.Name,
+                        UserName = payload.Email,
+                        UrlAvatar = payload.Picture,
+                        IsActive = true,
+                        CreatedDate = DateTime.UtcNow,
+                        RoleId = defaultRole.Id,
+                        PassWord = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString("N")),
+                        PhoneNumber = "N/A"
+                    };
+
+                    await dbContext.users.AddAsync(user);
+                    await dbContext.SaveChangesAsync();
+
+                    user.Role = defaultRole;
+                }
+
+                // 4. Kiểm tra nếu user bị khóa
+                if (user.LockoutEnable == true || user.IsActive == false)
+                {
+                    return responseObjectToken.responseObjectError(StatusCodes.Status403Forbidden, "Tài khoản của bạn đã bị khóa.", null);
+                }
+
+                // 5. GỌI HÀM CÓ SẴN CỦA BẠN (SYNC)
+                var dtoToken = await GenerateAccessToken(user);
+
+                return responseObjectToken.responseObjectSuccess("Đăng nhập Google thành công.", dtoToken);
+            }
+            catch (InvalidJwtException)
+            {
+                return responseObjectToken.responseObjectError(StatusCodes.Status401Unauthorized, "Token không hợp lệ.", null);
+            }
+            catch (Exception ex)
+            {
+                return responseObjectToken.responseObjectError(StatusCodes.Status500InternalServerError, $"Lỗi server: {ex.Message}", null);
+            }
         }
     }
 }

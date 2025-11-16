@@ -11,24 +11,13 @@
     {
         public interface IService_LogHistory 
         {
-            // --- SỬA ---
             Task<ResponseObject<IList<DTO_LogHistory>>> GetLogHistory();
-
-            // (Giữ nguyên)
             Task<ResponseObject<DTO_LogHistory>> AddLogHistory(Request_LogHistory request);
             Task<bool> DeleteLogHistory(Guid id);
             Task<ResponseObject<DTO_LogHistory>> UpdateLogHistory(Guid id, Request_LogHistory request);
-
-            // --- SỬA ---
             Task<ResponseObject<IList<DTO_LogHistory>>> GetLogHistoryDay(int day, int month, int year, Guid userId);
-
-            // --- SỬA ---
             Task<ResponseObject<IList<DTO_LogHistory>>> GetLogHistoryMonth(int month, int year, Guid userId);
-
-            // --- SỬA ---
             Task<ResponseObject<IList<DTO_LogHistory>>> GetLogHistoryYear(int year, Guid userId);
-
-            // --- SỬA ---
             Task<ResponseObject<IList<DTO_LogHistory>>> GetLogHistoryById(Guid userId);
         }
     }
