@@ -378,6 +378,37 @@
         }
       }
     },
+    "/api/Authen/VerifyTwoStep": {
+      "post": {
+        "tags": [
+          "Authen"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_VerifyTwoStep"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_VerifyTwoStep"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_VerifyTwoStep"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Authen/Request_ValidateAccountStepOne": {
       "post": {
         "tags": [
@@ -935,6 +966,16 @@
         "additionalProperties": false
       },
       "Request_VerifyResetOtp": {
+        "type": "object",
+        "properties": {
+          "otp": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Request_VerifyTwoStep": {
         "type": "object",
         "properties": {
           "otp": {

@@ -20,6 +20,7 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         public DateTime LockoutEnd { get; set; }
         public bool? LockoutEnable { get; set; }
         public int AccessFailedCount { get; set; }
+        public bool? TwoStep { get; set; } = false;
         //--------------------------
         public Guid? RoleId { get; set; } 
         public Role? Role { get; set; }

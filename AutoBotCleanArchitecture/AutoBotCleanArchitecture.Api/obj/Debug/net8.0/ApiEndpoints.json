@@ -232,6 +232,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
+    "Method": "VerifyTwoStep",
+    "RelativePath": "api/Authen/VerifyTwoStep",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_VerifyTwoStep",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
     "Method": "AddLogHistory",
     "RelativePath": "api/LogHistory/AddLogHistory",

@@ -294,14 +294,14 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
 
             // --- (1) LOGIC CHECK KHÓA TÀI KHOẢN ---
-            if (user.LockoutEnable == true) // Check xem tính năng khóa có bật không
+            if (user.LockoutEnable == true) 
             {
-                // Check xem có đang bị khóa không (thời gian khóa chưa hết)
+
                 if (user.LockoutEnd > DateTime.UtcNow)
                 {
                     var secondsLeft = Math.Ceiling(user.LockoutEnd.Subtract(DateTime.UtcNow).TotalSeconds);
                     return responseObjectToken.responseObjectError(
-                        StatusCodes.Status423Locked, // Lỗi 423 Locked
+                        StatusCodes.Status423Locked, 
                         $"Tài khoản đang bị khóa. Vui lòng thử lại sau {secondsLeft} giây.",
                         null
                     );
@@ -322,23 +322,17 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             // --- (2) LOGIC XỬ LÝ SAI MẬT KHẨU ---
             if (!BCrypt.Net.BCrypt.Verify(request.PassWord, user.PassWord))
             {
-                // Tăng bộ đếm lỗi
                 user.AccessFailedCount++;
 
-                // (Giả sử 5 lần là khóa)
                 if (user.AccessFailedCount >= 5)
                 {
-                    // SỬA LẠI: KHÓA TRONG 1 PHÚT (để test)
                     user.LockoutEnd = DateTime.UtcNow.AddMinutes(1);
-                    user.LockoutEnable = true; // Bật cờ khóa
+                    user.LockoutEnable = true; 
                 }
-
-                // Lưu lại (quan trọng)
                 dbContext.SaveChanges();
 
                 return responseObjectToken.responseObjectError(StatusCodes.Status400BadRequest, "Tên tài khoản hoặc mật khẩu không hợp lệ!", null);
             }
-            // --- HẾT XỬ LÝ SAI MẬT KHẨU ---
 
 
             // --- (3) LOGIC XỬ LÝ ĐÚNG MẬT KHẨU ---
@@ -353,11 +347,10 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
 
 
-            // --- CHECK ISACTIVE (Giữ nguyên code của ông) ---
+            // --- CHECK ISACTIVE 
             if (user.IsActive != true)
             {
                 // ... (Code xóa mã cũ, tạo mã mới, gửi email...) ...
-                // (Tôi copy lại code cũ của ông)
                 var oldCodes = dbContext.confirmEmails.Where(x => x.UserId == user.Id);
                 if (oldCodes.Any())
                 {
@@ -387,11 +380,40 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     null
                 );
             }
-            // --- XONG ---
+
+            // Xác thực 2 bước
+            if (user.TwoStep == true)
+            {
+                Random r = new Random();
+                int otpCode = r.Next(100000, 999999);
+
+                var confirm = new ConfirmEmail
+                {
+                    Code = otpCode.ToString(),
+                    Message = "Xác thực 2 bước đăng nhập",
+                    Starttime = DateTime.Now,
+                    Expiredtime = DateTime.Now.AddMinutes(2),
+                    UserId = user.Id
+                };
+                dbContext.confirmEmails.Add(confirm);
+                dbContext.SaveChanges();
+
+                var emailTo = new EmailTo
+                {
+                    Mail = user.Email,
+                    Subject = "Mã xác thực 2 bước",
+                    Content = $"Mã xác nhận đăng nhập của bạn là: {otpCode}. Mã sẽ hết hạn sau 2 phút!"
+                };
+                emailTo.SendEmailAsync(emailTo);
+
+                return responseObjectToken.responseObjectError(
+                    StatusCodes.Status412PreconditionFailed,
+                    "Tài khoản đã bật xác thực 2 bước. Vui lòng nhập mã OTP được gửi qua email.",
+                    null
+                );
+            }
 
             // Đăng nhập thành công (pass đúng VÀ đã active)
-            // Hàm GenerateAccessToken() cũng sẽ SaveChanges() (để lưu RefreshToken)
-            // nên (AccessFailedCount = 0) cũng sẽ được lưu.
             return responseObjectToken.responseObjectSuccess("Đăng nhập thành công", GenerateAccessToken(user));
         }
 
@@ -559,6 +581,54 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             var user = dbContext.users.FirstOrDefault(x => x.Id == confirmEmail.UserId);
 
             return responseBase.ResponseSuccess($"{user.Id}");
+        }
+
+        public async Task<ResponseObject<DTO_Token>> VerifyTwoStep(Request_VerifyTwoStep request)
+        {
+            var otp = request.Otp;
+
+            var confirmEmail = dbContext.confirmEmails
+                .OrderByDescending(x => x.Starttime)
+                .FirstOrDefault(x => x.Code == otp && x.Message == "Xác thực 2 bước đăng nhập");
+
+            if (confirmEmail == null)
+            {
+                return responseObjectToken.responseObjectError(
+                    StatusCodes.Status400BadRequest,
+                    "Mã OTP không hợp lệ!",
+                    null
+                );
+            }
+
+            if (DateTime.Now > confirmEmail.Expiredtime)
+            {
+                return responseObjectToken.responseObjectError(
+                    StatusCodes.Status400BadRequest,
+                    "Mã OTP đã hết hạn!",
+                    null
+                );
+            }
+
+            var user = dbContext.users.FirstOrDefault(x => x.Id == confirmEmail.UserId);
+
+            if (user == null)
+            {
+                return responseObjectToken.responseObjectError(
+                    StatusCodes.Status404NotFound,
+                    "Không tìm thấy tài khoản!",
+                    null
+                );
+            }
+
+            dbContext.confirmEmails.Remove(confirmEmail);
+            dbContext.SaveChanges();
+
+            var token = GenerateAccessToken(user);
+
+            return responseObjectToken.responseObjectSuccess(
+                "Xác thực 2 bước thành công!",
+                token
+            );
         }
 
         public ResponseBase ValidateAccountStepOne(Request_ValidateAccountStepOne request)

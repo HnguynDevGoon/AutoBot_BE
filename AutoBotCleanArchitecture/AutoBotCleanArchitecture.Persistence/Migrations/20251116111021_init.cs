@@ -80,6 +80,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     LockoutEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LockoutEnable = table.Column<bool>(type: "bit", nullable: true),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false),
+                    TwoStep = table.Column<bool>(type: "bit", nullable: true),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -169,8 +170,8 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
 
             migrationBuilder.InsertData(
                 table: "users",
-                columns: new[] { "Id", "AccessFailedCount", "BirthDay", "CreatedDate", "Email", "FullName", "IsActive", "LockoutEnable", "LockoutEnd", "PassWord", "PhoneNumber", "RoleId", "UrlAvatar", "UserName" },
-                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$GdB5Yf5PMum9VAkLAoJDZuf4dTTqdMuYOdwzZKCnKVMKWroqP3dzG", "0908119698", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=", "Admin" });
+                columns: new[] { "Id", "AccessFailedCount", "BirthDay", "CreatedDate", "Email", "FullName", "IsActive", "LockoutEnable", "LockoutEnd", "PassWord", "PhoneNumber", "RoleId", "TwoStep", "UrlAvatar", "UserName" },
+                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$GdB5Yf5PMum9VAkLAoJDZuf4dTTqdMuYOdwzZKCnKVMKWroqP3dzG", "0908119698", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), false, "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=", "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_confirmEmails_UserId",

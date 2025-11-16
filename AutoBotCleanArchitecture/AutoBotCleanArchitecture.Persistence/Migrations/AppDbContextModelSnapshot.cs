@@ -242,6 +242,9 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Property<Guid?>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool?>("TwoStep")
+                        .HasColumnType("bit");
+
                     b.Property<string>("UrlAvatar")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -271,6 +274,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             PassWord = "$2a$11$GdB5Yf5PMum9VAkLAoJDZuf4dTTqdMuYOdwzZKCnKVMKWroqP3dzG",
                             PhoneNumber = "0908119698",
                             RoleId = new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"),
+                            TwoStep = false,
                             UrlAvatar = "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=",
                             UserName = "Admin"
                         });

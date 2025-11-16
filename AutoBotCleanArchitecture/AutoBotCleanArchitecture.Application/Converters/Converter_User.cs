@@ -27,6 +27,7 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 AccessFailedCount = user.AccessFailedCount,
                 LockoutEnable = user.LockoutEnable,
                 LockoutEnd = user.LockoutEnd,
+                TwoStep = user.TwoStep,
             };
         }
     }

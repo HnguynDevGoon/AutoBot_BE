@@ -86,7 +86,13 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(service_Authen.VerifyResetOtp(request));  
         }
 
-        [HttpPost("Request_ValidateAccountStepOne")]
+        [HttpPost("VerifyTwoStep")]
+        public IActionResult VerifyTwoStep(Request_VerifyTwoStep request)
+        {
+            return Ok(service_Authen.VerifyTwoStep(request));
+        }
+
+        [HttpPost("ValidateAccountStepOne")]
         public IActionResult Request_ValidateAccountStepOne(Request_ValidateAccountStepOne request)
         {
             return Ok(service_Authen.ValidateAccountStepOne(request));

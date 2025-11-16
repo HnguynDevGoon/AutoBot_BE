@@ -21,5 +21,6 @@ namespace AutoBotCleanArchitecture.Application.DTOs
         public bool? LockoutEnable { get; set; }
         public int AccessFailedCount { get; set; }
         public bool? IsActive { get; set; }
+        public bool? TwoStep { get; set; }
     }
 }
