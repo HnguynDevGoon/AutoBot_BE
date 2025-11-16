@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoBotCleanArchitecture.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251114084834_init")]
+    [Migration("20251116103130_init")]
     partial class init
     {
         /// <inheritdoc />

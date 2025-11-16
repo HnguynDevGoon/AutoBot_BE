@@ -24,19 +24,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
-        "Type": "System.Guid",
-        "IsRequired": false
-      },
-      {
-        "Name": "oldPass",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "newPass",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ChangePassword",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -202,19 +192,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
-        "Type": "System.Guid",
-        "IsRequired": false
-      },
-      {
-        "Name": "newPass",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "confirmPass",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_UpdatePassAfterOtp",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

@@ -424,31 +424,31 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
         }
 
-        public ResponseBase UpdatePassAfterOtp(Guid userId, string newPass, string confirmPass)
+        public ResponseBase UpdatePassAfterOtp(Request_UpdatePassAfterOtp request)
         {
-            if (string.IsNullOrEmpty(newPass) || string.IsNullOrEmpty(confirmPass))
+            if (string.IsNullOrEmpty(request.NewPassword) || string.IsNullOrEmpty(request.ConfirmPassword))
             {
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mật khẩu không được để trống !");
             }
 
-            var user = dbContext.users.FirstOrDefault(x => x.Id == userId);
+            var user = dbContext.users.FirstOrDefault(x => x.Id == request.Id);
             if (user == null)
             {
                 return responseBase.ResponseError(StatusCodes.Status404NotFound, "Không có user nào được tìm thấy !");
             }
 
-            string checkPassword = CheckInput.IsPassWord(newPass);
-            if (checkPassword != newPass)
+            string checkPassword = CheckInput.IsPassWord(request.NewPassword);
+            if (checkPassword != request.NewPassword)
             {
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest, checkPassword);
             }
 
-            if (confirmPass != newPass)
+            if (request.ConfirmPassword != request.NewPassword)
             {
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Xác nhận mật khẩu sai !");
             }
 
-            user.PassWord = BCrypt.Net.BCrypt.HashPassword(newPass);
+            user.PassWord = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
 
             dbContext.users.Update(user);
             dbContext.SaveChanges();
@@ -456,28 +456,28 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return responseBase.ResponseSuccess("Đổi mật khẩu thành công !");
         }
 
-        public ResponseBase ChangePassword(Guid userId, string oldPass, string newPass)
+        public ResponseBase ChangePassword(Request_ChangePassword request)
         {
-            if (string.IsNullOrWhiteSpace(oldPass) || string.IsNullOrWhiteSpace(newPass))
+            if (string.IsNullOrWhiteSpace(request.OldPassword) || string.IsNullOrWhiteSpace(request.NewPassword))
             {
                 return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ");
             }
 
-            var user = dbContext.users.FirstOrDefault(x => x.Id == userId);
+            var user = dbContext.users.FirstOrDefault(x => x.Id == request.Id);
             if (user == null)
             {
                 return responseBase.ResponseError(StatusCodes.Status404NotFound, "Người dùng không tồn tại!");
             }
 
-            string checkPassword = CheckInput.IsPassWord(newPass);
-            if (checkPassword != newPass)
+            string checkPassword = CheckInput.IsPassWord(request.NewPassword);
+            if (checkPassword != request.NewPassword)
             {
                 return responseBase.ResponseError(400, checkPassword);
             }
 
-            if (BCrypt.Net.BCrypt.Verify(oldPass, user.PassWord))
+            if (BCrypt.Net.BCrypt.Verify(request.OldPassword, user.PassWord))
             {
-                user.PassWord = BCrypt.Net.BCrypt.HashPassword(newPass);
+                user.PassWord = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
                 dbContext.users.Update(user);
                 dbContext.SaveChanges();
 

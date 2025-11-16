@@ -63,9 +63,9 @@ namespace AutoBotCleanArchitecture.Api.Controllers
 
         [HttpPost("ChangePassword")]
         [Authorize(Roles = "Admin,User")]
-        public IActionResult ChangePassword(Guid userId, string oldPass, string newPass)
+        public IActionResult ChangePassword(Request_ChangePassword request)
         {
-            return Ok(service_Authen.ChangePassword(userId, oldPass, newPass));
+            return Ok(service_Authen.ChangePassword(request));
         }
 
         [HttpPost("ForgotPassword")]
@@ -75,9 +75,9 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("UpdatePassAfterOtp")]
-        public IActionResult UpdatePassAfterOtp(Guid userId, string newPass, string confirmPass)
+        public IActionResult UpdatePassAfterOtp(Request_UpdatePassAfterOtp request)
         {
-            return Ok(service_Authen.UpdatePassAfterOtp(userId, newPass, confirmPass));
+            return Ok(service_Authen.UpdatePassAfterOtp(request));
         }
 
         [HttpPost("VerifyResetOtp")]
