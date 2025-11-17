@@ -218,7 +218,7 @@
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
               "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
-              "ViewState": "AgIAAC4DAAAAAAAAAAAqwDYDAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAGsBAAAAAAAAAAAAAG8BAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-08T05:30:46.097Z",
               "IsPinned": true,
@@ -235,8 +235,7 @@
               "ViewState": "AgIAAAEAAAAAAAAAAAAowBsAAABVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-08T03:53:35.928Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
@@ -360,8 +359,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_FacebookLogin.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T12:09:42.144Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-17T12:09:42.144Z"
             },
             {
               "$type": "Document",
@@ -373,8 +371,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\AuthenController.cs",
               "ViewState": "AgIAAFsAAAAAAAAAAIA3wG0AAABVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:07:06.781Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:07:06.781Z"
             },
             {
               "$type": "Document",
@@ -384,7 +381,7 @@
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\appsettings.json",
               "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\appsettings.json",
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-11-07T10:18:42.941Z",
               "EditorCaption": ""
@@ -399,8 +396,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Program.cs",
               "ViewState": "AgIAAFsAAAAAAAAAAAAIwG0AAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T10:19:02.896Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T10:19:02.896Z"
             },
             {
               "$type": "Document",
@@ -412,8 +408,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Persistence\\DBContext\\AppDbContext.cs",
               "ViewState": "AgIAAC8AAAAAAAAAAAAcwDwAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T04:08:49.657Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T04:08:49.657Z"
             },
             {
               "$type": "Document",
@@ -425,8 +420,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_LogHistory.cs",
               "ViewState": "AgIAANQAAAAAAAAAAAAAwEUAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:02:50.107Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T13:02:50.107Z"
             },
             {
               "$type": "Document",
@@ -438,8 +432,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_User.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAqwB0AAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T04:01:39.245Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T04:01:39.245Z"
             },
             {
               "$type": "Document",
@@ -451,8 +444,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_LogHistory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:41:28.205Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T13:41:28.205Z"
             },
             {
               "$type": "Document",
@@ -464,8 +456,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\LogHistoryController.cs",
               "ViewState": "AgIAACMAAAAAAAAAAAAwwE8AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T14:24:09.558Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T14:24:09.558Z"
             },
             {
               "$type": "Document",
@@ -477,8 +468,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_User.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAAAqwBcAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T04:01:12.496Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T04:01:12.496Z"
             },
             {
               "$type": "Document",
@@ -490,8 +480,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_ChangePassword.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T10:17:23.602Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-16T10:17:23.602Z"
             },
             {
               "$type": "Document",
@@ -503,8 +492,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\User.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAA9wBMAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:30:50.853Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:30:50.853Z"
             },
             {
               "$type": "Document",
@@ -516,8 +504,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UserLogin.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:51:29.158Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:51:29.158Z"
             },
             {
               "$type": "Document",
@@ -529,8 +516,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyTwoStep.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T11:00:20.345Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-16T11:00:20.345Z"
             },
             {
               "$type": "Document",
@@ -542,8 +528,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UpdatePassAfterOtp.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T10:22:39.706Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-16T10:22:39.706Z"
             },
             {
               "$type": "Document",
@@ -555,8 +540,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\LogHistory\\Request_LogHistory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:48:25.752Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T13:48:25.752Z"
             },
             {
               "$type": "Document",
@@ -568,8 +552,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_LogHistory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwBQAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:21:22.298Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T13:21:22.298Z"
             },
             {
               "$type": "Document",
@@ -581,8 +564,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\RoleController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:33:04.062Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:33:04.062Z"
             },
             {
               "$type": "Document",
@@ -594,8 +576,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Role.cs",
               "ViewState": "AgIAAC4AAAAAAAAAAAAgwDkAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:33:39.344Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:33:39.344Z"
             },
             {
               "$type": "Document",
@@ -607,8 +588,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_Role.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:35:54.522Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:35:54.522Z"
             },
             {
               "$type": "Document",
@@ -620,8 +600,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_LogHistory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-14T07:57:26.181Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-14T07:57:26.181Z"
             },
             {
               "$type": "Document",
@@ -633,8 +612,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Responses\\ResponseObject.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:49:01.863Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:49:01.863Z"
             },
             {
               "$type": "Document",
@@ -646,8 +624,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_Token.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:57:56.048Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:57:56.048Z"
             },
             {
               "$type": "Document",
@@ -659,8 +636,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\LogHistory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:00:26.106Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T13:00:26.106Z"
             },
             {
               "$type": "Document",
@@ -672,8 +648,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\ConfirmEmail.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAIBJwBAAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:41:47.371Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:41:47.371Z"
             },
             {
               "$type": "Document",
@@ -685,8 +660,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\Role.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:34:36.536Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:34:36.536Z"
             },
             {
               "$type": "Document",
@@ -698,8 +672,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\BotTrading.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T07:54:27.865Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T07:54:27.865Z"
             },
             {
               "$type": "Document",
@@ -711,8 +684,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\PriceBot.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T07:51:30.303Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T07:51:30.303Z"
             },
             {
               "$type": "Document",
@@ -724,8 +696,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UpdateAvatar.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T15:23:59.477Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-11T15:23:59.477Z"
             },
             {
               "$type": "Document",
@@ -737,8 +708,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Constants\\DefaultRoles.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAABlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T15:35:39.763Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-11T15:35:39.763Z"
             },
             {
               "$type": "Document",
@@ -750,8 +720,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_AccountVerification.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T11:45:23.773Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T11:45:23.773Z"
             },
             {
               "$type": "Document",
@@ -763,8 +732,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_ForgotPassword.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T09:48:19.361Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T09:48:19.361Z"
             },
             {
               "$type": "Document",
@@ -776,8 +744,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyResetOtp.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAcwAoAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T12:58:26.531Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T12:58:26.531Z"
             },
             {
               "$type": "Document",
@@ -789,8 +756,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_ValidateAccountStepOne.cs",
               "ViewState": "AgIAAAEAAAAAAAAAAAAcwAgAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T13:45:48.429Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T13:45:48.429Z"
             },
             {
               "$type": "Document",
@@ -802,8 +768,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_CreateUser.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:50:58.417Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:50:58.417Z"
             },
             {
               "$type": "Document",
@@ -815,8 +780,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Role.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAABBwBEAAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:33:59.073Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:33:59.073Z"
             },
             {
               "$type": "Document",
@@ -839,8 +803,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Responses\\ResponseBase.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:49:12.458Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:49:12.458Z"
             },
             {
               "$type": "Document",
@@ -852,8 +815,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-11-07T10:11:35.07Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T10:11:35.07Z"
             },
             {
               "$type": "Document",
@@ -876,8 +838,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_Role.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:36:11.115Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:36:11.115Z"
             },
             {
               "$type": "Document",
@@ -889,8 +850,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\RefreshToken.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:45:46.537Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:45:46.537Z"
             },
             {
               "$type": "Document",
@@ -902,8 +862,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-11-08T05:34:57.777Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T05:34:57.777Z"
             },
             {
               "$type": "Document",
@@ -915,8 +874,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Helper\\CheckInput.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T05:41:17.536Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T05:41:17.536Z"
             },
             {
               "$type": "Document",
@@ -928,8 +886,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-11-07T10:08:45.863Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T10:08:45.863Z"
             },
             {
               "$type": "Document",
@@ -941,8 +898,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Responses\\ResponseToken.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:48:47.171Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:48:47.171Z"
             },
             {
               "$type": "Document",
@@ -954,8 +910,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\BaseEntity.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:26:04.219Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T03:26:04.219Z"
             },
             {
               "$type": "Document",
@@ -967,8 +922,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-11-07T10:07:38.286Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T10:07:38.286Z"
             }
           ]
         }

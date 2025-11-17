@@ -229,8 +229,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             int code = r.Next(100000, 999999);
             var emailTo = new EmailTo();
             emailTo.Mail = request.Email;
-            emailTo.Subject = "Nhận mã";
-            emailTo.Content = $"Mã xác nhận của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
+            emailTo.Subject = "Xác thực tài khoản";
+            emailTo.Content = $"Mã xác thực tài khoản của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
             emailTo.SendEmailAsync(emailTo);
 
             //ConfirmEmail
@@ -365,7 +365,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 int code = r.Next(100000, 999999);
                 var emailTo = new EmailTo();
                 emailTo.Mail = user.Email;
-                emailTo.Subject = "Xác nhận lại tài khoản";
+                emailTo.Subject = "Kích hoạt tài khoản";
                 emailTo.Content = $"Mã xác nhận của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
                 emailTo.SendEmailAsync(emailTo);
                 var confirmEmail = new ConfirmEmail();
@@ -435,8 +435,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             int code = r.Next(100000, 999999);
             var emailTo = new EmailTo();
             emailTo.Mail = request.Email;
-            emailTo.Subject = "Nhận mã";
-            emailTo.Content = $"Mã xác nhận của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
+            emailTo.Subject = "Nhận mã cho quên mật khẩu";
+            emailTo.Content = $"Mã xác nhận cho quên mật khẩu của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
             emailTo.SendEmailAsync(emailTo);
 
             var confirmEmail = new ConfirmEmail();
@@ -448,7 +448,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             await dbContext.confirmEmails.AddAsync(confirmEmail); 
             await dbContext.SaveChangesAsync(); 
 
-            return responseBase.ResponseSuccess("Mã OTP đang gửi vào email của bạn !");
+            return responseBase.ResponseSuccess("Mã xác nhận cho quên mật khẩu đang gửi vào email của bạn !");
 
         }
 
@@ -576,12 +576,12 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             var confirmEmail = await dbContext.confirmEmails.FirstOrDefaultAsync(x => x.Code == otp);
             if (confirmEmail == null)
             {
-                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mã OTP không hợp lệ !");
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mã xác thực cho quên mật khẩu không hợp lệ !");
             }
 
             if (DateTime.Now > confirmEmail.Expiredtime)
             {
-                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mã OTP đã hết hạn !");
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Mã xác thực cho quên mật khẩu đã hết hạn !");
             }
 
             var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == confirmEmail.UserId);
@@ -601,7 +601,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             {
                 return responseObjectToken.responseObjectError(
                     StatusCodes.Status400BadRequest,
-                    "Mã OTP không hợp lệ!",
+                    "Mã xác thực 2 bước không hợp lệ!",
                     null
                 );
             }
@@ -610,7 +610,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             {
                 return responseObjectToken.responseObjectError(
                     StatusCodes.Status400BadRequest,
-                    "Mã OTP đã hết hạn!",
+                    "Mã xác thực 2 bước đã hết hạn!",
                     null
                 );
             }
