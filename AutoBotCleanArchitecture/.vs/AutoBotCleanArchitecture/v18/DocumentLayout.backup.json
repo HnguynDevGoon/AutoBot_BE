@@ -218,7 +218,7 @@
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
               "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
-              "ViewState": "AgIAAGsBAAAAAAAAAAAAAG8BAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAAH4BAAAAAAAAAAAowIwBAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-08T05:30:46.097Z",
               "IsPinned": true,
@@ -383,8 +383,7 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-11-07T10:18:42.941Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T10:18:42.941Z"
             },
             {
               "$type": "Document",
