@@ -12,22 +12,22 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
     public interface IService_Authen
     {
         Task<ResponseObject<DTO_Token>> RenewAccessToken(DTO_Token request);
-        Task<ResponseObject<DTO_User>> CreateUser(Request_CreateUser request); // Sửa
+        Task<ResponseObject<DTO_User>> CreateUser(Request_CreateUser request); 
         Task<ResponseObject<DTO_Token>> UserLogin(Request_UserLogin request);
-        Task<ResponseBase> AccountVerification(Request_AccountVerification request); // Sửa
-        Task<ResponseBase> ForgotPassword(Request_ResendOtp request); // Sửa
-        Task<ResponseBase> UpdatePassAfterOtp(Request_UpdatePassAfterOtp request); // Sửa
-        Task<ResponseBase> ChangePassword(Request_ChangePassword request); // Sửa
+        Task<ResponseBase> AccountVerification(Request_AccountVerification request); 
+        Task<ResponseObject<DTO_User>> ForgotPassword(Request_ResendOtp request); 
+        Task<ResponseBase> UpdatePassAfterOtp(Request_UpdatePassAfterOtp request); 
+        Task<ResponseBase> ChangePassword(Request_ChangePassword request); 
         IQueryable<DTO_User> GetListUser(int pageSize, int pageNumber);
         Task<ResponseObject<DTO_User>> GetUserById(Guid userId);
-        Task<ResponseObject<DTO_User>> DeleteUser(Guid userId); // Sửa
-        Task<ResponseObject<DTO_User>> UpdateAvatar(Request_UpdateAvatar request); // Sửa
-        Task<ResponseBase> VerifyResetOtp(Request_VerifyResetOtp request); // Sửa
+        Task<ResponseObject<DTO_User>> DeleteUser(Guid userId); 
+        Task<ResponseObject<DTO_User>> UpdateAvatar(Request_UpdateAvatar request); 
+        Task<ResponseBase> VerifyResetOtp(Request_VerifyResetOtp request);
         Task<ResponseObject<DTO_Token>> VerifyTwoStep(Request_VerifyTwoStep request);
-        Task<ResponseObject<DTO_Token>> GoogleLogin(Request_GoogleLogin request); // Đổi tên (hoặc LoginWithGoogle)
+        Task<ResponseObject<DTO_Token>> GoogleLogin(Request_GoogleLogin request); 
         Task<ResponseObject<DTO_Token>> FacebookLogin(Request_FacebookLogin request);
-        Task<ResponseBase> ValidateAccountStepOne(Request_ValidateAccountStepOne request); // Sửa
-        Task<ResponseBase> ResendOtpForCreateUser(Request_ResendOtp request); // <-- Đổi tên ở đây
+        Task<ResponseBase> ValidateAccountStepOne(Request_ValidateAccountStepOne request); 
+        Task<ResponseBase> ResendOtpForCreateUser(Request_ResendOtp request); 
         Task<ResponseBase> ResendOtpForTwoStep(Request_ResendOtp request);
 
     }

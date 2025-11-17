@@ -426,7 +426,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return responseObjectToken.responseObjectSuccess("Đăng nhập thành công", dtoToken);
         }
 
-        public async Task<ResponseBase> ForgotPassword(Request_ResendOtp request)
+        public async Task<ResponseObject<DTO_User>> ForgotPassword(Request_ResendOtp request)
         {
             var user = await dbContext.users.FirstOrDefaultAsync(x => x.UserName == request.Identifier ||
                                           x.Email == request.Identifier ||
@@ -434,7 +434,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
             if (user == null)
             {
-                return responseBase.ResponseError(StatusCodes.Status404NotFound, "Email này chưa tạo tài khoản !");
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Email này chưa tạo tài khoản !", null);
             }
 
             Random r = new Random();
@@ -451,10 +451,15 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             confirmEmail.Starttime = DateTime.Now;
             confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
             confirmEmail.UserId = user.Id;
-            await dbContext.confirmEmails.AddAsync(confirmEmail); 
-            await dbContext.SaveChangesAsync(); 
+            await dbContext.confirmEmails.AddAsync(confirmEmail);
+            await dbContext.SaveChangesAsync();
 
-            return responseBase.ResponseSuccess("Mã xác nhận cho quên mật khẩu đang gửi vào email của bạn !");
+
+
+            return responseObject.responseObjectSuccess(
+                "Mã xác nhận cho quên mật khẩu đang gửi vào email của bạn !",
+                new DTO_User { Email = user.Email }
+            );
 
         }
 
