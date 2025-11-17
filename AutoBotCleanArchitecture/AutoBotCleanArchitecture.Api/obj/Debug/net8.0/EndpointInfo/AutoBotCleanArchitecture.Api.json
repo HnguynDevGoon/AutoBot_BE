@@ -294,17 +294,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Request_ForgotPassword"
+                "$ref": "#/components/schemas/Request_ResendOtp"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Request_ForgotPassword"
+                "$ref": "#/components/schemas/Request_ResendOtp"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Request_ForgotPassword"
+                "$ref": "#/components/schemas/Request_ResendOtp"
               }
             }
           }
@@ -491,6 +491,68 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/Request_FacebookLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Authen/ResendOtpForCreateUser": {
+      "post": {
+        "tags": [
+          "Authen"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_ResendOtp"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_ResendOtp"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_ResendOtp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Authen/ResendOtpForTwoStep": {
+      "post": {
+        "tags": [
+          "Authen"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_ResendOtp"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_ResendOtp"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_ResendOtp"
               }
             }
           }
@@ -933,16 +995,6 @@
         },
         "additionalProperties": false
       },
-      "Request_ForgotPassword": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "Request_GoogleLogin": {
         "type": "object",
         "properties": {
@@ -982,6 +1034,16 @@
           "userId": {
             "type": "string",
             "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Request_ResendOtp": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
             "nullable": true
           }
         },

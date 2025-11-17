@@ -229,14 +229,14 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             int code = r.Next(100000, 999999);
             var emailTo = new EmailTo();
             emailTo.Mail = request.Email;
-            emailTo.Subject = "Xác thực tài khoản";
-            emailTo.Content = $"Mã xác thực tài khoản của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
+            emailTo.Subject = "Xác nhận đăng kí tài khoản";
+            emailTo.Content = $"Mã xác nhận đăng kí tài khoản của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
             emailTo.SendEmailAsync(emailTo);
 
             //ConfirmEmail
             var confirmEmail = new ConfirmEmail();
             confirmEmail.Code = code.ToString();
-            confirmEmail.Message = "Xác nhận đăng kí !";
+            confirmEmail.Message = "Xác nhận đăng kí tài khoản";
             confirmEmail.Starttime = DateTime.Now;
             confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
             confirmEmail.UserId = userAccount.Id;
@@ -370,7 +370,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 emailTo.SendEmailAsync(emailTo);
                 var confirmEmail = new ConfirmEmail();
                 confirmEmail.Code = code.ToString();
-                confirmEmail.Message = "Xác nhận đăng nhập lại !";
+                confirmEmail.Message = "Xác nhận đăng nhập lại";
                 confirmEmail.Starttime = DateTime.Now;
                 confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
                 confirmEmail.UserId = user.Id;
@@ -381,7 +381,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
                 return responseObjectToken.responseObjectError(
                     StatusCodes.Status401Unauthorized,
-                    "Tài khoản chưa được kích hoạt. Chúng tôi đã gửi lại mã xác nhận đến email của bạn.",
+                    "Tài khoản chưa được xác thực. Chúng tôi đã gửi lại mã xác nhận đến email của bạn.",
                     null
                 );
             }
@@ -389,27 +389,31 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             // Xác thực 2 bước
             if (user.TwoStep == true)
             {
+                var oldCodes = dbContext.confirmEmails.Where(x => x.UserId == user.Id);
+                if (oldCodes.Any())
+                {
+                    dbContext.confirmEmails.RemoveRange(oldCodes);
+                }
+
                 Random r = new Random();
-                int otpCode = r.Next(100000, 999999);
+                int code = r.Next(100000, 999999); 
 
-                var confirm = new ConfirmEmail
-                {
-                    Code = otpCode.ToString(),
-                    Message = "Xác thực 2 bước đăng nhập",
-                    Starttime = DateTime.Now,
-                    Expiredtime = DateTime.Now.AddMinutes(2),
-                    UserId = user.Id
-                };
-                await dbContext.confirmEmails.AddAsync(confirm); 
-                await dbContext.SaveChangesAsync(); 
-
-                var emailTo = new EmailTo
-                {
-                    Mail = user.Email,
-                    Subject = "Mã xác thực 2 bước",
-                    Content = $"Mã xác nhận đăng nhập của bạn là: {otpCode}. Mã sẽ hết hạn sau 2 phút!"
-                };
+                var emailTo = new EmailTo();
+                emailTo.Mail = user.Email;
+                emailTo.Subject = "Mã xác thực 2 bước";
+                emailTo.Content = $"Mã xác nhận đăng nhập của bạn là: {code}. Mã sẽ hết hạn sau 2 phút!";
                 emailTo.SendEmailAsync(emailTo);
+
+                var confirmEmail = new ConfirmEmail(); 
+                confirmEmail.Code = code.ToString();
+                confirmEmail.Message = "Xác thực 2 bước đăng nhập";
+                confirmEmail.Starttime = DateTime.Now;
+                confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
+                confirmEmail.UserId = user.Id;
+
+                await dbContext.confirmEmails.AddAsync(confirmEmail);
+
+                await dbContext.SaveChangesAsync();
 
                 return responseObjectToken.responseObjectError(
                     StatusCodes.Status412PreconditionFailed,
@@ -418,14 +422,16 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 );
             }
 
-            // Đăng nhập thành công (pass đúng VÀ đã active)
             var dtoToken = await GenerateAccessToken(user);
             return responseObjectToken.responseObjectSuccess("Đăng nhập thành công", dtoToken);
         }
 
-        public async Task<ResponseBase> ForgotPassword(Request_ForgotPassword request)
+        public async Task<ResponseBase> ForgotPassword(Request_ResendOtp request)
         {
-            var user = await dbContext.users.FirstOrDefaultAsync(x => x.Email == request.Email);
+            var user = await dbContext.users.FirstOrDefaultAsync(x => x.UserName == request.Identifier ||
+                                          x.Email == request.Identifier ||
+                                          x.PhoneNumber == request.Identifier);
+
             if (user == null)
             {
                 return responseBase.ResponseError(StatusCodes.Status404NotFound, "Email này chưa tạo tài khoản !");
@@ -434,7 +440,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             Random r = new Random();
             int code = r.Next(100000, 999999);
             var emailTo = new EmailTo();
-            emailTo.Mail = request.Email;
+            emailTo.Mail = user.Email;
             emailTo.Subject = "Nhận mã cho quên mật khẩu";
             emailTo.Content = $"Mã xác nhận cho quên mật khẩu của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
             emailTo.SendEmailAsync(emailTo);
@@ -737,7 +743,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        // --- HÀM MỚI IMPLEMENT (Không cần Helper) ---
         public async Task<ResponseObject<DTO_Token>> FacebookLogin(Request_FacebookLogin request)
         {
             try
@@ -825,6 +830,110 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             {
                 return responseObjectToken.responseObjectError(500, $"Lỗi server: {ex.Message}", null);
             }
+        }
+
+        public async Task<ResponseBase> ResendOtpForCreateUser(Request_ResendOtp request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Identifier))
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ!");
+            }
+            var identifier = request.Identifier;
+
+            var user = await dbContext.users
+                .FirstOrDefaultAsync(x => x.UserName == identifier ||
+                                          x.Email == identifier ||
+                                          x.PhoneNumber == identifier);
+
+            if (user == null)
+            {
+                return responseBase.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy tài khoản!");
+            }
+
+            if (user.IsActive == true)
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Tài khoản này đã được kích hoạt.");
+            }
+
+            var oldCodes = dbContext.confirmEmails.Where(x => x.UserId == user.Id);
+            if (oldCodes.Any())
+            {
+                dbContext.confirmEmails.RemoveRange(oldCodes);
+            }
+
+            Random r = new Random();
+            int code = r.Next(100000, 999999);
+
+            var emailTo = new EmailTo();
+            emailTo.Mail = user.Email;
+            emailTo.Subject = "Xác thực tài khoản";
+            emailTo.Content = $"Mã xác thực tài khoản của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
+            emailTo.SendEmailAsync(emailTo);
+
+            var confirmEmail = new ConfirmEmail();
+            confirmEmail.Code = code.ToString();
+            confirmEmail.Message = "Xác thực tài khoản (gửi lại)";
+            confirmEmail.Starttime = DateTime.Now;
+            confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
+            confirmEmail.UserId = user.Id;
+
+            await dbContext.confirmEmails.AddAsync(confirmEmail);
+
+            await dbContext.SaveChangesAsync();
+
+            return responseBase.ResponseSuccess("Đã gửi lại mã xác thực. Vui lòng kiểm tra email của bạn!");
+        }
+
+        public async Task<ResponseBase> ResendOtpForTwoStep(Request_ResendOtp request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Identifier))
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ!");
+            }
+            var identifier = request.Identifier;
+
+            var user = await dbContext.users
+                .FirstOrDefaultAsync(x => x.UserName == identifier ||
+                                          x.Email == identifier ||
+                                          x.PhoneNumber == identifier);
+
+            if (user == null)
+            {
+                return responseBase.ResponseError(StatusCodes.Status404NotFound, "Tài khoản không tồn tại!");
+            }
+
+            if (user.TwoStep != true)
+            {
+                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Tài khoản này không sử dụng xác thực 2 bước.");
+            }
+
+            var oldCodes = dbContext.confirmEmails.Where(x => x.UserId == user.Id);
+            if (oldCodes.Any())
+            {
+                dbContext.confirmEmails.RemoveRange(oldCodes);
+            }
+
+            Random r = new Random();
+            int code = r.Next(100000, 999999);
+
+            var emailTo = new EmailTo();
+            emailTo.Mail = user.Email; 
+            emailTo.Subject = "Mã xác thực 2 bước";
+            emailTo.Content = $"Mã xác thực đăng nhập của bạn là: {code}. Mã sẽ hết hạn sau 2 phút!";
+            emailTo.SendEmailAsync(emailTo);
+
+            var confirmEmail = new ConfirmEmail();
+            confirmEmail.Code = code.ToString();
+            confirmEmail.Message = "Xác thực 2 bước đăng nhập (gửi lại)";
+            confirmEmail.Starttime = DateTime.Now;
+            confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
+            confirmEmail.UserId = user.Id;
+
+            await dbContext.confirmEmails.AddAsync(confirmEmail);
+
+            await dbContext.SaveChangesAsync();
+
+            return responseBase.ResponseSuccess("Đã gửi lại mã xác thực. Vui lòng kiểm tra email của bạn!");
         }
 
     }

@@ -119,7 +119,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ForgotPassword",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ResendOtp",
         "IsRequired": true
       }
     ],
@@ -173,6 +173,38 @@
       {
         "Name": "request",
         "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_GoogleLogin",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
+    "Method": "ResendOtpForCreateUser",
+    "RelativePath": "api/Authen/ResendOtpForCreateUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ResendOtp",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
+    "Method": "ResendOtpForTwoStep",
+    "RelativePath": "api/Authen/ResendOtpForTwoStep",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_ResendOtp",
         "IsRequired": true
       }
     ],

@@ -71,7 +71,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword(Request_ForgotPassword request) 
+        public async Task<IActionResult> ForgotPassword(Request_ResendOtp request) 
         {
             return Ok(await service_Authen.ForgotPassword(request));
         }
@@ -110,6 +110,18 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         public async Task<IActionResult> FacebookLogin(Request_FacebookLogin request)
         {
             return Ok(await service_Authen.FacebookLogin(request));
+        }
+
+        [HttpPost("ResendOtpForCreateUser")]
+        public async Task<IActionResult> ResendOtpForCreateUser(Request_ResendOtp request)
+        {
+            return Ok(await service_Authen.ResendOtpForCreateUser(request));
+        }
+
+        [HttpPost("ResendOtpForTwoStep")]
+        public async Task<IActionResult> ResendOtpForTwoStep(Request_ResendOtp request)
+        {
+            return Ok(await service_Authen.ResendOtpForTwoStep(request));
         }
     }
 

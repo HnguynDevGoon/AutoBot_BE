@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AutoBotCleanArchitecture.Application.Requests.User
 {
-    public class Request_ForgotPassword
+    public class Request_ResendOtp
     {
-        public string Email { get; set; }
+        public string Identifier { get; set; }
     }
 }

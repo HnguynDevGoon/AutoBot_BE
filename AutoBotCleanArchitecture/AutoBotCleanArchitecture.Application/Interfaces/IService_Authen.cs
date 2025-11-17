@@ -15,7 +15,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseObject<DTO_User>> CreateUser(Request_CreateUser request); // Sửa
         Task<ResponseObject<DTO_Token>> UserLogin(Request_UserLogin request);
         Task<ResponseBase> AccountVerification(Request_AccountVerification request); // Sửa
-        Task<ResponseBase> ForgotPassword(Request_ForgotPassword request); // Sửa
+        Task<ResponseBase> ForgotPassword(Request_ResendOtp request); // Sửa
         Task<ResponseBase> UpdatePassAfterOtp(Request_UpdatePassAfterOtp request); // Sửa
         Task<ResponseBase> ChangePassword(Request_ChangePassword request); // Sửa
         IQueryable<DTO_User> GetListUser(int pageSize, int pageNumber);
@@ -27,6 +27,8 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseObject<DTO_Token>> GoogleLogin(Request_GoogleLogin request); // Đổi tên (hoặc LoginWithGoogle)
         Task<ResponseObject<DTO_Token>> FacebookLogin(Request_FacebookLogin request);
         Task<ResponseBase> ValidateAccountStepOne(Request_ValidateAccountStepOne request); // Sửa
+        Task<ResponseBase> ResendOtpForCreateUser(Request_ResendOtp request); // <-- Đổi tên ở đây
+        Task<ResponseBase> ResendOtpForTwoStep(Request_ResendOtp request);
 
     }
 }
