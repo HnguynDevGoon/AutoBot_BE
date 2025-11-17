@@ -324,3 +324,12 @@ D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchite
 D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\Google.Apis.Core.dll
 D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\System.Management.dll
 D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.dll
+D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\Microsoft.Extensions.Http.dll
+D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+D:\Types_of_work\Project\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll

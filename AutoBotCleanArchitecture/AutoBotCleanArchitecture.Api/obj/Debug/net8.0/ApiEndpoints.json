@@ -95,6 +95,22 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
+    "Method": "FacebookLogin",
+    "RelativePath": "api/Authen/FacebookLogin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_FacebookLogin",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
     "Method": "ForgotPassword",
     "RelativePath": "api/Authen/ForgotPassword",
     "HttpMethod": "POST",

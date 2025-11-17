@@ -25,6 +25,8 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseBase> VerifyResetOtp(Request_VerifyResetOtp request); // Sửa
         Task<ResponseObject<DTO_Token>> VerifyTwoStep(Request_VerifyTwoStep request);
         Task<ResponseObject<DTO_Token>> GoogleLogin(Request_GoogleLogin request); // Đổi tên (hoặc LoginWithGoogle)
+        Task<ResponseObject<DTO_Token>> FacebookLogin(Request_FacebookLogin request);
         Task<ResponseBase> ValidateAccountStepOne(Request_ValidateAccountStepOne request); // Sửa
+
     }
 }

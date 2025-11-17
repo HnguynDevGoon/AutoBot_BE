@@ -107,6 +107,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 
 // Add services to the container.
+builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<ResponseBase>();
 

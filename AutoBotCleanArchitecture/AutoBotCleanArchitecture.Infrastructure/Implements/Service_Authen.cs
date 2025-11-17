@@ -8,6 +8,7 @@ using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Handle;
 using AutoBotCleanArchitecture.Persistence.DBContext;
 using Google.Apis.Auth;
+using Google.Apis.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AutoBotCleanArchitecture.Infrastructure.Implements
@@ -27,15 +30,17 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
     {
         private readonly AppDbContext dbContext;
         private readonly IConfiguration configuration;
+        private readonly System.Net.Http.IHttpClientFactory httpClientFactory;
         private readonly ResponseObject<DTO_Token> responseObjectToken;
         private readonly Converter_User converter_Authen;
         private readonly ResponseObject<DTO_User> responseObject;
         private readonly ResponseBase responseBase;
 
-        public Service_Authen(AppDbContext dbContext, IConfiguration configuration, ResponseObject<DTO_Token> responseObjectToken, Converter_User converter_Authen, ResponseObject<DTO_User> responseObject, ResponseBase responseBase)
+        public Service_Authen(AppDbContext dbContext, IConfiguration configuration, System.Net.Http.IHttpClientFactory httpClientFactory, ResponseObject<DTO_Token> responseObjectToken, Converter_User converter_Authen, ResponseObject<DTO_User> responseObject, ResponseBase responseBase)
         {
             this.dbContext = dbContext;
             this.configuration = configuration;
+            this.httpClientFactory = httpClientFactory;
             this.responseObjectToken = responseObjectToken;
             this.converter_Authen = converter_Authen;
             this.responseObject = responseObject;
@@ -111,11 +116,11 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                         new Claim("Id", user.Id.ToString()),
                         //new Claim(ClaimTypes.Email, user.Email),
                         //new Claim("Username", user.UserName),
-                        //new Claim("RoleId", user.RoleId.ToString()),
+                        new Claim("RoleId", user.RoleId.ToString()),
                         
                         //new Claim("UrlAvatar", user.UrlAvatar.ToString()),
                         //new Claim("FullName", user.FullName.ToString()),
-                        new Claim(ClaimTypes.Role, decentralization?.RoleName ?? "") // Giữ nguyên RoleName của bạn
+                        new Claim(ClaimTypes.Role, decentralization?.RoleName ?? "") 
                 }),
                 Expires = DateTime.UtcNow.AddHours(4),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeyBytes), SecurityAlgorithms.HmacSha256Signature)
@@ -731,5 +736,96 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return responseObjectToken.responseObjectError(StatusCodes.Status500InternalServerError, $"Lỗi server: {ex.Message}", null);
             }
         }
+
+        // --- HÀM MỚI IMPLEMENT (Không cần Helper) ---
+        public async Task<ResponseObject<DTO_Token>> FacebookLogin(Request_FacebookLogin request)
+        {
+            try
+            {
+                // 1. Lấy App ID và App Secret từ config
+                var appId = configuration["Facebook:AppId"];
+                var appSecret = configuration["Facebook:AppSecret"];
+
+                var client = httpClientFactory.CreateClient();
+
+                // 2. Xác thực User Access Token với Facebook
+                var validationUrl = $"https://graph.facebook.com/debug_token?input_token={request.idToken}&access_token={appId}|{appSecret}";
+                var validationResponse = await client.GetAsync(validationUrl);
+
+                if (!validationResponse.IsSuccessStatusCode)
+                    return responseObjectToken.responseObjectError(401, "Token Facebook không hợp lệ.", null);
+
+                var validationContent = await validationResponse.Content.ReadAsStringAsync();
+                using var validationDoc = JsonDocument.Parse(validationContent);
+                var validationData = validationDoc.RootElement.GetProperty("data");
+
+                if (!validationData.GetProperty("is_valid").GetBoolean())
+                    return responseObjectToken.responseObjectError(401, "Token Facebook không hợp lệ (is_valid = false).", null);
+
+                var userId = validationData.GetProperty("user_id").GetString();
+
+                // 3. Lấy thông tin user từ Facebook (phải có access_token)
+                var infoUrl = $"https://graph.facebook.com/{userId}?fields=id,name,email,picture.type(large)&access_token={request.idToken}";
+                var infoResponse = await client.GetAsync(infoUrl);
+
+                if (!infoResponse.IsSuccessStatusCode)
+                    return responseObjectToken.responseObjectError(400, "Không thể lấy thông tin user từ Facebook.", null);
+
+                var infoContent = await infoResponse.Content.ReadAsStringAsync();
+                using var infoDoc = JsonDocument.Parse(infoContent);
+                var infoRoot = infoDoc.RootElement;
+
+                // 4. Lấy email, name, picture
+                if (!infoRoot.TryGetProperty("email", out var emailElement))
+                    return responseObjectToken.responseObjectError(400, "Không thể lấy email từ tài khoản Facebook. Kiểm tra cài đặt bảo mật trên Facebook.", null);
+
+                var email = emailElement.GetString();
+                var name = infoRoot.GetProperty("name").GetString();
+                var pictureUrl = infoRoot.GetProperty("picture").GetProperty("data").GetProperty("url").GetString();
+
+                // 5. Tìm hoặc tạo user trong DB
+                var user = await dbContext.users
+                                .Include(u => u.Role)
+                                .FirstOrDefaultAsync(u => u.Email == email);
+
+                if (user == null)
+                {
+                    var defaultRole = await dbContext.roles.FindAsync(DefaultRoles.USER_ID);
+                    if (defaultRole == null)
+                        return responseObjectToken.responseObjectError(500, "Lỗi hệ thống: Không tìm thấy Role 'User'.", null);
+
+                    user = new User
+                    {
+                        Id = Guid.NewGuid(),
+                        Email = email,
+                        FullName = name,
+                        UserName = email,
+                        UrlAvatar = pictureUrl,
+                        IsActive = true,
+                        CreatedDate = DateTime.UtcNow,
+                        RoleId = defaultRole.Id,
+                        PassWord = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString("N")),
+                        PhoneNumber = "N/A"
+                    };
+
+                    await dbContext.users.AddAsync(user);
+                    await dbContext.SaveChangesAsync();
+                    user.Role = defaultRole;
+                }
+
+                // 6. Kiểm tra khóa tài khoản
+                if (user.LockoutEnable == true || user.IsActive == false)
+                    return responseObjectToken.responseObjectError(403, "Tài khoản của bạn đã bị khóa.", null);
+
+                // 7. Tạo token hệ thống
+                var dtoToken = await GenerateAccessToken(user);
+                return responseObjectToken.responseObjectSuccess("Đăng nhập Facebook thành công.", dtoToken);
+            }
+            catch (Exception ex)
+            {
+                return responseObjectToken.responseObjectError(500, $"Lỗi server: {ex.Message}", null);
+            }
+        }
+
     }
 }

@@ -471,6 +471,37 @@
         }
       }
     },
+    "/api/Authen/FacebookLogin": {
+      "post": {
+        "tags": [
+          "Authen"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_FacebookLogin"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_FacebookLogin"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_FacebookLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/LogHistory/GetLogHistory": {
       "get": {
         "tags": [
@@ -886,6 +917,16 @@
         "type": "object",
         "properties": {
           "roleName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Request_FacebookLogin": {
+        "type": "object",
+        "properties": {
+          "idToken": {
             "type": "string",
             "nullable": true
           }

@@ -105,6 +105,12 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         {
             return Ok(await service_Authen.GoogleLogin(request));
         }
+
+        [HttpPost("FacebookLogin")]
+        public async Task<IActionResult> FacebookLogin(Request_FacebookLogin request)
+        {
+            return Ok(await service_Authen.FacebookLogin(request));
+        }
     }
 
 }
