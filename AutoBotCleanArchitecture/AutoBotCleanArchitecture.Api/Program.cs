@@ -130,14 +130,18 @@ builder.Services.AddScoped<ResponseObject<DTO_Token>>();
 builder.Services.AddScoped<ResponseObject<DTO_LogHistory>>();
 builder.Services.AddScoped<ResponseObject<DTO_Wallet>>();
 builder.Services.AddScoped<ResponseObject<IList<DTO_LogHistory>>>();
+builder.Services.AddScoped<ResponseObject<DTO_WalletTransaction>>();
+builder.Services.AddScoped<ResponseObject<IList<DTO_WalletTransaction>>>();
 builder.Services.AddScoped<ResponseObject<string>>();
 builder.Services.AddScoped<ResponseObject<bool>>();
+
 
 // Converter
 builder.Services.AddScoped<Converter_Role>();
 builder.Services.AddScoped<Converter_User>();
 builder.Services.AddScoped<Converter_LogHistory>();
 builder.Services.AddScoped<Converter_Wallet>();
+builder.Services.AddScoped<Converter_WalletTransaction>();
 
 
 // IService, Service
@@ -146,6 +150,7 @@ builder.Services.AddScoped<IService_Authen, Service_Authen>();
 builder.Services.AddScoped<IService_LogHistory, Service_LogHistory>();
 builder.Services.AddScoped<IService_Payment, Service_Payment>();
 builder.Services.AddScoped<IService_Wallet, Service_Wallet>();
+builder.Services.AddScoped<IService_WalletTransaction, Service_WalletTransaction>();
 
 
 builder.Services.AddMemoryCache();

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AutoBotCleanArchitecture.Application.DTOs;
+using AutoBotCleanArchitecture.Application.Requests.WalletTransaction;
+using AutoBotCleanArchitecture.Application.Responses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +11,8 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
 {
     public interface IService_WalletTransaction
     {
+        Task<ResponseObject<IList<DTO_WalletTransaction>>> GetTransactionHistory(Guid userId, int pageNumber, int pageSize);
+
+        Task<ResponseObject<DTO_WalletTransaction>> DeductMoney(Request_DeductMoney request);
     }
 }

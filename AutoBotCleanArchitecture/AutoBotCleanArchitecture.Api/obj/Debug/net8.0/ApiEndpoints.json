@@ -265,6 +265,22 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
+    "Method": "UpdateUserInfo",
+    "RelativePath": "api/Authen/UpdateUserInfo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_UpdateUserInfo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
     "Method": "UserLogin",
     "RelativePath": "api/Authen/UserLogin",
     "HttpMethod": "POST",
@@ -628,6 +644,48 @@
       {
         "Name": "userId",
         "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletTransactionController",
+    "Method": "DeductMoney",
+    "RelativePath": "api/WalletTransaction/DeductMoney",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.WalletTransaction.Request_DeductMoney",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletTransactionController",
+    "Method": "GetHistory",
+    "RelativePath": "api/WalletTransaction/GetHistory",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
         "IsRequired": false
       }
     ],

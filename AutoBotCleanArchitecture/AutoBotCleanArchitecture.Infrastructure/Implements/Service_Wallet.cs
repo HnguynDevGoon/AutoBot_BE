@@ -38,14 +38,14 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == userId);
                 if (user == null)
                 {
-                    return responseObject.responseObjectError(StatusCodes.Status404NotFound, "User không tồn tại.", null);
+                    return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không tồn tại.", null);
                 }
 
                 var existingWallet = await dbContext.wallets.FirstOrDefaultAsync(x => x.UserId == userId);
                 if (existingWallet != null)
                 {
                     var dto = converter_Wallet.EntityToDTO(existingWallet);
-                    return responseObject.responseObjectSuccess("User này đã có ví.", dto);
+                    return responseObject.responseObjectSuccess("Người dùng này đã có ví.", dto);
                 }
 
                 var newWallet = new Wallet
@@ -79,7 +79,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
                 if (wallet == null)
                 {
-                    return responseObject.responseObjectError(StatusCodes.Status404NotFound, "User chưa có ví. Vui lòng tạo ví trước.", null);
+                    return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Người dùng chưa có ví. Vui lòng tạo ví trước.", null);
                 }
 
                 var walletDto = converter_Wallet.EntityToDTO(wallet);

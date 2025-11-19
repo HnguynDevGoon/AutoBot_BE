@@ -19,7 +19,7 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                //PassWord = user.PassWord,
+                PassWord = user.PassWord,
                 UrlAvatar = user.UrlAvatar,
                 BirthDay = user.BirthDay,
                 CreatedDate = user.CreatedDate,
