@@ -265,7 +265,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
-                            CreatedDate = new DateTime(2025, 11, 16, 17, 18, 31, 714, DateTimeKind.Utc).AddTicks(6494),
+                            CreatedDate = new DateTime(2025, 11, 18, 11, 5, 10, 570, DateTimeKind.Utc).AddTicks(2860),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,
@@ -278,6 +278,63 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             UrlAvatar = "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg",
                             UserName = "Admin"
                         });
+                });
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Wallet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("wallets");
+                });
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.WalletTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("OrderCode")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransactionStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("walletTransactions");
                 });
 
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.ConfirmEmail", b =>
@@ -331,6 +388,28 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Wallet", b =>
+                {
+                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.User", "User")
+                        .WithOne("Wallet")
+                        .HasForeignKey("AutoBotCleanArchitecture.Domain.Entities.Wallet", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.WalletTransaction", b =>
+                {
+                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.Wallet", "Wallet")
+                        .WithMany("WalletTransactions")
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Wallet");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.BotTrading", b =>
                 {
                     b.Navigation("PriceBots");
@@ -348,6 +427,13 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Navigation("LogHistorys");
 
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Wallet", b =>
+                {
+                    b.Navigation("WalletTransactions");
                 });
 #pragma warning restore 612, 618
         }

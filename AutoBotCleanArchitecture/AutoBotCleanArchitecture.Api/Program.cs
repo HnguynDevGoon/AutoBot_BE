@@ -11,6 +11,11 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
 using System.Text.Json;
+using Net.payOS;
+using Net.payOS.Types;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,18 +90,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     {
         OnChallenge = async context =>
         {
-            // Dừng response mặc định
             context.HandleResponse();
 
-            // Thiết lập response
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             context.Response.ContentType = "application/json";
 
-            // Tạo object lỗi tùy chỉnh
             var response = new
             {
                 StatusCode = 401,
-                Message = "Vui lòng làm theo mẫu Bearer {token}" // <-- Lỗi của bạn đây
+                Message = "Vui lòng làm theo mẫu Bearer {token}"
             };
 
             // Ghi lỗi ra response
@@ -109,6 +111,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 // Add services to the container.
 builder.Services.AddHttpClient();
 
+builder.Services.AddSingleton<PayOS>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    return new PayOS(
+        config["PayOS:ClientId"],
+        config["PayOS:ApiKey"],
+        config["PayOS:ChecksumKey"]
+    );
+});
+
 builder.Services.AddScoped<ResponseBase>();
 
 //DTO
@@ -116,20 +128,27 @@ builder.Services.AddScoped<ResponseObject<DTO_Role>>();
 builder.Services.AddScoped<ResponseObject<DTO_User>>();
 builder.Services.AddScoped<ResponseObject<DTO_Token>>();
 builder.Services.AddScoped<ResponseObject<DTO_LogHistory>>();
+builder.Services.AddScoped<ResponseObject<DTO_Wallet>>();
 builder.Services.AddScoped<ResponseObject<IList<DTO_LogHistory>>>();
-
+builder.Services.AddScoped<ResponseObject<string>>();
+builder.Services.AddScoped<ResponseObject<bool>>();
 
 // Converter
 builder.Services.AddScoped<Converter_Role>();
 builder.Services.AddScoped<Converter_User>();
 builder.Services.AddScoped<Converter_LogHistory>();
+builder.Services.AddScoped<Converter_Wallet>();
 
 
 // IService, Service
 builder.Services.AddScoped<IService_Role, Service_Role>();
 builder.Services.AddScoped<IService_Authen, Service_Authen>();
 builder.Services.AddScoped<IService_LogHistory, Service_LogHistory>();
+builder.Services.AddScoped<IService_Payment, Service_Payment>();
+builder.Services.AddScoped<IService_Wallet, Service_Wallet>();
 
+
+builder.Services.AddMemoryCache();
 
 
 builder.Services.AddControllers();

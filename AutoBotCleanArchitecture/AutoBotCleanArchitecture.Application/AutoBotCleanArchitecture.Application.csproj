@@ -9,10 +9,15 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="payOS" Version="1.0.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AutoBotCleanArchitecture.Domain\AutoBotCleanArchitecture.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Requests\WalletTransaction\" />
   </ItemGroup>
 
 </Project>

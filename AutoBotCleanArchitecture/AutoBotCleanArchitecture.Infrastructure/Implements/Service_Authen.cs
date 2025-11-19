@@ -606,7 +606,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
             var confirmEmail = await dbContext.confirmEmails
                 .OrderByDescending(x => x.Starttime)
-                .FirstOrDefaultAsync(x => x.Code == otp && x.Message == "Xác thực 2 bước đăng nhập");
+                .FirstOrDefaultAsync(x => x.Code == otp &&
+                (x.Message == "Xác thực 2 bước đăng nhập" ||
+                 x.Message == "Xác thực 2 bước đăng nhập (gửi lại)"));
 
             if (confirmEmail == null)
             {
@@ -837,27 +839,27 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        public async Task<ResponseBase> ResendOtpForCreateUser(Request_ResendOtp request)
+        public async Task<ResponseObject<DTO_User>> ResendOtpForCreateUser(Request_ResendOtp request)
         {
             if (string.IsNullOrWhiteSpace(request.Identifier))
             {
-                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ!");
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ!", null);
             }
             var identifier = request.Identifier;
 
             var user = await dbContext.users
                 .FirstOrDefaultAsync(x => x.UserName == identifier ||
-                                          x.Email == identifier ||
-                                          x.PhoneNumber == identifier);
+                                         x.Email == identifier ||
+                                         x.PhoneNumber == identifier);
 
             if (user == null)
             {
-                return responseBase.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy tài khoản!");
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy tài khoản!", null);
             }
 
             if (user.IsActive == true)
             {
-                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Tài khoản này đã được kích hoạt.");
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Tài khoản này đã được kích hoạt.", null);
             }
 
             var oldCodes = dbContext.confirmEmails.Where(x => x.UserId == user.Id);
@@ -886,30 +888,33 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
             await dbContext.SaveChangesAsync();
 
-            return responseBase.ResponseSuccess("Đã gửi lại mã xác thực. Vui lòng kiểm tra email của bạn!");
+            return responseObject.responseObjectSuccess(
+                "Đã gửi lại mã xác thực. Vui lòng kiểm tra email của bạn!",
+                new DTO_User { Email = user.Email } 
+            );
         }
 
-        public async Task<ResponseBase> ResendOtpForTwoStep(Request_ResendOtp request)
+        public async Task<ResponseObject<DTO_User>> ResendOtpForTwoStep(Request_ResendOtp request)
         {
             if (string.IsNullOrWhiteSpace(request.Identifier))
             {
-                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ!");
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ!", null);
             }
             var identifier = request.Identifier;
 
             var user = await dbContext.users
                 .FirstOrDefaultAsync(x => x.UserName == identifier ||
-                                          x.Email == identifier ||
-                                          x.PhoneNumber == identifier);
+                                         x.Email == identifier ||
+                                         x.PhoneNumber == identifier);
 
             if (user == null)
             {
-                return responseBase.ResponseError(StatusCodes.Status404NotFound, "Tài khoản không tồn tại!");
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Tài khoản không tồn tại!", null);
             }
 
             if (user.TwoStep != true)
             {
-                return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Tài khoản này không sử dụng xác thực 2 bước.");
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Tài khoản này không sử dụng xác thực 2 bước.", null);
             }
 
             var oldCodes = dbContext.confirmEmails.Where(x => x.UserId == user.Id);
@@ -922,7 +927,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             int code = r.Next(100000, 999999);
 
             var emailTo = new EmailTo();
-            emailTo.Mail = user.Email; 
+            emailTo.Mail = user.Email;
             emailTo.Subject = "Mã xác thực 2 bước";
             emailTo.Content = $"Mã xác thực đăng nhập của bạn là: {code}. Mã sẽ hết hạn sau 2 phút!";
             emailTo.SendEmailAsync(emailTo);
@@ -938,7 +943,122 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
             await dbContext.SaveChangesAsync();
 
-            return responseBase.ResponseSuccess("Đã gửi lại mã xác thực. Vui lòng kiểm tra email của bạn!");
+            return responseObject.responseObjectSuccess(
+                "Đã gửi lại mã xác thực. Vui lòng kiểm tra email của bạn!",
+                new DTO_User { Email = user.Email }
+            );
+        }
+
+        public async Task<ResponseObject<DTO_User>> GetEmailByIdentifier(Request_GetEmail request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Identifier))
+            {
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ!", null);
+            }
+            var identifier = request.Identifier;
+            var user = await dbContext.users
+                .FirstOrDefaultAsync(x => x.UserName == identifier ||
+                                         x.Email == identifier ||
+                                         x.PhoneNumber == identifier);
+            if (user == null)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Tài khoản không tồn tại!", null);
+            }
+
+            if (user.TwoStep != true)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Tài khoản này không sử dụng xác thực 2 bước.", null);
+            }
+
+            return responseObject.responseObjectSuccess(
+                "Email của bạn đã được lấy",
+                new DTO_User { Email = user.Email }
+            );
+        }
+
+        //public async Task<List<DTO_UserDevice>> GetDevices(Request_GetDevices request)
+        //{
+        //    var devices = await dbContext.userDevices
+        //        .Where(d => d.UserId == request.UserId)
+        //        .Select(d => new DTO_UserDevice
+        //        {
+        //            Id = d.Id,
+        //            User = d.UserId,
+        //            Fingerprint = d.Fingerprint,
+        //            AccessToken = d.AccessToken,
+        //            CreatedAt = d.CreatedAt,
+        //            LastActive = d.LastActive
+        //        })
+        //        .ToListAsync();
+
+        //    // Trả về danh sách rỗng nếu không có thiết bị
+        //    if (devices == null || devices.Count == 0)
+        //        devices = new List<DTO_UserDevice>();
+
+        //    return devices;
+        //}
+
+
+        //public async Task<ResponseObject<DTO_UserDevice>> LogoutOtherDevices(Request_LogoutOtherDevices request)
+        //{
+        //    var userId = request.UserId;
+
+        //    // Lấy tất cả thiết bị của user, trừ thiết bị hiện tại
+        //    var devices = await dbContext.userDevices
+        //        .Where(d => d.User.Id == userId && d.Fingerprint != request.CurrentFingerprint)
+        //        .ToListAsync();
+
+        //    if (devices == null || !devices.Any())
+        //    {
+        //        return null;
+        //    }
+
+        //    // Xóa các thiết bị khác
+        //    dbContext.userDevices.RemoveRange(devices);
+        //    await dbContext.SaveChangesAsync();
+
+        //    return null;
+        //}
+
+        public async Task<ResponseObject<DTO_User>> UpdateUserInfo(Request_UpdateUserInfo request)
+        {
+            try
+            {
+                // 1. Tìm User
+                var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == request.Id);
+
+                if (user == null)
+                {
+                    return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy người dùng.", null);
+                }
+
+                // 2. Validate Số điện thoại (Nếu có gửi lên và khác số cũ)
+                if (!string.IsNullOrEmpty(request.PhoneNumber) && request.PhoneNumber != user.PhoneNumber)
+                {
+                    bool isDuplicate = await dbContext.users.AnyAsync(x => x.PhoneNumber == request.PhoneNumber && x.Id != request.Id);
+                    if (isDuplicate)
+                    {
+                        return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Số điện thoại này đã được sử dụng.", null);
+                    }
+                }
+
+                // 3. CẬP NHẬT (Dùng toán tử 3 ngôi theo ý ông)
+                user.FullName = !string.IsNullOrEmpty(request.FullName) ? request.FullName : user.FullName;
+                user.PhoneNumber = !string.IsNullOrEmpty(request.PhoneNumber) ? request.PhoneNumber : user.PhoneNumber;
+                user.BirthDay = request.BirthDay.HasValue ? request.BirthDay : user.BirthDay;
+                user.TwoStep = request.TwoStep.HasValue ? request.TwoStep : user.TwoStep;
+
+                // 4. Lưu DB
+                dbContext.users.Update(user);
+                await dbContext.SaveChangesAsync();
+
+                var userDto = converter_Authen.EntityToDTO(user);
+                return responseObject.responseObjectSuccess("Cập nhật thông tin thành công!", userDto);
+            }
+            catch (Exception ex)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status500InternalServerError, $"Lỗi Server: {ex.Message}", null);
+            }
         }
 
     }

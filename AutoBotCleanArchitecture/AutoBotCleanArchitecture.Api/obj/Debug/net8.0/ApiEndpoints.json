@@ -127,6 +127,22 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
+    "Method": "GetEmailByIdentifier",
+    "RelativePath": "api/Authen/GetEmailByIdentifier",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_GetEmail",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
     "Method": "GetListUser",
     "RelativePath": "api/Authen/GetListUser",
     "HttpMethod": "GET",
@@ -469,6 +485,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PaymentController",
+    "Method": "CreateWalletDepositLink",
+    "RelativePath": "api/Payment/CreateWalletDepositLink",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Wallet.Request_Deposit",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PaymentController",
+    "Method": "VerifyDepositStatus",
+    "RelativePath": "api/Payment/VerifyDepositStatus",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.RoleController",
     "Method": "CreateRole",
     "RelativePath": "api/Role/CreateRole",
@@ -549,6 +597,38 @@
         "Name": "request",
         "Type": "AutoBotCleanArchitecture.Application.Requests.Role.Request_UpdateRole",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletController",
+    "Method": "CreateWallet",
+    "RelativePath": "api/Wallet/CreateWallet",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletController",
+    "Method": "GetMoneyInWallet",
+    "RelativePath": "api/Wallet/GetMoneyInWallet",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

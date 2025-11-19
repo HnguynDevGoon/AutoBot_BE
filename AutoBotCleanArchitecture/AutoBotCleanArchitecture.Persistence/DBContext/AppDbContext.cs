@@ -21,6 +21,9 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
         public DbSet<BotTrading> botTradings { get; set; }
         public DbSet<PriceBot> priceBots { get; set; }
         public DbSet<LogHistory> logHistories { get; set; }
+        public DbSet<WalletTransaction> walletTransactions { get; set; }
+        public DbSet<Wallet> wallets { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)

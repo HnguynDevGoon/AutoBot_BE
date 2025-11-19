@@ -123,6 +123,19 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         {
             return Ok(await service_Authen.ResendOtpForTwoStep(request));
         }
+
+        [HttpPost("GetEmailByIdentifier")]
+        public async Task<IActionResult> GetEmailByIdentifier(Request_GetEmail request)
+        {
+            return Ok(await service_Authen.GetEmailByIdentifier(request));
+        }
+
+        [HttpPost("UpdateUserInfo")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserInfo(Request_UpdateUserInfo request)
+        {
+            return Ok(await service_Authen.UpdateUserInfo(request));
+        }
     }
 
 }

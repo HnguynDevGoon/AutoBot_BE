@@ -24,10 +24,12 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         //--------------------------
         public Guid? RoleId { get; set; } 
         public Role? Role { get; set; }
+        public Wallet? Wallet { get; set; }
         //--------------------------
         public ICollection<ConfirmEmail>? ConfirmEmails { get; set; }
         public ICollection<RefreshToken>? RefreshTokens { get; set; }
         public ICollection<LogHistory>? LogHistorys { get; set; }
+
 
     }
 }
