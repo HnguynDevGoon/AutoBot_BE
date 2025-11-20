@@ -1024,7 +1024,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             try
             {
-                // 1. Tìm User
                 var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == request.Id);
 
                 if (user == null)
@@ -1032,7 +1031,14 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy người dùng.", null);
                 }
 
-                // 2. Validate Số điện thoại (Nếu có gửi lên và khác số cũ)
+                // --- ĐOẠN NÀY LÀM CHO NÓ GIỐNG DỰ ÁN CŨ ---
+                // Fix lỗi do Swagger tự điền "string" trong JSON
+                if (request.FullName == "string") request.FullName = null;
+                if (request.PhoneNumber == "string") request.PhoneNumber = null;
+                if (request.UserName == "string") request.UserName = null;
+                // --------------------------------------------
+
+                // Check trùng SDT (An toàn vì "string" đã thành null rồi)
                 if (!string.IsNullOrEmpty(request.PhoneNumber) && request.PhoneNumber != user.PhoneNumber)
                 {
                     bool isDuplicate = await dbContext.users.AnyAsync(x => x.PhoneNumber == request.PhoneNumber && x.Id != request.Id);
@@ -1042,13 +1048,12 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     }
                 }
 
-                // 3. CẬP NHẬT (Dùng toán tử 3 ngôi theo ý ông)
-                user.FullName = !string.IsNullOrEmpty(request.FullName) ? request.FullName : user.FullName;
-                user.PhoneNumber = !string.IsNullOrEmpty(request.PhoneNumber) ? request.PhoneNumber : user.PhoneNumber;
-                user.BirthDay = request.BirthDay.HasValue ? request.BirthDay : user.BirthDay;
-                user.TwoStep = request.TwoStep.HasValue ? request.TwoStep : user.TwoStep;
+                // CẬP NHẬT (Logic y hệt dự án cũ)
+                user.FullName = request.FullName ?? user.FullName;
+                user.PhoneNumber = request.PhoneNumber ?? user.PhoneNumber;
+                user.UserName = request.UserName ?? user.UserName;
+                user.BirthDay = request.BirthDay ?? user.BirthDay;
 
-                // 4. Lưu DB
                 dbContext.users.Update(user);
                 await dbContext.SaveChangesAsync();
 

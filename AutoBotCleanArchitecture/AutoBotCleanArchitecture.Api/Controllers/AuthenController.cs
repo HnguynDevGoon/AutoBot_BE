@@ -131,8 +131,8 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("UpdateUserInfo")]
-        [Authorize]
-        public async Task<IActionResult> UpdateUserInfo(Request_UpdateUserInfo request)
+        //[Authorize]
+        public async Task<IActionResult> UpdateUserInfo([FromForm] Request_UpdateUserInfo request)
         {
             return Ok(await service_Authen.UpdateUserInfo(request));
         }

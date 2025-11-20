@@ -9,9 +9,9 @@ namespace AutoBotCleanArchitecture.Application.Requests.User
     public class Request_UpdateUserInfo
     {
         public Guid Id { get; set; }
+        public string UserName { get; set; }
         public string FullName { get; set; }
         public string PhoneNumber { get; set; }
         public DateOnly? BirthDay { get; set; }
-        public bool? TwoStep { get; set; }
     }
 }
