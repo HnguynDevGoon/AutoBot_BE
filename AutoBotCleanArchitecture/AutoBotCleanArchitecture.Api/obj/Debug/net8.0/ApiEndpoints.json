@@ -651,22 +651,6 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletTransactionController",
-    "Method": "DeductMoney",
-    "RelativePath": "api/WalletTransaction/DeductMoney",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.WalletTransaction.Request_DeductMoney",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletTransactionController",
     "Method": "GetHistory",
     "RelativePath": "api/WalletTransaction/GetHistory",
     "HttpMethod": "GET",

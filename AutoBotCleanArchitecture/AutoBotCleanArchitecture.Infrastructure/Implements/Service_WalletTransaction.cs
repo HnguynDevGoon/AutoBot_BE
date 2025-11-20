@@ -121,8 +121,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         //    {
         //        return responseWalletTransaction.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
         //    }
+        //}
 
-
-        }
     }
 }

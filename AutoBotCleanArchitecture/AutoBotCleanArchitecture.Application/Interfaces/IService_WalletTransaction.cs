@@ -13,6 +13,6 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
     {
         Task<ResponseObject<IList<DTO_WalletTransaction>>> GetTransactionHistory(Guid userId, int pageNumber, int pageSize);
 
-        Task<ResponseObject<DTO_WalletTransaction>> DeductMoney(Request_DeductMoney request);
+        //Task<ResponseObject<DTO_WalletTransaction>> DeductMoney(Request_DeductMoney request);
     }
 }
