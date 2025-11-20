@@ -70,8 +70,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     request.Amount,
                     "Nạp tiền vào ví",
                     items,
-                    cancelUrl: "http://localhost:3000/payment/cancel", // FE trang hủy
-                    returnUrl: "http://localhost:3000/payment/success" // FE trang thành công -> Gọi API CheckPayment
+                    cancelUrl: "https://cdn2.fptshop.com.vn/unsafe/800x0/meme_che_2_cc087a8d1c.jpg", // FE trang hủy
+                    returnUrl: "https://images.hindustantimes.com/rf/image_size_800x600/HT/p1/2015/04/15/Incoming/Pictures/1337553_Wallpaper2.jpg" // FE trang thành công -> Gọi API CheckPayment
                 );
 
                 CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);

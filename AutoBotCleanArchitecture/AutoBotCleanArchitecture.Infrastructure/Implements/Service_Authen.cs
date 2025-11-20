@@ -719,8 +719,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                         IsActive = true,
                         CreatedDate = DateTime.UtcNow,
                         RoleId = defaultRole.Id,
-                        PassWord = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString("N")),
-                        PhoneNumber = "N/A"
+                        PassWord = "",
+                        PhoneNumber = ""
                     };
 
                     await dbContext.users.AddAsync(user);
@@ -1064,6 +1064,27 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             {
                 return responseObject.responseObjectError(StatusCodes.Status500InternalServerError, $"Lỗi Server: {ex.Message}", null);
             }
+        }
+
+        public async Task<ResponseObject<DTO_User>> OnOffTwoStep (Request_OnOffTwoStep request)
+        {
+            var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == request.UserId);
+
+            if (user == null)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy người dùng.", null);
+            }
+
+            user.TwoStep = request.IsTwoStep;
+
+            dbContext.users.Update(user);
+            await dbContext.SaveChangesAsync();
+
+            var userDto = converter_Authen.EntityToDTO(user);
+
+            string message = request.IsTwoStep ? "Đã bật xác thực 2 bước." : "Đã tắt xác thực 2 bước.";
+
+            return responseObject.responseObjectSuccess(message, userDto);
         }
 
     }

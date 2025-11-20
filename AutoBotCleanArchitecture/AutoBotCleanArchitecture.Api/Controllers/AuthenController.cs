@@ -57,7 +57,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("UpdateAvatar")]
-        [Authorize(Roles = "Admin,User")]
+        [Authorize]
         public async Task<IActionResult> UpdateAvatar(Request_UpdateAvatar? request)
         {
             return Ok(await service_Authen.UpdateAvatar(request));
@@ -135,6 +135,13 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         public async Task<IActionResult> UpdateUserInfo(Request_UpdateUserInfo request)
         {
             return Ok(await service_Authen.UpdateUserInfo(request));
+        }
+
+        [HttpPost("OnOffTwoStep")]
+        [Authorize]
+        public async Task<IActionResult> OnOffTwoStep(Request_OnOffTwoStep request)
+        {
+            return Ok(await service_Authen.OnOffTwoStep(request));
         }
     }
 

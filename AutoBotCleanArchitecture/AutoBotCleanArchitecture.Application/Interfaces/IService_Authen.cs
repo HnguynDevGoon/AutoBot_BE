@@ -31,5 +31,6 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseObject<DTO_User>> ResendOtpForTwoStep(Request_ResendOtp request);
         Task<ResponseObject<DTO_User>> GetEmailByIdentifier(Request_GetEmail request);
         Task<ResponseObject<DTO_User>> UpdateUserInfo(Request_UpdateUserInfo request);
+        Task<ResponseObject<DTO_User>> OnOffTwoStep(Request_OnOffTwoStep request);
     }
 }
