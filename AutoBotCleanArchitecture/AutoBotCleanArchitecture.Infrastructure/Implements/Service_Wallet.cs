@@ -1,6 +1,7 @@
 ﻿using AutoBotCleanArchitecture.Application.Converters;
 using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
+using AutoBotCleanArchitecture.Application.Requests.Wallet;
 using AutoBotCleanArchitecture.Application.Responses;
 using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Persistence.DBContext;
@@ -91,5 +92,68 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return responseObject.responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi Server: " + ex.Message, null);
             }
         }
+
+        public async Task<ResponseObject<DTO_Wallet>> CreatePinWallet(Request_CreatePinWallet request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Pin) || request.Pin.Length != 6 || !int.TryParse(request.Pin, out _))
+            {
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Mã PIN phải là 6 chữ số.", null);
+            }
+
+            if (request.Pin != request.ConfirmPin)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Xác nhận mã PIN không khớp.", null);
+            }
+
+            var wallet = await dbContext.wallets.FirstOrDefaultAsync(x => x.UserId == request.UserId);
+
+            if (wallet == null)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Bạn chưa có ví.", null);
+            }
+
+            if (!string.IsNullOrEmpty(wallet.WalletPin))
+            {
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Ví này đã có mã PIN rồi.", null);
+            }
+
+            wallet.WalletPin = BCrypt.Net.BCrypt.HashPassword(request.Pin);
+
+            dbContext.wallets.Update(wallet);
+            await dbContext.SaveChangesAsync();
+
+            await dbContext.Entry(wallet).Reference(w => w.User).LoadAsync();
+            var walletDto = converter_Wallet.EntityToDTO(wallet);
+
+            return responseObject.responseObjectSuccess("Tạo mã PIN thành công.", walletDto);
+        }
+
+        public async Task<ResponseObject<DTO_Wallet>> CheckPinWallet(Request_CheckPinWallet request)
+        {
+            var wallet = await dbContext.wallets
+                                .Include(w => w.User)
+                                .FirstOrDefaultAsync(x => x.UserId == request.UserId);
+
+            if (wallet == null)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Bạn chưa có ví.", null);
+            }
+
+            if (string.IsNullOrEmpty(wallet.WalletPin))
+            {
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Bạn chưa thiết lập mã PIN cho ví.", null);
+            }
+
+            bool isPinValid = BCrypt.Net.BCrypt.Verify(request.Pin, wallet.WalletPin);
+
+            if (!isPinValid)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Mã PIN không chính xác.", null);
+            }
+
+            var walletDto = converter_Wallet.EntityToDTO(wallet);
+            return responseObject.responseObjectSuccess("Mã PIN chính xác.", walletDto);
+        }
+
     }
 }

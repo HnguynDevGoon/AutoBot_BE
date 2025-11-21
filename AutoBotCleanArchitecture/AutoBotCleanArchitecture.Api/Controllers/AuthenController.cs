@@ -38,6 +38,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpGet("GetListUser")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetListUser(int pageSize = 10, int pageNumber = 1)
         {
             return Ok(service_Authen.GetListUser(pageSize, pageNumber));
@@ -64,7 +65,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("ChangePassword")]
-        [Authorize(Roles = "Admin,User")]
+        [Authorize]
         public async Task<IActionResult> ChangePassword(Request_ChangePassword request) 
         {
             return Ok(await service_Authen.ChangePassword(request));

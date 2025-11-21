@@ -1,4 +1,5 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
+using AutoBotCleanArchitecture.Application.Requests.Wallet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,6 +30,20 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         public async Task<IActionResult> CreateWallet(Guid userId)
         {
             return Ok(await _service_Wallet.CreateWallet(userId));
+        }
+
+        [HttpPost("CreatePinWallet")]
+        //[Authorize]
+        public async Task<IActionResult> CreatePinWallet(Request_CreatePinWallet request)
+        {
+            return Ok(await _service_Wallet.CreatePinWallet(request));
+        }
+
+        [HttpPost("CheckPinWallet")]
+        //[Authorize]
+        public async Task<IActionResult> CheckPinWallet(Request_CheckPinWallet request)
+        {
+            return Ok(await _service_Wallet.CheckPinWallet(request));
         }
     }
 }
