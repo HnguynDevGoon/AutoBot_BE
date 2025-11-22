@@ -46,7 +46,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(await _service_Wallet.CheckPinWallet(request));
         }
 
-        [HttpPost("GetWalletByUserId")]
+        [HttpGet("GetWalletByUserId")]
         [Authorize]
         public async Task<IActionResult> GetWalletByUserId(Guid userId)
         {
