@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoBotCleanArchitecture.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251118110513_init")]
+    [Migration("20251121095805_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -268,7 +268,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
-                            CreatedDate = new DateTime(2025, 11, 18, 11, 5, 10, 570, DateTimeKind.Utc).AddTicks(2860),
+                            CreatedDate = new DateTime(2025, 11, 21, 9, 58, 3, 164, DateTimeKind.Utc).AddTicks(3062),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,
@@ -294,6 +294,9 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("WalletPin")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

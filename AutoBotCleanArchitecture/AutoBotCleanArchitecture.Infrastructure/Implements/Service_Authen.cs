@@ -538,13 +538,12 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             var searchUserId = await dbContext.users.FirstOrDefaultAsync(x => x.Id == userId);
             if (searchUserId == null)
             {
-                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy user", null);
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy người dùng", null);
             }
 
-            // Chuyển đổi role entity thành DTO
             var userDto = converter_Authen.EntityToDTO(searchUserId);
 
-            return responseObject.responseObjectSuccess("Tìm user thành công", userDto);
+            return responseObject.responseObjectSuccess("Tìm người dùng thành công", userDto);
         }
 
         public async Task<ResponseObject<DTO_User>> DeleteUser(Guid userId)
@@ -552,7 +551,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             var searchUserId = await dbContext.users.FirstOrDefaultAsync(x => x.Id == userId);
             if (searchUserId == null)
             {
-                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "User không tồn tại", null);
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
             }
             dbContext.users.Remove(searchUserId);
             await dbContext.SaveChangesAsync(); 
@@ -564,7 +563,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (user == null)
             {
-                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy user", null);
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy người dùng", null);
             }
 
             if (request.UrlAvatar != null)

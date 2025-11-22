@@ -33,14 +33,14 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("CreatePinWallet")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> CreatePinWallet(Request_CreatePinWallet request)
         {
             return Ok(await _service_Wallet.CreatePinWallet(request));
         }
 
         [HttpPost("CheckPinWallet")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> CheckPinWallet(Request_CheckPinWallet request)
         {
             return Ok(await _service_Wallet.CheckPinWallet(request));
