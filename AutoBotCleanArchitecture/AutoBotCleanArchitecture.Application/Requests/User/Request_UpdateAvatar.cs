@@ -10,6 +10,6 @@ namespace AutoBotCleanArchitecture.Application.Requests.User
     public class Request_UpdateAvatar
     {
         public Guid Id { get; set; }
-        public IFormFile? UrlAvatar { get; set; }
+        public string? UrlAvatar { get; set; }
     }
 }

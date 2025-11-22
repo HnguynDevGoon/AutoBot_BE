@@ -31,7 +31,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             this.converter_Wallet = converter_Wallet;
         }
 
-        // 1. TẠO VÍ MỚI
         public async Task<ResponseObject<DTO_Wallet>> CreateWallet(Guid userId)
         {
             try
@@ -122,10 +121,10 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             dbContext.wallets.Update(wallet);
             await dbContext.SaveChangesAsync();
 
-            await dbContext.Entry(wallet).Reference(w => w.User).LoadAsync();
-            var walletDto = converter_Wallet.EntityToDTO(wallet);
+            //await dbContext.Entry(wallet).Reference(w => w.User).LoadAsync();
+            //var walletDto = converter_Wallet.EntityToDTO(wallet);
 
-            return responseObject.responseObjectSuccess("Tạo mã PIN thành công.", walletDto);
+            return responseObject.responseObjectSuccess("Tạo mã PIN thành công.", null);
         }
 
         public async Task<ResponseObject<DTO_Wallet>> CheckPinWallet(Request_CheckPinWallet request)
@@ -155,5 +154,20 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return responseObject.responseObjectSuccess("Mã PIN chính xác.", walletDto);
         }
 
+        public async Task<ResponseObject<DTO_Wallet>> GetWalletByUserId(Guid userId)
+        {
+            var wallet = await dbContext.wallets
+                                        .Include(w => w.User)
+                                        .FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (wallet == null)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Người dùng chưa kích hoạt ví.", null);
+            }
+
+            var walletDto = converter_Wallet.EntityToDTO(wallet);
+
+            return responseObject.responseObjectSuccess("Lấy thông tin ví thành công.", walletDto);
+        }
     }
 }

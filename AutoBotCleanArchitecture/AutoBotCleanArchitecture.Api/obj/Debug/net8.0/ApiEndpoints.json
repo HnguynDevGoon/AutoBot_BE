@@ -251,13 +251,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.Guid",
-        "IsRequired": false
-      },
-      {
-        "Name": "UrlAvatar",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_UpdateAvatar",
         "IsRequired": false
       }
     ],
@@ -635,6 +630,38 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletController",
+    "Method": "CheckPinWallet",
+    "RelativePath": "api/Wallet/CheckPinWallet",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Wallet.Request_CheckPinWallet",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletController",
+    "Method": "CreatePinWallet",
+    "RelativePath": "api/Wallet/CreatePinWallet",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Wallet.Request_CreatePinWallet",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletController",
     "Method": "CreateWallet",
     "RelativePath": "api/Wallet/CreateWallet",
     "HttpMethod": "POST",
@@ -654,6 +681,22 @@
     "Method": "GetMoneyInWallet",
     "RelativePath": "api/Wallet/GetMoneyInWallet",
     "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletController",
+    "Method": "GetWalletByUserId",
+    "RelativePath": "api/Wallet/GetWalletByUserId",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [

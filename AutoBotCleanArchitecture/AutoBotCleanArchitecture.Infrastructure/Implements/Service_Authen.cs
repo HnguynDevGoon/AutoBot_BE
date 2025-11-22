@@ -568,8 +568,10 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
             if (request.UrlAvatar != null)
             {
-                CloudinaryService cloudinaryService = new CloudinaryService();
-                user.UrlAvatar = cloudinaryService.UploadImage(request.UrlAvatar);
+                //CloudinaryService cloudinaryService = new CloudinaryService();
+                //user.UrlAvatar = cloudinaryService.UploadImage(request.UrlAvatar);
+
+                user.UrlAvatar = request.UrlAvatar;
             }
 
             dbContext.users.Update(user);
