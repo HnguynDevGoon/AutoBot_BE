@@ -70,7 +70,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     request.Amount,
                     "Nạp tiền vào ví",
                     items,
-                    cancelUrl: "http://localhost:3000/failed", 
+                    cancelUrl: "http://localhost:3000/fail", 
                     returnUrl: "http://localhost:3000/success" 
                 );
 
