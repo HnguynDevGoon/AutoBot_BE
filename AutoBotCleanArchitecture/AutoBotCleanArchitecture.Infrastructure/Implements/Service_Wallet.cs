@@ -93,6 +93,11 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Người dùng chưa có ví. Vui lòng tạo ví trước.", null);
                 }
 
+                if (string.IsNullOrEmpty(wallet.WalletPin))
+                {
+                    return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Bạn chưa thiết lập mã PIN. Vui lòng tạo mới.", null);
+                }
+
 
                 return responseObject.responseObjectSuccess("Lấy thông tin ví thành công.",
                     new DTO_Wallet { Balance = wallet.Balance }
@@ -173,9 +178,106 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Người dùng chưa kích hoạt ví.", null);
             }
 
+            if (string.IsNullOrEmpty(wallet.WalletPin))
+            {
+                return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Bạn chưa thiết lập mã PIN cho ví.", null);
+            }
+
             var walletDto = converter_Wallet.EntityToDTO(wallet);
 
             return responseObject.responseObjectSuccess("Lấy thông tin ví thành công.", walletDto);
+        }
+
+        public async Task<ResponseBase> SendOtpResetPin(Request_SendOtpResetPin request)
+        {
+            try
+            {
+                var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == request.UserId);
+                if (user == null)
+                {
+                    return responseBase.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy user.");
+                }
+
+                var oldCodes = dbContext.confirmEmails.Where(x => x.UserId == user.Id && x.Message == "Đặt lại PIN");
+                if (oldCodes.Any())
+                {
+                    dbContext.confirmEmails.RemoveRange(oldCodes);
+                }
+
+                Random r = new Random();
+                int code = r.Next(100000, 999999);
+
+                var emailTo = new EmailTo
+                {
+                    Mail = user.Email,
+                    Subject = "Mã xác nhận Reset PIN Ví",
+                    Content = $"Mã xác nhận của bạn là: <b>{code}</b>. Mã sẽ hết hạn sau 5 phút!"
+                };
+                await emailTo.SendEmailAsync(emailTo);
+
+                var confirmEmail = new ConfirmEmail
+                {
+                    Code = code.ToString(),
+                    Message = "Đặt lại PIN", 
+                    Starttime = DateTime.Now,
+                    Expiredtime = DateTime.Now.AddMinutes(5),
+                    UserId = user.Id
+                };
+
+                await dbContext.confirmEmails.AddAsync(confirmEmail);
+                await dbContext.SaveChangesAsync();
+
+                return responseBase.ResponseSuccess("Mã OTP đã được gửi đến email của bạn.");
+            }
+            catch (Exception ex)
+            {
+                return responseBase.ResponseError(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        public async Task<ResponseObject<DTO_Wallet>> ResetPin(Request_ResetPin request)
+        {
+            try
+            {
+                // 1. Tìm Ví
+                var wallet = await dbContext.wallets.FirstOrDefaultAsync(x => x.UserId == request.UserId);
+                if (wallet == null)
+                {
+                    return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Bạn chưa có ví.", null);
+                }
+
+                // 2. Tìm OTP trong DB
+                var confirmEmail = await dbContext.confirmEmails
+                    .OrderByDescending(x => x.Starttime) 
+                    .FirstOrDefaultAsync(x => x.UserId == request.UserId
+                                           && x.Code == request.Otp
+                                           && x.Message == "Đặt lại PIN");
+
+                if (confirmEmail == null)
+                {
+                    return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Mã OTP không chính xác.", null);
+                }
+
+                if (DateTime.Now > confirmEmail.Expiredtime)
+                {
+                    return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Mã OTP đã hết hạn.", null);
+                }
+
+                wallet.WalletPin = null;
+
+                dbContext.confirmEmails.Remove(confirmEmail);
+
+                dbContext.wallets.Update(wallet);
+                await dbContext.SaveChangesAsync();
+
+                var walletDto = converter_Wallet.EntityToDTO(wallet);
+
+                return responseObject.responseObjectSuccess("Xác thực thành công. Vui lòng tạo mã PIN mới.", walletDto);
+            }
+            catch (Exception ex)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
+            }
         }
 
     }

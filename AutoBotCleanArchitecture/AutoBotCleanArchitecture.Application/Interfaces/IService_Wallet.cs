@@ -16,5 +16,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseObject<DTO_Wallet>> CreatePinWallet(Request_CreatePinWallet request);
         Task<ResponseObject<DTO_Wallet>> CheckPinWallet(Request_CheckPinWallet request);
         Task<ResponseObject<DTO_Wallet>> GetWalletByUserId(Guid userId);
+        Task<ResponseObject<DTO_Wallet>> ResetPin(Request_ResetPin request);
+        Task<ResponseBase> SendOtpResetPin(Request_SendOtpResetPin request);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Requests.Wallet;
+using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -51,6 +52,20 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         public async Task<IActionResult> GetWalletByUserId(Guid userId)
         {
             return Ok(await _service_Wallet.GetWalletByUserId(userId));
+        }
+
+        [HttpPost("ResetPin")]
+        [Authorize]
+        public async Task<IActionResult> ResetPin(Request_ResetPin request)
+        {
+            return Ok(await _service_Wallet.ResetPin(request));
+        }
+
+        [HttpPost("SendOtpResetPin")]
+        [Authorize]
+        public async Task<IActionResult> SendOtpResetPin(Request_SendOtpResetPin request)
+        {
+            return Ok(await _service_Wallet.SendOtpResetPin(request));
         }
     }
 }

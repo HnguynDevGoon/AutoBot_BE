@@ -709,6 +709,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletController",
+    "Method": "ResetPin",
+    "RelativePath": "api/Wallet/ResetPin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Wallet.Request_ResetPin",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletController",
+    "Method": "SendOtpResetPin",
+    "RelativePath": "api/Wallet/SendOtpResetPin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Wallet.Request_SendOtpResetPin",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletTransactionController",
     "Method": "GetHistory",
     "RelativePath": "api/WalletTransaction/GetHistory",

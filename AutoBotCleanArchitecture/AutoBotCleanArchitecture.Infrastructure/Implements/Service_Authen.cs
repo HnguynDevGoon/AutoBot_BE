@@ -374,10 +374,10 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 confirmEmail.Starttime = DateTime.Now;
                 confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
                 confirmEmail.UserId = user.Id;
-                await dbContext.confirmEmails.AddAsync(confirmEmail); // SỬA: Phải dùng await + Async
+                await dbContext.confirmEmails.AddAsync(confirmEmail); 
 
                 // Dòng này sẽ lưu (AccessFailedCount = 0) VÀ (mã confirm mới)
-                await dbContext.SaveChangesAsync(); // SỬA: Phải dùng await
+                await dbContext.SaveChangesAsync(); 
 
                 return responseObjectToken.responseObjectError(
                     StatusCodes.Status401Unauthorized,
