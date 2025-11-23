@@ -35,37 +35,48 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             try
             {
-                var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == userId);
+                // 1. Kiểm tra user có tồn tại trong DB hay không
+                var user = await dbContext.users
+                    .FirstOrDefaultAsync(x => x.Id == userId);
+
                 if (user == null)
                 {
-                    return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không tồn tại.", null);
+                    return responseObject.responseObjectError(
+                        StatusCodes.Status404NotFound, "Người dùng không tồn tại.", null);
                 }
 
+                // 2. Kiểm tra ví đã tồn tại chưa
                 var existingWallet = await dbContext.wallets.FirstOrDefaultAsync(x => x.UserId == userId);
+
                 if (existingWallet != null)
                 {
                     var dto = converter_Wallet.EntityToDTO(existingWallet);
                     return responseObject.responseObjectSuccess("Người dùng này đã có ví.", dto);
                 }
 
+                // 3. Tạo ví mới
                 var newWallet = new Wallet
                 {
                     Id = Guid.NewGuid(),
                     UserId = userId,
-                    Balance = 0, 
+                    Balance = 0,
+                    User = user
                 };
 
-                await dbContext.wallets.AddAsync(newWallet);
+                dbContext.wallets.Add(newWallet);
                 await dbContext.SaveChangesAsync();
 
-                newWallet.User = user;
-
                 var walletDto = converter_Wallet.EntityToDTO(newWallet);
+
                 return responseObject.responseObjectSuccess("Tạo ví thành công.", walletDto);
             }
             catch (Exception ex)
             {
-                return responseObject.responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi Server: " + ex.Message, null);
+                return responseObject.responseObjectError(
+                    StatusCodes.Status500InternalServerError,
+                    "Lỗi Server: " + ex.Message,
+                    null
+                );
             }
         }
 
