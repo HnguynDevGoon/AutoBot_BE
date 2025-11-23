@@ -83,7 +83,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 }
 
 
-                return responseObject.responseObjectSuccess("Lấy thông tin ví thành công.", null);
+                return responseObject.responseObjectSuccess("Lấy thông tin ví thành công.",
+                    new DTO_Wallet { Balance = wallet.Balance }
+                    );
             }
             catch (Exception ex)
             {

@@ -696,7 +696,7 @@
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletController",
     "Method": "GetWalletByUserId",
     "RelativePath": "api/Wallet/GetWalletByUserId",
-    "HttpMethod": "POST",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
