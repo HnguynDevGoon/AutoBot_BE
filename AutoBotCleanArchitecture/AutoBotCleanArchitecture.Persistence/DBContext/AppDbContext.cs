@@ -23,6 +23,10 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
         public DbSet<LogHistory> logHistories { get; set; }
         public DbSet<WalletTransaction> walletTransactions { get; set; }
         public DbSet<Wallet> wallets { get; set; }
+        public DbSet<ChatRoom> chatRooms { get; set; }
+        public DbSet<ChatMessage> chatMessages { get; set; }
+        public DbSet<UserDevice> userDevices { get; set; }
+
 
 
 

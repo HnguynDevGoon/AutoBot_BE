@@ -211,7 +211,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 {
                     Mail = user.Email,
                     Subject = "Mã xác nhận Reset PIN Ví",
-                    Content = $"Mã xác nhận của bạn là: <b>{code}</b>. Mã sẽ hết hạn sau 5 phút!"
+                    Content = $"Mã xác nhận của bạn là: <b>{code}</b>. Mã sẽ hết hạn sau 2 phút!"
                 };
                 await emailTo.SendEmailAsync(emailTo);
 
@@ -220,7 +220,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     Code = code.ToString(),
                     Message = "Đặt lại PIN", 
                     Starttime = DateTime.Now,
-                    Expiredtime = DateTime.Now.AddMinutes(5),
+                    Expiredtime = DateTime.Now.AddMinutes(2),
                     UserId = user.Id
                 };
 

@@ -42,6 +42,23 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "userDevices",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Fingerprint = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_userDevices", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "priceBots",
                 columns: table => new
                 {
@@ -90,6 +107,26 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         name: "FK_users_roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "roles",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "chatRooms",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    GuestSessionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_chatRooms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_chatRooms_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
                         principalColumn: "Id");
                 });
 
@@ -180,6 +217,30 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "chatMessages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false),
+                    IsAdminSender = table.Column<bool>(type: "bit", nullable: false),
+                    IpAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChatRoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_chatMessages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_chatMessages_chatRooms_ChatRoomId",
+                        column: x => x.ChatRoomId,
+                        principalTable: "chatRooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "walletTransactions",
                 columns: table => new
                 {
@@ -215,7 +276,17 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDay", "CreatedDate", "Email", "FullName", "IsActive", "LockoutEnable", "LockoutEnd", "PassWord", "PhoneNumber", "RoleId", "TwoStep", "UrlAvatar", "UserName" },
-                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(2025, 11, 21, 9, 58, 3, 164, DateTimeKind.Utc).AddTicks(3062), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a", "0123456789", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), true, "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg", "Admin" });
+                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(2025, 11, 24, 16, 29, 58, 667, DateTimeKind.Utc).AddTicks(7258), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a", "0123456789", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), true, "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg", "Admin" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_chatMessages_ChatRoomId",
+                table: "chatMessages",
+                column: "ChatRoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_chatRooms_UserId",
+                table: "chatRooms",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_confirmEmails_UserId",
@@ -264,6 +335,9 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "chatMessages");
+
+            migrationBuilder.DropTable(
                 name: "confirmEmails");
 
             migrationBuilder.DropTable(
@@ -276,7 +350,13 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 name: "refreshTokens");
 
             migrationBuilder.DropTable(
+                name: "userDevices");
+
+            migrationBuilder.DropTable(
                 name: "walletTransactions");
+
+            migrationBuilder.DropTable(
+                name: "chatRooms");
 
             migrationBuilder.DropTable(
                 name: "botTradings");

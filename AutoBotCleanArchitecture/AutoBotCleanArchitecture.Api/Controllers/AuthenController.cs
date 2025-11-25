@@ -1,4 +1,5 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
+using AutoBotCleanArchitecture.Application.Requests.Device;
 using AutoBotCleanArchitecture.Application.Requests.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -144,6 +145,8 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         {
             return Ok(await service_Authen.OnOffTwoStep(request));
         }
+
+
     }
 
 }

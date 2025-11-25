@@ -29,7 +29,7 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         public ICollection<ConfirmEmail>? ConfirmEmails { get; set; }
         public ICollection<RefreshToken>? RefreshTokens { get; set; }
         public ICollection<LogHistory>? LogHistorys { get; set; }
-
+        public ICollection<ChatRoom>? ChatRooms { get; set; }
 
     }
 }

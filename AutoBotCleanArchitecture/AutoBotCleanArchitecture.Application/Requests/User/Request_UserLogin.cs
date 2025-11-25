@@ -10,5 +10,6 @@ namespace AutoBotCleanArchitecture.Application.Requests.User
     {
         public string LoginIdentifier { get; set; }
         public string PassWord { get; set; }
+        public string Fingerprint { get; set; }
     }
 }

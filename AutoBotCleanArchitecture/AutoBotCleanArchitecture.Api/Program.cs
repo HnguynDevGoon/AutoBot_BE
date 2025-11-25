@@ -2,17 +2,18 @@
 using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Responses;
+using AutoBotCleanArchitecture.Infrastructure.Hubs;
 using AutoBotCleanArchitecture.Infrastructure.Implements;
 using AutoBotCleanArchitecture.Persistence.DBContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Net.payOS;
+using Net.payOS.Types;
 using System;
 using System.Text;
 using System.Text.Json;
-using Net.payOS;
-using Net.payOS.Types;
 
 
 
@@ -111,6 +112,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 // Add services to the container.
 builder.Services.AddHttpClient();
 
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSignalR();
+
 builder.Services.AddSingleton<PayOS>(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
@@ -134,6 +139,10 @@ builder.Services.AddScoped<ResponseObject<DTO_WalletTransaction>>();
 builder.Services.AddScoped<ResponseObject<IList<DTO_WalletTransaction>>>();
 builder.Services.AddScoped<ResponseObject<string>>();
 builder.Services.AddScoped<ResponseObject<bool>>();
+builder.Services.AddScoped<ResponseObject<DTO_ChatMessage>>();
+builder.Services.AddScoped<ResponseObject<IList<DTO_ChatMessage>>>();
+builder.Services.AddScoped<ResponseObject<List<DTO_UserDevice>>>();
+
 
 
 // Converter
@@ -142,6 +151,7 @@ builder.Services.AddScoped<Converter_User>();
 builder.Services.AddScoped<Converter_LogHistory>();
 builder.Services.AddScoped<Converter_Wallet>();
 builder.Services.AddScoped<Converter_WalletTransaction>();
+builder.Services.AddScoped<Converter_ChatMessage>();
 
 
 // IService, Service
@@ -151,6 +161,9 @@ builder.Services.AddScoped<IService_LogHistory, Service_LogHistory>();
 builder.Services.AddScoped<IService_Payment, Service_Payment>();
 builder.Services.AddScoped<IService_Wallet, Service_Wallet>();
 builder.Services.AddScoped<IService_WalletTransaction, Service_WalletTransaction>();
+builder.Services.AddScoped<IService_Chat, Service_Chat>();
+builder.Services.AddScoped<IService_Device, Service_Device>();
+
 
 
 builder.Services.AddMemoryCache();
@@ -169,6 +182,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.UseHttpsRedirection();
 

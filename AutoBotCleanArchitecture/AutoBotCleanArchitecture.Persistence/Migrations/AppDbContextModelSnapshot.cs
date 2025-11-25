@@ -49,6 +49,67 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.ToTable("botTradings");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.ChatMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ChatRoomId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAdminSender")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatRoomId");
+
+                    b.ToTable("chatMessages");
+                });
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.ChatRoom", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GuestSessionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("chatRooms");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.ConfirmEmail", b =>
                 {
                     b.Property<Guid>("Id")
@@ -265,7 +326,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
-                            CreatedDate = new DateTime(2025, 11, 21, 9, 58, 3, 164, DateTimeKind.Utc).AddTicks(3062),
+                            CreatedDate = new DateTime(2025, 11, 24, 16, 29, 58, 667, DateTimeKind.Utc).AddTicks(7258),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,
@@ -278,6 +339,38 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             UrlAvatar = "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg",
                             UserName = "Admin"
                         });
+                });
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.UserDevice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("userDevices");
                 });
 
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Wallet", b =>
@@ -338,6 +431,26 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.HasIndex("WalletId");
 
                     b.ToTable("walletTransactions");
+                });
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.ChatMessage", b =>
+                {
+                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.ChatRoom", "ChatRoom")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChatRoom");
+                });
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.ChatRoom", b =>
+                {
+                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.User", "User")
+                        .WithMany("ChatRooms")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.ConfirmEmail", b =>
@@ -418,6 +531,11 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Navigation("PriceBots");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.ChatRoom", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Role", b =>
                 {
                     b.Navigation("Users");
@@ -425,6 +543,8 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
 
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.User", b =>
                 {
+                    b.Navigation("ChatRooms");
+
                     b.Navigation("ConfirmEmails");
 
                     b.Navigation("LogHistorys");

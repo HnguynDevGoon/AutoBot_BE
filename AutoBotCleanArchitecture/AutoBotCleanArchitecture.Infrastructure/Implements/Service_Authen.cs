@@ -374,10 +374,10 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 confirmEmail.Starttime = DateTime.Now;
                 confirmEmail.Expiredtime = DateTime.Now.AddMinutes(2);
                 confirmEmail.UserId = user.Id;
-                await dbContext.confirmEmails.AddAsync(confirmEmail); 
+                await dbContext.confirmEmails.AddAsync(confirmEmail);
 
                 // Dòng này sẽ lưu (AccessFailedCount = 0) VÀ (mã confirm mới)
-                await dbContext.SaveChangesAsync(); 
+                await dbContext.SaveChangesAsync();
 
                 return responseObjectToken.responseObjectError(
                     StatusCodes.Status401Unauthorized,
@@ -396,7 +396,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 }
 
                 Random r = new Random();
-                int code = r.Next(100000, 999999); 
+                int code = r.Next(100000, 999999);
 
                 var emailTo = new EmailTo();
                 emailTo.Mail = user.Email;
@@ -404,7 +404,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 emailTo.Content = $"Mã xác nhận đăng nhập của bạn là: {code}. Mã sẽ hết hạn sau 2 phút!";
                 emailTo.SendEmailAsync(emailTo);
 
-                var confirmEmail = new ConfirmEmail(); 
+                var confirmEmail = new ConfirmEmail();
                 confirmEmail.Code = code.ToString();
                 confirmEmail.Message = "Xác thực 2 bước đăng nhập";
                 confirmEmail.Starttime = DateTime.Now;
@@ -423,6 +423,35 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
 
             var dtoToken = await GenerateAccessToken(user);
+
+            var device = await dbContext.userDevices
+                    .FirstOrDefaultAsync(x =>
+                    x.UserId == user.Id &&
+                    x.Fingerprint == request.Fingerprint
+            );
+
+            if (device == null)
+            {
+                var newDevice = new UserDevice
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = user.Id,
+                    Fingerprint = request.Fingerprint,
+                    AccessToken = dtoToken.AccessToken,
+                    RefreshToken = dtoToken.RefreshToken,
+                    CreatedAt = DateTime.UtcNow,
+                    LastUpdatedAt = DateTime.UtcNow
+                };
+
+                await dbContext.userDevices.AddAsync(newDevice);
+            }
+            else
+            {
+                device.AccessToken = dtoToken.AccessToken;
+                device.LastUpdatedAt = DateTime.UtcNow;
+            }
+
+            await dbContext.SaveChangesAsync();
             return responseObjectToken.responseObjectSuccess("Đăng nhập thành công", dtoToken);
         }
 
@@ -976,50 +1005,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 new DTO_User { Email = user.Email }
             );
         }
-
-        //public async Task<List<DTO_UserDevice>> GetDevices(Request_GetDevices request)
-        //{
-        //    var devices = await dbContext.userDevices
-        //        .Where(d => d.UserId == request.UserId)
-        //        .Select(d => new DTO_UserDevice
-        //        {
-        //            Id = d.Id,
-        //            User = d.UserId,
-        //            Fingerprint = d.Fingerprint,
-        //            AccessToken = d.AccessToken,
-        //            CreatedAt = d.CreatedAt,
-        //            LastActive = d.LastActive
-        //        })
-        //        .ToListAsync();
-
-        //    // Trả về danh sách rỗng nếu không có thiết bị
-        //    if (devices == null || devices.Count == 0)
-        //        devices = new List<DTO_UserDevice>();
-
-        //    return devices;
-        //}
-
-
-        //public async Task<ResponseObject<DTO_UserDevice>> LogoutOtherDevices(Request_LogoutOtherDevices request)
-        //{
-        //    var userId = request.UserId;
-
-        //    // Lấy tất cả thiết bị của user, trừ thiết bị hiện tại
-        //    var devices = await dbContext.userDevices
-        //        .Where(d => d.User.Id == userId && d.Fingerprint != request.CurrentFingerprint)
-        //        .ToListAsync();
-
-        //    if (devices == null || !devices.Any())
-        //    {
-        //        return null;
-        //    }
-
-        //    // Xóa các thiết bị khác
-        //    dbContext.userDevices.RemoveRange(devices);
-        //    await dbContext.SaveChangesAsync();
-
-        //    return null;
-        //}
 
         public async Task<ResponseObject<DTO_User>> UpdateUserInfo(Request_UpdateUserInfo request)
         {
