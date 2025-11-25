@@ -35,8 +35,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         private readonly Converter_User converter_Authen;
         private readonly ResponseObject<DTO_User> responseObject;
         private readonly ResponseBase responseBase;
+        private readonly ResponseObject<ResponsePagination<DTO_User>> responsePagination;
 
-        public Service_Authen(AppDbContext dbContext, IConfiguration configuration, System.Net.Http.IHttpClientFactory httpClientFactory, ResponseObject<DTO_Token> responseObjectToken, Converter_User converter_Authen, ResponseObject<DTO_User> responseObject, ResponseBase responseBase)
+        public Service_Authen(AppDbContext dbContext, IConfiguration configuration, System.Net.Http.IHttpClientFactory httpClientFactory, ResponseObject<DTO_Token> responseObjectToken, Converter_User converter_Authen, ResponseObject<DTO_User> responseObject, ResponseBase responseBase, ResponseObject<ResponsePagination<DTO_User>> responsePagination)
         {
             this.dbContext = dbContext;
             this.configuration = configuration;
@@ -45,6 +46,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             this.converter_Authen = converter_Authen;
             this.responseObject = responseObject;
             this.responseBase = responseBase;
+            this.responsePagination = responsePagination;
         }
 
         public async Task<ResponseObject<DTO_Token>> RenewAccessToken(DTO_Token request)
@@ -555,11 +557,37 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Sai mật khẩu cũ!");
         }
 
-        public IQueryable<DTO_User> GetListUser(int pageSize, int pageNumber)
+        public async Task<ResponseObject<ResponsePagination<DTO_User>>> GetListUser(int pageSize, int pageNumber)
         {
-            return dbContext.users.Skip((pageNumber - 1) * pageSize)
+            // 1. Tạo Query
+            var query = dbContext.users.AsQueryable();
+
+            // 2. Tính toán phân trang
+            var totalItems = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            // 3. Lấy dữ liệu
+            var users = await query
+                .Include(x => x.Role)
+                .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(x => converter_Authen.EntityToDTO(x));
+                .ToListAsync();
+
+            // 4. Convert sang DTO
+            var userDtos = users.Select(x => converter_Authen.EntityToDTO(x)).ToList();
+
+            // 5. Đóng gói Dữ liệu (Đây là Data)
+            var paginationData = new ResponsePagination<DTO_User>
+            {
+                Items = userDtos,
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                TotalPages = totalPages
+            };
+
+            // 6. Trả về Response (Dùng cái Tool đã Inject để bọc Data và Message lại)
+            return responsePagination.responseObjectSuccess("Lấy danh sách thành công", paginationData);
         }
 
         public async Task<ResponseObject<DTO_User>> GetUserById(Guid userId)
@@ -670,9 +698,43 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
 
             dbContext.confirmEmails.Remove(confirmEmail);
-            await dbContext.SaveChangesAsync(); 
 
             var token = await GenerateAccessToken(user);
+
+            // --- THÊM ĐOẠN LOGIC LƯU USER DEVICE VÀO ĐÂY ---
+            if (!string.IsNullOrEmpty(request.Fingerprint))
+            {
+                var device = await dbContext.userDevices
+                    .FirstOrDefaultAsync(x => x.UserId == user.Id && x.Fingerprint == request.Fingerprint);
+
+                if (device == null)
+                {
+                    // Thiết bị mới -> Tạo mới
+                    var newDevice = new UserDevice
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = user.Id,
+                        Fingerprint = request.Fingerprint,
+                        AccessToken = token.AccessToken,
+                        RefreshToken = token.RefreshToken,
+                        CreatedAt = DateTime.UtcNow,
+                        LastUpdatedAt = DateTime.UtcNow
+                    };
+                    await dbContext.userDevices.AddAsync(newDevice);
+                }
+                else
+                {
+                    // Thiết bị cũ -> Cập nhật Token
+                    device.AccessToken = token.AccessToken;
+                    device.RefreshToken = token.RefreshToken; // Cập nhật cả RefreshToken nếu cần
+                    device.LastUpdatedAt = DateTime.UtcNow;
+                    dbContext.userDevices.Update(device);
+                }
+            }
+            // --------------------------------------------------
+
+            // Lưu tất cả thay đổi vào DB (Xóa OTP + Lưu Device)
+            await dbContext.SaveChangesAsync();
 
             return responseObjectToken.responseObjectSuccess(
                 "Xác thực 2 bước thành công!",

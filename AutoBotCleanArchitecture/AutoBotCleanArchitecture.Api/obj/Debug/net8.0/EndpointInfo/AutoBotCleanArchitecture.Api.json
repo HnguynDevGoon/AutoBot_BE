@@ -1842,6 +1842,10 @@
           "otp": {
             "type": "string",
             "nullable": true
+          },
+          "fingerprint": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

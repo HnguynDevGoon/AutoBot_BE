@@ -134,14 +134,16 @@ builder.Services.AddScoped<ResponseObject<DTO_User>>();
 builder.Services.AddScoped<ResponseObject<DTO_Token>>();
 builder.Services.AddScoped<ResponseObject<DTO_LogHistory>>();
 builder.Services.AddScoped<ResponseObject<DTO_Wallet>>();
-builder.Services.AddScoped<ResponseObject<IList<DTO_LogHistory>>>();
 builder.Services.AddScoped<ResponseObject<DTO_WalletTransaction>>();
-builder.Services.AddScoped<ResponseObject<IList<DTO_WalletTransaction>>>();
-builder.Services.AddScoped<ResponseObject<string>>();
-builder.Services.AddScoped<ResponseObject<bool>>();
 builder.Services.AddScoped<ResponseObject<DTO_ChatMessage>>();
+builder.Services.AddScoped<ResponseObject<IList<DTO_LogHistory>>>();
+builder.Services.AddScoped<ResponseObject<IList<DTO_WalletTransaction>>>();
 builder.Services.AddScoped<ResponseObject<IList<DTO_ChatMessage>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_UserDevice>>>();
+builder.Services.AddScoped<ResponseObject<string>>();
+builder.Services.AddScoped<ResponseObject<bool>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_User>>>();
+
 
 
 

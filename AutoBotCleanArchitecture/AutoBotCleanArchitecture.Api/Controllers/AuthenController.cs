@@ -40,9 +40,9 @@ namespace AutoBotCleanArchitecture.Api.Controllers
 
         [HttpGet("GetListUser")]
         [Authorize(Roles = "Admin")]
-        public IActionResult GetListUser(int pageSize = 10, int pageNumber = 1)
+        public async Task<IActionResult> GetListUser(int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(service_Authen.GetListUser(pageSize, pageNumber));
+            return Ok(await service_Authen.GetListUser(pageSize, pageNumber));
         }
 
         [HttpGet("GetUserById")]

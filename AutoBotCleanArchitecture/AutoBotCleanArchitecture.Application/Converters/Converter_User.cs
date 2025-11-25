@@ -28,6 +28,7 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 LockoutEnable = user.LockoutEnable,
                 LockoutEnd = user.LockoutEnd,
                 TwoStep = user.TwoStep,
+                RoleName = user.Role?.RoleName,
             };
         }
     }

@@ -22,5 +22,6 @@ namespace AutoBotCleanArchitecture.Application.DTOs
         public int AccessFailedCount { get; set; }
         public bool? IsActive { get; set; }
         public bool? TwoStep { get; set; }
+        public string? RoleName { get; set; }
     }
 }

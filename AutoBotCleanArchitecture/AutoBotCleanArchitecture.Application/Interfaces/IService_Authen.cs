@@ -17,8 +17,8 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseBase> AccountVerification(Request_AccountVerification request); 
         Task<ResponseObject<DTO_User>> ForgotPassword(Request_ResendOtp request); 
         Task<ResponseBase> UpdatePassAfterOtp(Request_UpdatePassAfterOtp request); 
-        Task<ResponseBase> ChangePassword(Request_ChangePassword request); 
-        IQueryable<DTO_User> GetListUser(int pageSize, int pageNumber);
+        Task<ResponseBase> ChangePassword(Request_ChangePassword request);
+        Task<ResponseObject<ResponsePagination<DTO_User>>> GetListUser(int pageSize, int pageNumber);
         Task<ResponseObject<DTO_User>> GetUserById(Guid userId);
         Task<ResponseObject<DTO_User>> DeleteUser(Guid userId); 
         Task<ResponseObject<DTO_User>> UpdateAvatar(Request_UpdateAvatar request); 
