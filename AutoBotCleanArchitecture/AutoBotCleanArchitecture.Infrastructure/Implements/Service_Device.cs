@@ -124,5 +124,82 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return responseListDevice.responseObjectError(StatusCodes.Status500InternalServerError, $"Lỗi Server: {ex.Message}", null);
             }
         }
+        public async Task<ResponseObject<DTO_UserDevice>> UserLogout()
+        {
+            try
+            {
+                var context = _httpContextAccessor.HttpContext;
+
+                if (context == null)
+                {
+                    return new ResponseObject<DTO_UserDevice>()
+                        .responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi Context", null);
+                }
+
+                // 1. Lấy UserId từ JWT
+                var userIdString = context.User?.FindFirst("Id")?.Value;
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return new ResponseObject<DTO_UserDevice>()
+                        .responseObjectError(StatusCodes.Status401Unauthorized, "Bạn chưa đăng nhập.", null);
+                }
+
+                var userId = Guid.Parse(userIdString);
+
+                // 2. Lấy Access Token hiện tại từ Header
+                string currentToken = context.Request.Headers["Authorization"]
+                    .ToString()
+                    .Replace("Bearer ", "");
+
+                if (string.IsNullOrEmpty(currentToken))
+                {
+                    return new ResponseObject<DTO_UserDevice>()
+                        .responseObjectError(StatusCodes.Status401Unauthorized, "Token không hợp lệ.", null);
+                }
+
+                // 3. Lấy userDevice tương ứng với token hiện tại
+                var currentDevice = await dbContext.userDevices
+                    .FirstOrDefaultAsync(d =>
+                        d.UserId == userId &&
+                        d.AccessToken == currentToken
+                    );
+
+                if (currentDevice == null)
+                {
+                    return new ResponseObject<DTO_UserDevice>()
+                        .responseObjectError(StatusCodes.Status404NotFound,
+                        "Không tìm thấy thiết bị để đăng xuất.", null);
+                }
+
+                // 4. Xóa accessToken + refreshToken
+                currentDevice.AccessToken = null;
+                currentDevice.RefreshToken = null;
+                currentDevice.LastUpdatedAt = DateTime.UtcNow;
+
+                await dbContext.SaveChangesAsync();
+
+                // 5. Trả về DTO
+                var resultDTO = new DTO_UserDevice
+                {
+                    Id = currentDevice.Id,
+                    UserId = currentDevice.UserId,
+                    Fingerprint = currentDevice.Fingerprint,
+                    AccessToken = null,
+                    RefreshToken = null,
+                    CreatedAt = currentDevice.CreatedAt,
+                    LastActive = currentDevice.LastUpdatedAt
+                };
+
+                return new ResponseObject<DTO_UserDevice>()
+                    .responseObjectSuccess("Đăng xuất thành công.", resultDTO);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseObject<DTO_UserDevice>()
+                    .responseObjectError(StatusCodes.Status500InternalServerError,
+                    $"Lỗi Server: {ex.Message}", null);
+            }
+        }
+
     }
 }

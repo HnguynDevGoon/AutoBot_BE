@@ -19,24 +19,31 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpPost("GetDevices")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetDevices(Request_GetDevices request)
         {
             return Ok(await service_Device.GetDevices(request));
         }
 
         [HttpGet("GetAccessTokens")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetAccessTokens(Guid userId)
         {
             return Ok(await service_Device.GetAccessTokens(userId));
         }
 
         [HttpPost("LogoutAllDevices")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> LogoutAllDevices()
         {
             return Ok(await service_Device.LogoutAllDevices());
+        }
+
+        [HttpPost("UserLogout")]
+        [Authorize]
+        public async Task<IActionResult> UserLogout()
+        {
+            return Ok(await service_Device.UserLogout());
         }
     }
 }

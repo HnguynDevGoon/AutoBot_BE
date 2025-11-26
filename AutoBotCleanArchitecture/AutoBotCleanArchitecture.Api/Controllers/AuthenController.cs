@@ -46,6 +46,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpGet("GetUserById")]
+        [Authorize]
         public async Task<IActionResult> GetUserById(Guid userId)
         {
             return Ok(await service_Authen.GetUserById(userId));

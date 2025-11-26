@@ -465,6 +465,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.DeviceController",
+    "Method": "UserLogout",
+    "RelativePath": "api/Device/UserLogout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
     "Method": "AddLogHistory",
     "RelativePath": "api/LogHistory/AddLogHistory",

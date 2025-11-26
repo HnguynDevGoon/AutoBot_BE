@@ -822,6 +822,18 @@
         }
       }
     },
+    "/api/Device/UserLogout": {
+      "post": {
+        "tags": [
+          "Device"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/LogHistory/GetLogHistory": {
       "get": {
         "tags": [
