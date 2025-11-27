@@ -466,6 +466,22 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.DeviceController",
+    "Method": "LogoutDevice",
+    "RelativePath": "api/Device/LogoutDevice",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "deviceId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.DeviceController",
     "Method": "UserLogout",
     "RelativePath": "api/Device/UserLogout",
     "HttpMethod": "POST",

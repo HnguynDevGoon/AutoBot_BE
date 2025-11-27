@@ -143,6 +143,7 @@ builder.Services.AddScoped<ResponseObject<List<DTO_UserDevice>>>();
 builder.Services.AddScoped<ResponseObject<string>>();
 builder.Services.AddScoped<ResponseObject<bool>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_User>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WalletTransaction>>>();
 
 
 

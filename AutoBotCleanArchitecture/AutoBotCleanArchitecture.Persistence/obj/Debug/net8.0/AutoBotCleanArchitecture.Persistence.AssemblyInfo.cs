@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutoBotCleanArchitecture.Persistence")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7da7a22d67cf9a9fd8b0f7749b132becb7d629c4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8253410590cd66e5b52075d892c688af6e70d432")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoBotCleanArchitecture.Persistence")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoBotCleanArchitecture.Persistence")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

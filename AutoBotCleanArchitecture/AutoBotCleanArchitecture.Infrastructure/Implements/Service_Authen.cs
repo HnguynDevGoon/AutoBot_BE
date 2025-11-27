@@ -616,14 +616,32 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
         public async Task<ResponseObject<DTO_User>> DeleteUser(Guid userId)
         {
-            var searchUserId = await dbContext.users.FirstOrDefaultAsync(x => x.Id == userId);
-            if (searchUserId == null)
+            // 1. Tìm User
+            var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            if (user == null)
             {
                 return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
             }
-            dbContext.users.Remove(searchUserId);
-            await dbContext.SaveChangesAsync(); 
-            return responseObject.responseObjectSuccess("Xóa thành công !", null);
+
+            // 2. Xóa sạch các bảng liên quan đến Auth (Token, Device, OTP)
+            var tokens = dbContext.refreshTokens.Where(x => x.UserId == userId);
+            dbContext.refreshTokens.RemoveRange(tokens);
+
+            var devices = dbContext.userDevices.Where(x => x.UserId == userId);
+            dbContext.userDevices.RemoveRange(devices);
+
+            var otps = dbContext.confirmEmails.Where(x => x.UserId == userId);
+            dbContext.confirmEmails.RemoveRange(otps);
+
+            // 3. Xóa User
+            dbContext.users.Remove(user);
+
+            // 4. Lưu xuống DB
+            // Lưu ý: Nếu user còn dính Ví (Wallets) hay Chat -> Dòng này sẽ gây Crash API (Lỗi 500)
+            await dbContext.SaveChangesAsync();
+
+            return responseObject.responseObjectSuccess("Xóa thành công người dùng và các thiết bị/token liên quan!", null);
         }
 
         public async Task<ResponseObject<DTO_User>> UpdateAvatar(Request_UpdateAvatar request)

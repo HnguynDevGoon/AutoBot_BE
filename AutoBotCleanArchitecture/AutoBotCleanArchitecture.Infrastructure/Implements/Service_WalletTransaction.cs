@@ -20,18 +20,18 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         private readonly ResponseObject<IList<DTO_WalletTransaction>> responseWalletTransactionList;
         private readonly ResponseObject<DTO_WalletTransaction> responseWalletTransaction;
         private readonly Converter_WalletTransaction converter_WalletTransaction;
+        private readonly ResponseObject<ResponsePagination<DTO_WalletTransaction>> responsePagination;
 
-        public Service_WalletTransaction(
-            AppDbContext dbContext,
-            ResponseObject<IList<DTO_WalletTransaction>> responseWalletTransactionList,
-            ResponseObject<DTO_WalletTransaction> responseWalletTransaction,
-            Converter_WalletTransaction converter_WalletTransaction)
+        public Service_WalletTransaction(AppDbContext dbContext, ResponseObject<IList<DTO_WalletTransaction>> responseWalletTransactionList, ResponseObject<DTO_WalletTransaction> responseWalletTransaction, Converter_WalletTransaction converter_WalletTransaction, ResponseObject<ResponsePagination<DTO_WalletTransaction>> responsePagination)
         {
             this.dbContext = dbContext;
             this.responseWalletTransactionList = responseWalletTransactionList;
             this.responseWalletTransaction = responseWalletTransaction;
             this.converter_WalletTransaction = converter_WalletTransaction;
+            this.responsePagination = responsePagination;
         }
+
+
 
         // 1. LẤY LỊCH SỬ GIAO DỊCH
         public async Task<ResponseObject<IList<DTO_WalletTransaction>>> GetTransactionHistory(Guid userId, int pageNumber, int pageSize)
@@ -62,6 +62,41 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             {
                 return responseWalletTransactionList.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
+        }
+
+        public async Task<ResponseObject<ResponsePagination<DTO_WalletTransaction>>> GetAllTransactionsAdmin(int pageSize, int pageNumber)
+        {
+            // 1. Tạo Query
+            var query = dbContext.walletTransactions.AsQueryable();
+
+            // 2. Tính toán phân trang
+            var totalItems = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            // 3. Lấy dữ liệu
+            var transactions = await query
+                .Include(t => t.Wallet)      // Join sang Ví
+                .ThenInclude(w => w.User)    // Join sang User (Để Admin biết ai giao dịch)
+                .OrderByDescending(t => t.Timestamp) // Mới nhất lên đầu
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // 4. Convert sang DTO
+            var transactionDtos = transactions.Select(x => converter_WalletTransaction.EntityToDTO(x)).ToList();
+
+            // 5. Đóng gói Dữ liệu (Đây là Data - Cái bánh)
+            var paginationData = new ResponsePagination<DTO_WalletTransaction>
+            {
+                Items = transactionDtos,
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                TotalPages = totalPages
+            };
+
+            // 6. Trả về Response (Dùng cái Tool đã Inject để bọc Data và Message lại)
+            return responsePagination.responseObjectSuccess("Lấy danh sách giao dịch thành công", paginationData);
         }
 
         // 2. TRỪ TIỀN (Mua Bot / Dịch vụ)

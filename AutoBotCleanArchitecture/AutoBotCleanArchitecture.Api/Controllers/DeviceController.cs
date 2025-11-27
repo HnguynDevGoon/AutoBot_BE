@@ -26,7 +26,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpGet("GetAccessTokens")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetAccessTokens(Guid userId)
         {
             return Ok(await service_Device.GetAccessTokens(userId));
@@ -44,6 +44,13 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         public async Task<IActionResult> UserLogout()
         {
             return Ok(await service_Device.UserLogout());
+        }
+
+        [HttpDelete("LogoutDevice")]
+        [Authorize]
+        public async Task<IActionResult> LogoutDevice(Guid deviceId)
+        {
+            return Ok(await service_Device.LogoutDevice(deviceId));
         }
     }
 }

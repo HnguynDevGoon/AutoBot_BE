@@ -201,5 +201,62 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
+        public async Task<ResponseObject<DTO_UserDevice>> LogoutDevice(Guid deviceId)
+        {
+            try
+            {
+                var context = _httpContextAccessor.HttpContext;
+                if (context == null) return new ResponseObject<DTO_UserDevice>().responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi Context", null);
+
+                // 1. Check Login
+                var userIdString = context.User?.FindFirst("Id")?.Value;
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return new ResponseObject<DTO_UserDevice>().responseObjectError(StatusCodes.Status401Unauthorized, "Bạn chưa đăng nhập.", null);
+                }
+                var userId = Guid.Parse(userIdString);
+
+                // 2. Tìm thiết bị (Check đúng ID và đúng Chủ sở hữu)
+                var targetDevice = await dbContext.userDevices
+                    .FirstOrDefaultAsync(d => d.Id == deviceId && d.UserId == userId);
+
+                if (targetDevice == null)
+                {
+                    return new ResponseObject<DTO_UserDevice>().responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy thiết bị.", null);
+                }
+
+                // 3. Tạo DTO kết quả (Làm bước này TRƯỚC khi xóa/sửa để giữ lại thông tin)
+                var resultDTO = new DTO_UserDevice
+                {
+                    Id = targetDevice.Id,
+                    UserId = targetDevice.UserId, // Hoặc User = targetDevice.UserId tùy tên biến DTO của ông
+                    Fingerprint = targetDevice.Fingerprint,
+                    AccessToken = null, // Vì sắp logout nên trả về null cho đúng ngữ cảnh
+                    RefreshToken = null,
+                    CreatedAt = targetDevice.CreatedAt,
+                    LastActive = DateTime.UtcNow // Thời điểm bị đá
+                };
+
+                // 4. Thực hiện Đăng xuất
+
+                // CÁCH A: XÓA HẲN (Hard Delete - Khuyên dùng cho chức năng "Đá thiết bị")
+                dbContext.userDevices.Remove(targetDevice);
+
+                // CÁCH B: CẬP NHẬT NULL (Soft Delete - Nếu ông muốn giữ lịch sử)
+                // targetDevice.AccessToken = null;
+                // targetDevice.RefreshToken = null;
+                // targetDevice.LastUpdatedAt = DateTime.UtcNow;
+
+                await dbContext.SaveChangesAsync();
+
+                // 5. Trả về thông tin thiết bị vừa bị xử lý
+                return new ResponseObject<DTO_UserDevice>().responseObjectSuccess("Đăng xuất thiết bị thành công.", resultDTO);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseObject<DTO_UserDevice>().responseObjectError(StatusCodes.Status500InternalServerError, $"Lỗi Server: {ex.Message}", null);
+            }
+        }
+
     }
 }

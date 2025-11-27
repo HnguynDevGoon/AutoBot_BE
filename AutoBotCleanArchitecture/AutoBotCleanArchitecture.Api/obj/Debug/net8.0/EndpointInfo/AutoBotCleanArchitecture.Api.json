@@ -834,6 +834,28 @@
         }
       }
     },
+    "/api/Device/LogoutDevice": {
+      "delete": {
+        "tags": [
+          "Device"
+        ],
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/LogHistory/GetLogHistory": {
       "get": {
         "tags": [

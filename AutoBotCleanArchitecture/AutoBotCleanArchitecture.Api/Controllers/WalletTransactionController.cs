@@ -23,6 +23,12 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(await service_WalletTransaction.GetTransactionHistory(userId, pageNumber, pageSize));
         }
 
+        [HttpGet("GetAllTransactionsAdmin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllTransactionsAdmin(int pageSize = 10, int pageNumber = 1)
+        {
+            return Ok(await service_WalletTransaction.GetAllTransactionsAdmin(pageSize, pageNumber));
+        }
         //[HttpPost("DeductMoney")]
         //[Authorize] 
         //public async Task<IActionResult> DeductMoney([FromBody] Request_DeductMoney request)

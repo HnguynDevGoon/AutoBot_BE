@@ -3,16 +3,32 @@
   "WorkspaceRootPath": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\requests\\user\\request_verifytwostep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\requests\\user\\request_verifytwostep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\helper\\ipaddress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|solutionrelative:autobotcleanarchitecture.infrastructure\\helper\\ipaddress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\implements\\service_wallettransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|solutionrelative:autobotcleanarchitecture.infrastructure\\implements\\service_wallettransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\implements\\service_device.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|solutionrelative:autobotcleanarchitecture.infrastructure\\implements\\service_device.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\implements\\service_loghistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|solutionrelative:autobotcleanarchitecture.infrastructure\\implements\\service_loghistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.api\\controllers\\wallettransactioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|solutionrelative:autobotcleanarchitecture.api\\controllers\\wallettransactioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|solutionrelative:autobotcleanarchitecture.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\interfaces\\iservice_wallettransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\interfaces\\iservice_wallettransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\implements\\service_authen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|solutionrelative:autobotcleanarchitecture.infrastructure\\implements\\service_authen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.api\\controllers\\devicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,12 +39,28 @@
       "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\interfaces\\iservice_device.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\implements\\service_authen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|solutionrelative:autobotcleanarchitecture.infrastructure\\implements\\service_authen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\interfaces\\iservice_authen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\interfaces\\iservice_authen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\requests\\device\\request_logoutalldevices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\requests\\device\\request_logoutalldevices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5DEA5B7F-EFBE-41DE-8FC4-6BD8CE45D936}|AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.domain\\entities\\userdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5DEA5B7F-EFBE-41DE-8FC4-6BD8CE45D936}|AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj|solutionrelative:autobotcleanarchitecture.domain\\entities\\userdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.api\\controllers\\authencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|solutionrelative:autobotcleanarchitecture.api\\controllers\\authencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\requests\\user\\request_verifytwostep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\requests\\user\\request_verifytwostep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\implements\\service_loghistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|solutionrelative:autobotcleanarchitecture.infrastructure\\implements\\service_loghistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\requests\\user\\request_userlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -41,14 +73,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\dtos\\dto_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\dtos\\dto_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|solutionrelative:autobotcleanarchitecture.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\interfaces\\iservice_authen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\interfaces\\iservice_authen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\responses\\responseobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -87,16 +111,8 @@
       "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\dtos\\dto_userdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\requests\\device\\request_logoutalldevices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\requests\\device\\request_logoutalldevices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\requests\\device\\request_getdevices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\requests\\device\\request_getdevices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5DEA5B7F-EFBE-41DE-8FC4-6BD8CE45D936}|AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.domain\\entities\\userdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5DEA5B7F-EFBE-41DE-8FC4-6BD8CE45D936}|AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj|solutionrelative:autobotcleanarchitecture.domain\\entities\\userdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\responses\\responsetoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -111,16 +127,8 @@
       "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\requests\\chatmessage\\request_sendmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\interfaces\\iservice_chat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\interfaces\\iservice_chat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\requests\\chatmessage\\request_syncchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\requests\\chatmessage\\request_syncchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\helper\\ipaddress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|solutionrelative:autobotcleanarchitecture.infrastructure\\helper\\ipaddress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\implements\\service_payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -207,20 +215,8 @@
       "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\requests\\user\\request_createuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\interfaces\\iservice_wallettransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\interfaces\\iservice_wallettransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.application\\requests\\user\\request_updateavatar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3D5428AA-6FAF-409F-B1F0-DC8AE5CE4477}|AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj|solutionrelative:autobotcleanarchitecture.application\\requests\\user\\request_updateavatar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.api\\controllers\\wallettransactioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66F5F4F-18C5-4ADA-8C9A-8DE7BFF5DB0B}|AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj|solutionrelative:autobotcleanarchitecture.api\\controllers\\wallettransactioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.infrastructure\\implements\\service_wallettransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB670891-67D0-4BA0-B58E-8134840D49B7}|AutoBotCleanArchitecture.Infrastructure\\AutoBotCleanArchitecture.Infrastructure.csproj|solutionrelative:autobotcleanarchitecture.infrastructure\\implements\\service_wallettransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5DEA5B7F-EFBE-41DE-8FC4-6BD8CE45D936}|AutoBotCleanArchitecture.Domain\\AutoBotCleanArchitecture.Domain.csproj|d:\\types_of_work\\project\\autobot_be\\autobotcleanarchitecture\\autobotcleanarchitecture.domain\\entities\\wallet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -376,11 +372,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 36,
+          "SelectedChildIndex": 37,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 9,
               "Title": "IService_Authen.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_Authen.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Authen.cs",
@@ -393,17 +389,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Service_Authen.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
               "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Authen.cs",
-              "ViewState": "AgIAAAUBAAAAAAAAAAAUwNQBAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAPwBAAAAAAAAAAAgwFkCAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-08T05:30:46.097Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
@@ -531,72 +526,83 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Program.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Program.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Program.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Program.cs",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAQwJEAAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T09:27:50.643Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "WalletTransactionController.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\WalletTransactionController.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\WalletTransactionController.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\WalletTransactionController.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\WalletTransactionController.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAQwBsAAABkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-19T18:29:05.008Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Service_Device.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Device.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Device.cs",
               "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Device.cs",
               "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Device.cs",
-              "ViewState": "AgIAAHQAAAAAAAAAAAAUwIIAAAA+AAAAAAAAAA==",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAowK4AAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-24T16:11:12.864Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Service_LogHistory.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_LogHistory.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_LogHistory.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_LogHistory.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_LogHistory.cs",
-              "ViewState": "AgIAANQAAAAAAAAAAAAAwEUAAAA6AAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Service_WalletTransaction.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_WalletTransaction.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_WalletTransaction.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_WalletTransaction.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_WalletTransaction.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwEIAAACKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:02:50.107Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "DeviceController.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\DeviceController.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\DeviceController.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\DeviceController.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\DeviceController.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAQwCkAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T16:26:14.28Z",
+              "WhenOpened": "2025-11-19T18:26:15.703Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Request_VerifyTwoStep.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyTwoStep.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyTwoStep.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyTwoStep.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyTwoStep.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAvAAAAAAAAAA==",
+              "Title": "IpAddress.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Helper\\IpAddress.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Helper\\IpAddress.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Helper\\IpAddress.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Helper\\IpAddress.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T11:00:20.345Z",
+              "WhenOpened": "2025-11-24T08:58:01.688Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "IService_Device.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_Device.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Device.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_Device.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Device.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBAAAAA6AAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "IService_WalletTransaction.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_WalletTransaction.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_WalletTransaction.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_WalletTransaction.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_WalletTransaction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA4AAAB+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T16:11:41.348Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T06:24:54.288Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "AuthenController.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\AuthenController.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\AuthenController.cs",
@@ -604,180 +610,59 @@
               "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\AuthenController.cs",
               "ViewState": "AgIAAGAAAAAAAAAAAAAuwDAAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:07:06.781Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T06:07:06.781Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Program.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Program.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Program.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Program.cs",
-              "ViewState": "AgIAAJwAAAAAAAAAAAAQwI0AAABDAAAAAAAAAA==",
+              "DocumentIndex": 11,
+              "Title": "UserDevice.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\UserDevice.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\UserDevice.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\UserDevice.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\UserDevice.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T09:27:50.643Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "ResponseObject.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Responses\\ResponseObject.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Responses\\ResponseObject.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Responses\\ResponseObject.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Responses\\ResponseObject.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:49:01.863Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Converter_Role.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_Role.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Converters\\Converter_Role.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_Role.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_Role.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T06:36:11.115Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Converter_User.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_User.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Converters\\Converter_User.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_User.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_User.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAowB4AAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T04:01:39.245Z"
+              "WhenOpened": "2025-11-24T16:02:32.811Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "Request_UserLogin.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UserLogin.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UserLogin.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UserLogin.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UserLogin.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAvAAAAAAAAAA==",
+              "Title": "DeviceController.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\DeviceController.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\DeviceController.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\DeviceController.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\DeviceController.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAgwDEAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T03:51:29.158Z"
+              "WhenOpened": "2025-11-24T16:26:14.28Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "DTO_User.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_User.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_User.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_User.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_User.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAcwBgAAAAWAAAAAAAAAA==",
+              "DocumentIndex": 8,
+              "Title": "IService_Device.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_Device.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Device.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_Device.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Device.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAuwBEAAABJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T04:01:12.496Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "ChatHub.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Hubs\\ChatHub.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Hubs\\ChatHub.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Hubs\\ChatHub.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Hubs\\ChatHub.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAA8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T09:04:38.535Z"
+              "WhenOpened": "2025-11-24T16:11:41.348Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 13,
-              "Title": "ResponsePagination.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Responses\\ResponsePagination.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Responses\\ResponsePagination.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Responses\\ResponsePagination.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Responses\\ResponsePagination.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Title": "Request_VerifyTwoStep.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyTwoStep.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyTwoStep.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyTwoStep.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyTwoStep.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-25T16:02:34.568Z"
+              "WhenOpened": "2025-11-16T11:00:20.345Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 91,
-              "Title": "20251124163001_init.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\Migrations\\20251124163001_init.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Persistence\\Migrations\\20251124163001_init.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\Migrations\\20251124163001_init.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Persistence\\Migrations\\20251124163001_init.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T16:30:01.438Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Converter_LogHistory.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_LogHistory.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Converters\\Converter_LogHistory.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_LogHistory.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_LogHistory.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBsAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:21:22.298Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Service_Chat.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Chat.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Chat.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Chat.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Chat.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAANAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T09:38:15.072Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "ChatController.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\ChatController.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\ChatController.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\ChatController.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\ChatController.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAAwCcAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T09:59:31.673Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\DBContext\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Persistence\\DBContext\\AppDbContext.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\DBContext\\AppDbContext.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Persistence\\DBContext\\AppDbContext.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAzwBsAAAA6AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T04:08:49.657Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "DTO_UserDevice.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_UserDevice.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_UserDevice.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_UserDevice.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_UserDevice.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T16:12:22.113Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 10,
               "Title": "Request_LogoutAllDevices.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\Device\\Request_LogoutAllDevices.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\Device\\Request_LogoutAllDevices.cs",
@@ -789,7 +674,175 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Service_LogHistory.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_LogHistory.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_LogHistory.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_LogHistory.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_LogHistory.cs",
+              "ViewState": "AgIAANQAAAAAAAAAAAAAwEUAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T13:02:50.107Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ResponseObject.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Responses\\ResponseObject.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Responses\\ResponseObject.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Responses\\ResponseObject.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Responses\\ResponseObject.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T03:49:01.863Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Converter_Role.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_Role.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Converters\\Converter_Role.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_Role.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T06:36:11.115Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Converter_User.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_User.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Converters\\Converter_User.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_User.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_User.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAowB4AAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T04:01:39.245Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Request_UserLogin.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UserLogin.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UserLogin.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UserLogin.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UserLogin.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T03:51:29.158Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "DTO_User.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_User.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_User.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_User.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_User.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAcwBgAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T04:01:12.496Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 22,
+              "Title": "ChatHub.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Hubs\\ChatHub.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Hubs\\ChatHub.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Hubs\\ChatHub.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Hubs\\ChatHub.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T09:04:38.535Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ResponsePagination.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Responses\\ResponsePagination.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Responses\\ResponsePagination.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Responses\\ResponsePagination.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Responses\\ResponsePagination.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T16:02:34.568Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 90,
+              "Title": "20251124163001_init.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\Migrations\\20251124163001_init.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Persistence\\Migrations\\20251124163001_init.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\Migrations\\20251124163001_init.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Persistence\\Migrations\\20251124163001_init.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T16:30:01.438Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Converter_LogHistory.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_LogHistory.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Converters\\Converter_LogHistory.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_LogHistory.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Converters\\Converter_LogHistory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBsAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T13:21:22.298Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Service_Chat.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Chat.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Chat.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Chat.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Chat.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAANAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T09:38:15.072Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "ChatController.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\ChatController.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\ChatController.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\ChatController.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\ChatController.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAwCcAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T09:59:31.673Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\DBContext\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Persistence\\DBContext\\AppDbContext.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\DBContext\\AppDbContext.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Persistence\\DBContext\\AppDbContext.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAzwBsAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T04:08:49.657Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "DTO_UserDevice.cs",
+              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_UserDevice.cs",
+              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_UserDevice.cs",
+              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_UserDevice.cs",
+              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_UserDevice.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T16:12:22.113Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
               "Title": "Request_GetDevices.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\Device\\Request_GetDevices.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\Device\\Request_GetDevices.cs",
@@ -801,19 +854,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "UserDevice.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\UserDevice.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\UserDevice.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\UserDevice.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Domain\\Entities\\UserDevice.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T16:02:32.811Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 29,
               "Title": "Request_AccountVerification.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_AccountVerification.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_AccountVerification.cs",
@@ -825,7 +866,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 28,
               "Title": "ResponseToken.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Responses\\ResponseToken.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Responses\\ResponseToken.cs",
@@ -837,7 +878,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 30,
               "Title": "Request_SendMessage.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\ChatMessage\\Request_SendMessage.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\ChatMessage\\Request_SendMessage.cs",
@@ -849,19 +890,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "IService_Chat.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_Chat.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Chat.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_Chat.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Chat.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA8AAABGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T09:46:02.357Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 31,
               "Title": "Request_SyncChat.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\ChatMessage\\Request_SyncChat.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\ChatMessage\\Request_SyncChat.cs",
@@ -873,19 +902,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "IpAddress.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Helper\\IpAddress.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Helper\\IpAddress.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Helper\\IpAddress.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Helper\\IpAddress.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T08:58:01.688Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 32,
               "Title": "Service_Payment.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Payment.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Payment.cs",
@@ -897,7 +914,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 33,
               "Title": "Service_Wallet.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Wallet.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Wallet.cs",
@@ -909,7 +926,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 35,
               "Title": "ChatRoom.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\ChatRoom.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\ChatRoom.cs",
@@ -921,7 +938,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 34,
               "Title": "ChatMessage.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\ChatMessage.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\ChatMessage.cs",
@@ -933,7 +950,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 36,
               "Title": "Converter_ChatMessage.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_ChatMessage.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Converters\\Converter_ChatMessage.cs",
@@ -945,7 +962,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 37,
               "Title": "DTO_ChatMessage.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_ChatMessage.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_ChatMessage.cs",
@@ -957,7 +974,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 38,
               "Title": "DTO_LogHistory.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_LogHistory.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_LogHistory.cs",
@@ -969,7 +986,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 39,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\User.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\User.cs",
@@ -981,7 +998,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 40,
               "Title": "CheckInput.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Helper\\CheckInput.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Helper\\CheckInput.cs",
@@ -993,7 +1010,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 43,
               "Title": "Request_ChangePassword.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_ChangePassword.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_ChangePassword.cs",
@@ -1005,7 +1022,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 45,
               "Title": "Request_ResetPin.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\Wallet\\Request_ResetPin.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\Wallet\\Request_ResetPin.cs",
@@ -1017,7 +1034,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 46,
               "Title": "Request_CreatePinWallet.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\Wallet\\Request_CreatePinWallet.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\Wallet\\Request_CreatePinWallet.cs",
@@ -1029,7 +1046,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 41,
               "Title": "WalletController.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\WalletController.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\WalletController.cs",
@@ -1041,7 +1058,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 42,
               "Title": "IService_Wallet.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_Wallet.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Wallet.cs",
@@ -1053,7 +1070,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 47,
               "Title": "Request_CheckPinWallet.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\Wallet\\Request_CheckPinWallet.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\Wallet\\Request_CheckPinWallet.cs",
@@ -1065,7 +1082,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 44,
               "Title": "Request_SendOtpResetPin.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\Wallet\\Request_SendOtpResetPin.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\Wallet\\Request_SendOtpResetPin.cs",
@@ -1077,7 +1094,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 48,
               "Title": "Request_ValidateAccountStepOne.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_ValidateAccountStepOne.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_ValidateAccountStepOne.cs",
@@ -1089,7 +1106,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 49,
               "Title": "Request_VerifyResetOtp.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyResetOtp.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_VerifyResetOtp.cs",
@@ -1101,7 +1118,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 50,
               "Title": "Request_UpdateUserInfo.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UpdateUserInfo.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UpdateUserInfo.cs",
@@ -1113,7 +1130,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 51,
               "Title": "Request_UpdatePassAfterOtp.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UpdatePassAfterOtp.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UpdatePassAfterOtp.cs",
@@ -1125,7 +1142,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 52,
               "Title": "Request_CreateUser.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_CreateUser.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_CreateUser.cs",
@@ -1137,19 +1154,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
-              "Title": "IService_WalletTransaction.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_WalletTransaction.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_WalletTransaction.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_WalletTransaction.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_WalletTransaction.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBEAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T06:24:54.288Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 53,
               "Title": "Request_UpdateAvatar.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UpdateAvatar.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_UpdateAvatar.cs",
@@ -1161,31 +1166,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
-              "Title": "WalletTransactionController.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\WalletTransactionController.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\WalletTransactionController.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\WalletTransactionController.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Api\\Controllers\\WalletTransactionController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T18:29:05.008Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 54,
-              "Title": "Service_WalletTransaction.cs",
-              "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_WalletTransaction.cs",
-              "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_WalletTransaction.cs",
-              "ToolTip": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_WalletTransaction.cs",
-              "RelativeToolTip": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_WalletTransaction.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T18:26:15.703Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 55,
               "Title": "Wallet.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\Wallet.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\Wallet.cs",
@@ -1197,7 +1178,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 55,
               "Title": "Request_ResendOtp.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_ResendOtp.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_ResendOtp.cs",
@@ -1209,7 +1190,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 56,
               "Title": "Request_GoogleLogin.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_GoogleLogin.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_GoogleLogin.cs",
@@ -1221,7 +1202,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 57,
               "Title": "Request_OnOffTwoStep.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_OnOffTwoStep.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_OnOffTwoStep.cs",
@@ -1233,7 +1214,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 58,
               "Title": "Request_GetEmail.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_GetEmail.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_GetEmail.cs",
@@ -1245,7 +1226,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 59,
               "Title": "Request_FacebookLogin.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\User\\Request_FacebookLogin.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\User\\Request_FacebookLogin.cs",
@@ -1257,7 +1238,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 61,
+              "DocumentIndex": 60,
               "Title": "Service_Role.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Role.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Infrastructure\\Implements\\Service_Role.cs",
@@ -1269,7 +1250,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 62,
+              "DocumentIndex": 61,
               "Title": "RoleController.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\RoleController.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\RoleController.cs",
@@ -1281,7 +1262,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 62,
               "Title": "LogHistoryController.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\LogHistoryController.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\LogHistoryController.cs",
@@ -1293,7 +1274,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 66,
+              "DocumentIndex": 65,
               "Title": "BaseEntity.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\BaseEntity.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\BaseEntity.cs",
@@ -1305,7 +1286,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
+              "DocumentIndex": 63,
               "Title": "BotTrading.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\BotTrading.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\BotTrading.cs",
@@ -1317,7 +1298,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
+              "DocumentIndex": 64,
               "Title": "PriceBot.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\PriceBot.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\PriceBot.cs",
@@ -1329,7 +1310,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 68,
+              "DocumentIndex": 67,
               "Title": "DTO_WalletTransaction.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_WalletTransaction.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_WalletTransaction.cs",
@@ -1341,7 +1322,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 67,
+              "DocumentIndex": 66,
               "Title": "Request_DeductMoney.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\WalletTransaction\\Request_DeductMoney.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\WalletTransaction\\Request_DeductMoney.cs",
@@ -1353,7 +1334,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 70,
+              "DocumentIndex": 69,
               "Title": "Converter_WalletTransaction.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_WalletTransaction.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Converters\\Converter_WalletTransaction.cs",
@@ -1365,7 +1346,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 69,
+              "DocumentIndex": 68,
               "Title": "WalletTransaction.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\WalletTransaction.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\WalletTransaction.cs",
@@ -1377,7 +1358,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 71,
+              "DocumentIndex": 70,
               "Title": "PaymentController.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\Controllers\\PaymentController.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\Controllers\\PaymentController.cs",
@@ -1389,7 +1370,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 72,
+              "DocumentIndex": 71,
               "Title": "Converter_Wallet.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Converters\\Converter_Wallet.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Converters\\Converter_Wallet.cs",
@@ -1401,7 +1382,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 73,
+              "DocumentIndex": 72,
               "Title": "DTO_Wallet.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_Wallet.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_Wallet.cs",
@@ -1413,7 +1394,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 74,
+              "DocumentIndex": 73,
               "Title": "DTO_Role.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_Role.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_Role.cs",
@@ -1425,7 +1406,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 75,
+              "DocumentIndex": 74,
               "Title": "DTO_Token.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\DTOs\\DTO_Token.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\DTOs\\DTO_Token.cs",
@@ -1437,7 +1418,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 76,
+              "DocumentIndex": 75,
               "Title": "IService_Payment.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_Payment.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Payment.cs",
@@ -1449,7 +1430,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 77,
+              "DocumentIndex": 76,
               "Title": "LogHistory.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\LogHistory.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\LogHistory.cs",
@@ -1461,7 +1442,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 78,
+              "DocumentIndex": 77,
               "Title": "IService_LogHistory.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_LogHistory.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_LogHistory.cs",
@@ -1473,7 +1454,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 79,
+              "DocumentIndex": 78,
               "Title": "Request_LogHistory.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Requests\\LogHistory\\Request_LogHistory.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Requests\\LogHistory\\Request_LogHistory.cs",
@@ -1485,7 +1466,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 80,
+              "DocumentIndex": 79,
               "Title": "ConfirmEmail.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\ConfirmEmail.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\ConfirmEmail.cs",
@@ -1497,7 +1478,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 81,
+              "DocumentIndex": 80,
               "Title": "Role.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\Role.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\Role.cs",
@@ -1509,7 +1490,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 82,
+              "DocumentIndex": 81,
               "Title": "DefaultRoles.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Constants\\DefaultRoles.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Constants\\DefaultRoles.cs",
@@ -1521,7 +1502,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 86,
+              "DocumentIndex": 85,
               "Title": "IService_Role.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Interfaces\\IService_Role.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Interfaces\\IService_Role.cs",
@@ -1533,7 +1514,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 83,
+              "DocumentIndex": 82,
               "Title": "20251109091943_init.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\Migrations\\20251109091943_init.cs",
               "RelativeDocumentMoniker": "..\\..\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\Migrations\\20251109091943_init.cs",
@@ -1544,7 +1525,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 84,
+              "DocumentIndex": 83,
               "Title": "ResponseBase.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\Responses\\ResponseBase.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\Responses\\ResponseBase.cs",
@@ -1556,7 +1537,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 85,
+              "DocumentIndex": 84,
               "Title": "AutoBotCleanArchitecture.Api.csproj",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Api\\AutoBotCleanArchitecture.Api.csproj",
@@ -1568,7 +1549,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 87,
+              "DocumentIndex": 86,
               "Title": "20251108062743_init.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\Migrations\\20251108062743_init.cs",
               "RelativeDocumentMoniker": "..\\..\\AutoBot\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\Migrations\\20251108062743_init.cs",
@@ -1579,7 +1560,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 88,
+              "DocumentIndex": 87,
               "Title": "RefreshToken.cs",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Domain\\Entities\\RefreshToken.cs",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Domain\\Entities\\RefreshToken.cs",
@@ -1591,7 +1572,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 89,
+              "DocumentIndex": 88,
               "Title": "AutoBotCleanArchitecture.Persistence.csproj",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Persistence\\AutoBotCleanArchitecture.Persistence.csproj",
@@ -1603,7 +1584,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 90,
+              "DocumentIndex": 89,
               "Title": "AutoBotCleanArchitecture.Application.csproj",
               "DocumentMoniker": "D:\\Types_of_work\\Project\\AutoBot_BE\\AutoBotCleanArchitecture\\AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",
               "RelativeDocumentMoniker": "AutoBotCleanArchitecture.Application\\AutoBotCleanArchitecture.Application.csproj",

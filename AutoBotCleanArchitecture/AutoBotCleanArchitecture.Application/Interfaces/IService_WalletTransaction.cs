@@ -12,6 +12,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
     public interface IService_WalletTransaction
     {
         Task<ResponseObject<IList<DTO_WalletTransaction>>> GetTransactionHistory(Guid userId, int pageNumber, int pageSize);
+        Task<ResponseObject<ResponsePagination<DTO_WalletTransaction>>> GetAllTransactionsAdmin(int pageSize, int pageNumber);
 
         //Task<ResponseObject<DTO_WalletTransaction>> DeductMoney(Request_DeductMoney request);
     }

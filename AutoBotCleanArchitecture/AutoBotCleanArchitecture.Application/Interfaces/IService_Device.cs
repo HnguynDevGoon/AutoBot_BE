@@ -15,5 +15,6 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<List<DTO_UserDevice>> GetAccessTokens(Guid userId);
         Task<ResponseObject<List<DTO_UserDevice>>> LogoutAllDevices();
         Task<ResponseObject<DTO_UserDevice>> UserLogout();
+        Task<ResponseObject<DTO_UserDevice>> LogoutDevice(Guid deviceId);
     }
 }
