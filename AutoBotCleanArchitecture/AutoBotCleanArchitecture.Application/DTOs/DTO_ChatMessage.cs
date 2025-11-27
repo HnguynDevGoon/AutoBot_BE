@@ -14,6 +14,8 @@ namespace AutoBotCleanArchitecture.Application.DTOs
         public bool IsAdminSender { get; set; }
         public bool IsRead { get; set; }
         public string IpAddress { get; set; }
+        public string TypeMessage { get; set; }
+        public string? MediaUrl { get; set; }
 
     }
 }

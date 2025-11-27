@@ -4,17 +4,17 @@ using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Requests.ChatMessage;
 using AutoBotCleanArchitecture.Application.Responses;
 using AutoBotCleanArchitecture.Domain.Entities;
-using AutoBotCleanArchitecture.Infrastructure.Helper; // IpAdress
+using AutoBotCleanArchitecture.Infrastructure.Helper; 
 using AutoBotCleanArchitecture.Infrastructure.Hubs;
 using AutoBotCleanArchitecture.Persistence.DBContext;
-using Microsoft.AspNetCore.Http; // Cần cái này
+using Microsoft.AspNetCore.Http; 
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Security.Claims; // Cần cái này
+using System.Security.Claims; 
 using System.Threading.Tasks;
 
 namespace AutoBotCleanArchitecture.Infrastructure.Implements
@@ -26,7 +26,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         private readonly ResponseObject<IList<DTO_ChatMessage>> responseList;
         private readonly ResponseObject<bool> responseBool;
         private readonly Converter_ChatMessage converter;
-        private readonly IHttpContextAccessor _httpContextAccessor; // <-- Inject cái này
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public Service_Chat(
             AppDbContext dbContext,
@@ -34,7 +34,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             ResponseObject<IList<DTO_ChatMessage>> responseList,
             ResponseObject<bool> responseBool,
             Converter_ChatMessage converter,
-            IHttpContextAccessor httpContextAccessor) // Inject
+            IHttpContextAccessor httpContextAccessor)
         {
             this.dbContext = dbContext;
             this._hubContext = hubContext;
@@ -116,7 +116,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     IpAddress = currentIp,
                     Timestamp = DateTime.UtcNow,
                     IsRead = false,
-                    SenderId = !string.IsNullOrEmpty(currentUserId) ? Guid.Parse(currentUserId) : null
+                    SenderId = !string.IsNullOrEmpty(currentUserId) ? Guid.Parse(currentUserId) : null,
+                    TypeMessage = request.TypeMessage,
+                    MediaUrl = request.MediaUrl,
                 };
 
                 await dbContext.chatMessages.AddAsync(msg);
@@ -153,32 +155,66 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             try
             {
+                // 1. Lấy thông tin người đang gọi API
                 var (currentUserId, role, currentIp) = GetCurrentUserContext();
                 bool isAdmin = role == "Admin";
 
-                string roomKey;
+                ChatRoom room = null;
+
+                // --- TRƯỜNG HỢP 1: ADMIN (Quyền lực nhất) ---
                 if (isAdmin)
                 {
-                    roomKey = request.TargetId; // Admin xem phòng của ai
+                    if (!string.IsNullOrEmpty(request.TargetId))
+                    {
+                        // Admin muốn xem USER -> Tìm theo UserId (TargetId)
+                        room = await dbContext.chatRooms
+                            .Include(r => r.Messages)
+                            .FirstOrDefaultAsync(r => r.UserId.ToString() == request.TargetId);
+                    }
+                    else if (!string.IsNullOrEmpty(request.GuestId))
+                    {
+                        // Admin muốn xem KHÁCH -> Tìm theo GuestId
+                        room = await dbContext.chatRooms
+                            .Include(r => r.Messages)
+                            .FirstOrDefaultAsync(r => r.GuestSessionId == request.GuestId);
+                    }
+                    else
+                    {
+                        return responseList.responseObjectError(StatusCodes.Status400BadRequest, "Admin phải nhập TargetId (để xem User) hoặc GuestId (để xem Khách).", null);
+                    }
                 }
+
+                // --- TRƯỜNG HỢP 2: USER ĐÃ ĐĂNG NHẬP (Chỉ xem của mình) ---
+                else if (!string.IsNullOrEmpty(currentUserId))
+                {
+                    // Tự lấy ID từ Token, không quan tâm request gửi gì lên
+                    room = await dbContext.chatRooms
+                        .Include(r => r.Messages)
+                        .FirstOrDefaultAsync(r => r.UserId.ToString() == currentUserId);
+                }
+
+                // --- TRƯỜNG HỢP 3: KHÁCH VÃNG LAI (Chỉ xem theo GuestId) ---
                 else
                 {
-                    // User/Khách xem phòng của mình
-                    if (!string.IsNullOrEmpty(currentUserId)) roomKey = currentUserId;
-                    else if (!string.IsNullOrEmpty(request.GuestId)) roomKey = request.GuestId;
-                    else roomKey = currentIp;
+                    // Bắt buộc phải có GuestId gửi lên
+                    if (!string.IsNullOrEmpty(request.GuestId))
+                    {
+                        room = await dbContext.chatRooms
+                            .Include(r => r.Messages)
+                            .FirstOrDefaultAsync(r => r.GuestSessionId == request.GuestId);
+                    }
+                    // (Nếu không có GuestId thì coi như khách mới -> room vẫn là null)
                 }
 
-                if (string.IsNullOrEmpty(roomKey))
-                    return responseList.responseObjectSuccess("New Session", new List<DTO_ChatMessage>());
-
-                var room = await dbContext.chatRooms
-                    .Include(r => r.Messages)
-                    .FirstOrDefaultAsync(r => r.UserId.ToString() == roomKey || r.GuestSessionId == roomKey);
+                // --- KẾT QUẢ CHUNG ---
 
                 if (room == null)
-                    return responseList.responseObjectSuccess("Chưa có tin nhắn", new List<DTO_ChatMessage>());
+                {
+                    // Không tìm thấy phòng -> Trả về danh sách rỗng (New Session)
+                    return responseList.responseObjectSuccess("Chưa có tin nhắn nào", new List<DTO_ChatMessage>());
+                }
 
+                // Map sang DTO và trả về
                 var dtos = room.Messages
                     .OrderBy(m => m.Timestamp)
                     .Select(m => converter.EntityToDTO(m))

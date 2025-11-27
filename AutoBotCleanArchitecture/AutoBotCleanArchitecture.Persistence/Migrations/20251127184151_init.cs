@@ -30,6 +30,22 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "contents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UrlAvatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_contents", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "roles",
                 columns: table => new
                 {
@@ -47,8 +63,8 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Fingerprint = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -227,6 +243,8 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
                     IsAdminSender = table.Column<bool>(type: "bit", nullable: false),
                     IpAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TypeMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MediaUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ChatRoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -276,7 +294,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDay", "CreatedDate", "Email", "FullName", "IsActive", "LockoutEnable", "LockoutEnd", "PassWord", "PhoneNumber", "RoleId", "TwoStep", "UrlAvatar", "UserName" },
-                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(2025, 11, 24, 16, 29, 58, 667, DateTimeKind.Utc).AddTicks(7258), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a", "0123456789", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), true, "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg", "Admin" });
+                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(2025, 11, 27, 18, 41, 50, 979, DateTimeKind.Utc).AddTicks(3729), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a", "0123456789", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), true, "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg", "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_chatMessages_ChatRoomId",
@@ -339,6 +357,9 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "confirmEmails");
+
+            migrationBuilder.DropTable(
+                name: "contents");
 
             migrationBuilder.DropTable(
                 name: "logHistories");

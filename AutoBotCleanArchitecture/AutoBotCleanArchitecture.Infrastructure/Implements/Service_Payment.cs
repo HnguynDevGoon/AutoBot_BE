@@ -130,7 +130,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                         OrderCode = orderData.OrderCode,
                         TransactionType = "Tiền nạp",
                         Description = "Nạp tiền vào ví qua PayOS",
-                        TransactionStatus = "Success",
+                        TransactionStatus = "Thành công",
                         Timestamp = DateTime.UtcNow
                     };
                     await _context.walletTransactions.AddAsync(transaction);

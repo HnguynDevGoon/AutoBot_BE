@@ -423,6 +423,101 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ChatRoomController",
+    "Method": "GetChatRooms",
+    "RelativePath": "api/ChatRoom/GetChatRooms",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ContentController",
+    "Method": "CreateContent",
+    "RelativePath": "api/Content/CreateContent",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Content.Request_CreateContent",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ContentController",
+    "Method": "DeleteContent",
+    "RelativePath": "api/Content/DeleteContent",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ContentController",
+    "Method": "GetContentById",
+    "RelativePath": "api/Content/GetContentById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ContentController",
+    "Method": "GetListContent",
+    "RelativePath": "api/Content/GetListContent",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ContentController",
+    "Method": "UpdateContent",
+    "RelativePath": "api/Content/UpdateContent",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Content.Request_UpdateContent",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.DeviceController",
     "Method": "GetAccessTokens",
     "RelativePath": "api/Device/GetAccessTokens",
@@ -872,6 +967,27 @@
         "Name": "request",
         "Type": "AutoBotCleanArchitecture.Application.Requests.Wallet.Request_SendOtpResetPin",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletTransactionController",
+    "Method": "GetAllTransactionsAdmin",
+    "RelativePath": "api/WalletTransaction/GetAllTransactionsAdmin",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

@@ -15,6 +15,8 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         public bool IsRead { get; set; } = false;
         public bool IsAdminSender { get; set; } // True: Admin, False: Khách
         public string IpAddress { get; set; } // --- THÊM: Lưu IP ---
+        public string TypeMessage { get; set; } = "Text"; // Lưu: "Text", "Image", "Video", "File"
+        public string? MediaUrl { get; set; } // Link ảnh/video/file từ Cloudinary
         public Guid ChatRoomId { get; set; }
         public ChatRoom ChatRoom { get; set; }
 

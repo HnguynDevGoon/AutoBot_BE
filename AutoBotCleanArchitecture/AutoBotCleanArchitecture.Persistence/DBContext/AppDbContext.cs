@@ -26,6 +26,8 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
         public DbSet<ChatRoom> chatRooms { get; set; }
         public DbSet<ChatMessage> chatMessages { get; set; }
         public DbSet<UserDevice> userDevices { get; set; }
+        public DbSet<Content> contents { get; set; }
+
 
 
 

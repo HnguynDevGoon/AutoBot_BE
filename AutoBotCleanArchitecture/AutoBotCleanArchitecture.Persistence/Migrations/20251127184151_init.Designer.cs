@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoBotCleanArchitecture.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251124163001_init")]
+    [Migration("20251127184151_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -71,6 +71,9 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
+                    b.Property<string>("MediaUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -80,6 +83,10 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("TypeMessage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -141,6 +148,34 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("confirmEmails");
+                });
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Content", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Link")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UrlAvatar")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("contents");
                 });
 
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.LogHistory", b =>
@@ -329,7 +364,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
-                            CreatedDate = new DateTime(2025, 11, 24, 16, 29, 58, 667, DateTimeKind.Utc).AddTicks(7258),
+                            CreatedDate = new DateTime(2025, 11, 27, 18, 41, 50, 979, DateTimeKind.Utc).AddTicks(3729),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,
@@ -351,7 +386,6 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccessToken")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -365,7 +399,6 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RefreshToken")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")

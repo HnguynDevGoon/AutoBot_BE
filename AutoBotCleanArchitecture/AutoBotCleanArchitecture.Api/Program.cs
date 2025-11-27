@@ -134,16 +134,21 @@ builder.Services.AddScoped<ResponseObject<DTO_User>>();
 builder.Services.AddScoped<ResponseObject<DTO_Token>>();
 builder.Services.AddScoped<ResponseObject<DTO_LogHistory>>();
 builder.Services.AddScoped<ResponseObject<DTO_Wallet>>();
+builder.Services.AddScoped<ResponseObject<DTO_ChatRoom>>();
 builder.Services.AddScoped<ResponseObject<DTO_WalletTransaction>>();
 builder.Services.AddScoped<ResponseObject<DTO_ChatMessage>>();
+builder.Services.AddScoped<ResponseObject<DTO_Content>>();
 builder.Services.AddScoped<ResponseObject<IList<DTO_LogHistory>>>();
 builder.Services.AddScoped<ResponseObject<IList<DTO_WalletTransaction>>>();
 builder.Services.AddScoped<ResponseObject<IList<DTO_ChatMessage>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_UserDevice>>>();
+builder.Services.AddScoped<ResponseObject<List<DTO_ChatRoom>>>();
 builder.Services.AddScoped<ResponseObject<string>>();
 builder.Services.AddScoped<ResponseObject<bool>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_User>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WalletTransaction>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_Content>>>();
+
 
 
 
@@ -155,6 +160,8 @@ builder.Services.AddScoped<Converter_LogHistory>();
 builder.Services.AddScoped<Converter_Wallet>();
 builder.Services.AddScoped<Converter_WalletTransaction>();
 builder.Services.AddScoped<Converter_ChatMessage>();
+builder.Services.AddScoped<Converter_Content>();
+
 
 
 // IService, Service
@@ -166,6 +173,10 @@ builder.Services.AddScoped<IService_Wallet, Service_Wallet>();
 builder.Services.AddScoped<IService_WalletTransaction, Service_WalletTransaction>();
 builder.Services.AddScoped<IService_Chat, Service_Chat>();
 builder.Services.AddScoped<IService_Device, Service_Device>();
+builder.Services.AddScoped<IService_Content, Service_Content>();
+builder.Services.AddScoped<IService_ChatRoom, Service_ChatRoom>();
+
+
 
 
 
