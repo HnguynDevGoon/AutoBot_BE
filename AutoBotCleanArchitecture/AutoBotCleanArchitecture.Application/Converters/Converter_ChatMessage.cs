@@ -20,7 +20,6 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 IsRead = chatMessage.IsRead,
                 Message = chatMessage.Message,
                 Timestamp = chatMessage.Timestamp,
-                MediaUrl = chatMessage.MediaUrl,
                 TypeMessage = chatMessage.TypeMessage,
             };
         }

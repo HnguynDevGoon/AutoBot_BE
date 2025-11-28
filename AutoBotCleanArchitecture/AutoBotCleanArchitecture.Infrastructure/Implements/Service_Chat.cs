@@ -118,7 +118,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     IsRead = false,
                     SenderId = !string.IsNullOrEmpty(currentUserId) ? Guid.Parse(currentUserId) : null,
                     TypeMessage = request.TypeMessage,
-                    MediaUrl = request.MediaUrl,
                 };
 
                 await dbContext.chatMessages.AddAsync(msg);
@@ -155,66 +154,68 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             try
             {
-                // 1. Lấy thông tin người đang gọi API
                 var (currentUserId, role, currentIp) = GetCurrentUserContext();
                 bool isAdmin = role == "Admin";
 
                 ChatRoom room = null;
 
-                // --- TRƯỜNG HỢP 1: ADMIN (Quyền lực nhất) ---
+                // --- TRƯỜNG HỢP 1: ADMIN ---
                 if (isAdmin)
                 {
                     if (!string.IsNullOrEmpty(request.TargetId))
                     {
-                        // Admin muốn xem USER -> Tìm theo UserId (TargetId)
-                        room = await dbContext.chatRooms
-                            .Include(r => r.Messages)
-                            .FirstOrDefaultAsync(r => r.UserId.ToString() == request.TargetId);
+                        // --- FIX LỖI TẠI ĐÂY ---
+                        // Phải parse string sang Guid để so sánh chuẩn xác với DB
+                        if (Guid.TryParse(request.TargetId, out Guid userGuid))
+                        {
+                            room = await dbContext.chatRooms
+                                .Include(r => r.Messages)
+                                .FirstOrDefaultAsync(r => r.UserId == userGuid); // So sánh Guid == Guid
+                        }
+                        else
+                        {
+                            return responseList.responseObjectError(StatusCodes.Status400BadRequest, "TargetId không đúng định dạng GUID.", null);
+                        }
                     }
                     else if (!string.IsNullOrEmpty(request.GuestId))
                     {
-                        // Admin muốn xem KHÁCH -> Tìm theo GuestId
+                        // Admin xem KHÁCH -> GuestId là string nên so sánh bình thường
                         room = await dbContext.chatRooms
                             .Include(r => r.Messages)
                             .FirstOrDefaultAsync(r => r.GuestSessionId == request.GuestId);
                     }
-                    else
+                }
+
+                // --- TRƯỜNG HỢP 2: USER ĐÃ ĐĂNG NHẬP (Tự xem mình) ---
+                else if (!string.IsNullOrEmpty(currentUserId))
+                {
+                    // Parse currentUserId (từ token) sang Guid luôn cho chắc
+                    if (Guid.TryParse(currentUserId, out Guid myGuid))
                     {
-                        return responseList.responseObjectError(StatusCodes.Status400BadRequest, "Admin phải nhập TargetId (để xem User) hoặc GuestId (để xem Khách).", null);
+                        room = await dbContext.chatRooms
+                            .Include(r => r.Messages)
+                            .FirstOrDefaultAsync(r => r.UserId == myGuid);
                     }
                 }
 
-                // --- TRƯỜNG HỢP 2: USER ĐÃ ĐĂNG NHẬP (Chỉ xem của mình) ---
-                else if (!string.IsNullOrEmpty(currentUserId))
-                {
-                    // Tự lấy ID từ Token, không quan tâm request gửi gì lên
-                    room = await dbContext.chatRooms
-                        .Include(r => r.Messages)
-                        .FirstOrDefaultAsync(r => r.UserId.ToString() == currentUserId);
-                }
-
-                // --- TRƯỜNG HỢP 3: KHÁCH VÃNG LAI (Chỉ xem theo GuestId) ---
+                // --- TRƯỜNG HỢP 3: KHÁCH (Tự xem mình) ---
                 else
                 {
-                    // Bắt buộc phải có GuestId gửi lên
                     if (!string.IsNullOrEmpty(request.GuestId))
                     {
                         room = await dbContext.chatRooms
                             .Include(r => r.Messages)
                             .FirstOrDefaultAsync(r => r.GuestSessionId == request.GuestId);
                     }
-                    // (Nếu không có GuestId thì coi như khách mới -> room vẫn là null)
                 }
 
-                // --- KẾT QUẢ CHUNG ---
+                // --- KẾT QUẢ ---
 
                 if (room == null)
                 {
-                    // Không tìm thấy phòng -> Trả về danh sách rỗng (New Session)
-                    return responseList.responseObjectSuccess("Chưa có tin nhắn nào", new List<DTO_ChatMessage>());
+                    return responseList.responseObjectSuccess("Chưa có tin nhắn nào (New Session)", new List<DTO_ChatMessage>());
                 }
 
-                // Map sang DTO và trả về
                 var dtos = room.Messages
                     .OrderBy(m => m.Timestamp)
                     .Select(m => converter.EntityToDTO(m))

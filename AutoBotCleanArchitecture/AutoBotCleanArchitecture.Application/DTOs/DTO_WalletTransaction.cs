@@ -15,5 +15,6 @@ namespace AutoBotCleanArchitecture.Application.DTOs
         public DateTime Timestamp { get; set; }
         public long OrderCode { get; set; }
         public string TransactionStatus { get; set; }  // Trạng thái giao dịch: "Pending", "Success", "Failed"
+        public Guid UserId { get; set; }
     }
 }

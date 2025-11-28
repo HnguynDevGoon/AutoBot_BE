@@ -20,7 +20,8 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 OrderCode = walletTransaction.OrderCode,
                 Timestamp = walletTransaction.Timestamp,
                 TransactionStatus = walletTransaction.TransactionStatus,
-                TransactionType = walletTransaction.TransactionType 
+                TransactionType = walletTransaction.TransactionType,
+                UserId = walletTransaction.Wallet != null ? walletTransaction.Wallet.UserId : Guid.Empty,
             };
         }
     }

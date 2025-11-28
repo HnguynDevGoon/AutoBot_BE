@@ -14,8 +14,6 @@ namespace AutoBotCleanArchitecture.Application.Requests.ChatMessage
         // --- THÊM: Mã định danh khách (FE tự sinh và gửi lên) ---
         public string? GuestId { get; set; }
         public string TypeMessage { get; set; } = "Text"; // Frontend gửi: "Image", "File"...
-        public string? MediaUrl { get; set; }
-
         // --- THÔNG TIN CONTEXT (Controller sẽ điền vào) ---
         [JsonIgnore] // Ẩn khỏi Swagger để FE không cần điền (và không thấy)
         public string? CurrentUserId { get; set; }

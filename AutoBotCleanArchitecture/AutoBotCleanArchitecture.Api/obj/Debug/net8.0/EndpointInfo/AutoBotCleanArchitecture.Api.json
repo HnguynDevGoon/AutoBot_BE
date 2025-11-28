@@ -1939,10 +1939,6 @@
           "typeMessage": {
             "type": "string",
             "nullable": true
-          },
-          "mediaUrl": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false

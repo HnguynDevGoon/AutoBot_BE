@@ -47,6 +47,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
                 // Query transaction dựa trên WalletId
                 var transactions = await dbContext.walletTransactions
+                    .Include(t => t.Wallet)
                     .Where(t => t.WalletId == wallet.Id)
                     .OrderByDescending(t => t.Timestamp) // Mới nhất lên đầu
                     .Skip((pageNumber - 1) * pageSize)

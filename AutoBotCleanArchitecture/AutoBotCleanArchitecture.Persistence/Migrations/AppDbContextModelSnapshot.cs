@@ -68,9 +68,6 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MediaUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -361,7 +358,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
-                            CreatedDate = new DateTime(2025, 11, 27, 18, 41, 50, 979, DateTimeKind.Utc).AddTicks(3729),
+                            CreatedDate = new DateTime(2025, 11, 28, 5, 2, 37, 435, DateTimeKind.Utc).AddTicks(3585),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,
