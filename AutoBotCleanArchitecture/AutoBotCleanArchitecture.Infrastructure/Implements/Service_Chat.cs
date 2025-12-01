@@ -248,13 +248,15 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 }
 
                 // 2. Tìm phòng chat Guest (Nguồn)
+                // Include Messages để lấy toàn bộ tin nhắn ra
                 var guestRoom = await dbContext.chatRooms
                     .Include(r => r.Messages)
                     .FirstOrDefaultAsync(r => r.GuestSessionId == request.GuestId && r.UserId == null);
 
                 if (guestRoom == null)
                 {
-                    return responseBool.responseObjectSuccess("Không tìm thấy lịch sử chat khách cũ.", false);
+                    // Không có phòng khách cũ thì coi như xong, không lỗi
+                    return responseBool.responseObjectSuccess("Không tìm thấy lịch sử chat khách cũ.", true);
                 }
 
                 // 3. Tìm phòng chat User hiện tại (Đích)
@@ -263,24 +265,16 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
                 if (userRoom == null)
                 {
-                    // TRƯỜNG HỢP A: User chưa có phòng nào -> Lấy luôn phòng Guest làm của mình
+                    // --- TRƯỜNG HỢP A: User chưa có phòng ---
+                    // Đơn giản là đổi tên chủ phòng từ Khách -> User
                     guestRoom.UserId = request.UserId;
-                    guestRoom.GuestSessionId = null; 
+                    guestRoom.GuestSessionId = null; // Xóa dấu vết khách
 
-                    dbContext.chatRooms.Update(guestRoom);
-                }
-                else
-                {
-                    // TRƯỜNG HỢP B: User đã có phòng rồi -> GỘP TIN NHẮN 
-
-                    // B1: Chuyển hộ khẩu toàn bộ tin nhắn từ GuestRoom -> UserRoom
-                    if (guestRoom.Messages != null && guestRoom.Messages.Any())
+                    // Cập nhật lại tin nhắn: Gán SenderId cho những tin của khách
+                    if (guestRoom.Messages != null)
                     {
                         foreach (var msg in guestRoom.Messages)
                         {
-                            msg.ChatRoomId = userRoom.Id;
-
-                            // Nếu tin này do khách nhắn, gán luôn SenderId là User cho chính chủ
                             if (msg.SenderId == null && !msg.IsAdminSender)
                             {
                                 msg.SenderId = request.UserId;
@@ -288,19 +282,50 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                         }
                     }
 
-                    // B2: Xóa phòng Guest đi (vì ruột đã chuyển sang UserRoom rồi)
+                    dbContext.chatRooms.Update(guestRoom);
+                }
+                else
+                {
+                    // --- TRƯỜNG HỢP B: User ĐÃ CÓ phòng -> GỘP (MERGE) ---
+
+                    if (guestRoom.Messages != null && guestRoom.Messages.Any())
+                    {
+                        // BƯỚC QUAN TRỌNG: 
+                        // 1. Tách danh sách tin nhắn ra khỏi object guestRoom bằng .ToList()
+                        // Để tránh lỗi "Collection was modified" khi đang foreach
+                        var messagesToMove = guestRoom.Messages.ToList();
+
+                        foreach (var msg in messagesToMove)
+                        {
+                            // 2. Chuyển hộ khẩu sang nhà mới
+                            msg.ChatRoomId = userRoom.Id;
+                            msg.ChatRoom = null; // Ngắt tham chiếu object cũ để EF không bị lú
+
+                            // 3. Quy chủ tin nhắn (nếu là tin khách gửi)
+                            if (msg.SenderId == null && !msg.IsAdminSender)
+                            {
+                                msg.SenderId = request.UserId;
+                            }
+                        }
+
+                        // 4. Update dứt khoát danh sách tin nhắn này
+                        dbContext.chatMessages.UpdateRange(messagesToMove);
+                    }
+
+                    // 5. Sau khi tin nhắn đã an toàn ở nhà mới, xóa phòng cũ
                     dbContext.chatRooms.Remove(guestRoom);
                 }
 
                 await dbContext.SaveChangesAsync();
 
-                return responseBool.responseObjectSuccess("Đồng bộ và gộp lịch sử chat thành công.", true);
+                return responseBool.responseObjectSuccess("Đồng bộ thành công! Đã gộp về 1 phòng duy nhất.", true);
             }
             catch (Exception ex)
             {
                 return responseBool.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, false);
             }
-
         }
+
+
     }
 }
