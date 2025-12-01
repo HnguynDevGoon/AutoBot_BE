@@ -1700,6 +1700,148 @@
           }
         }
       }
+    },
+    "/api/WalletTransaction/SearchTransactionsByAdmin": {
+      "post": {
+        "tags": [
+          "WalletTransaction"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Keyword": {
+                    "type": "string"
+                  },
+                  "TransactionType": {
+                    "type": "string"
+                  },
+                  "Status": {
+                    "type": "string"
+                  },
+                  "FromDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "ToDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "PageNumber": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "PageSize": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "Keyword": {
+                  "style": "form"
+                },
+                "TransactionType": {
+                  "style": "form"
+                },
+                "Status": {
+                  "style": "form"
+                },
+                "FromDate": {
+                  "style": "form"
+                },
+                "ToDate": {
+                  "style": "form"
+                },
+                "PageNumber": {
+                  "style": "form"
+                },
+                "PageSize": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WalletTransaction/SearchMyTransactions": {
+      "post": {
+        "tags": [
+          "WalletTransaction"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Keyword": {
+                    "type": "string"
+                  },
+                  "TransactionType": {
+                    "type": "string"
+                  },
+                  "Status": {
+                    "type": "string"
+                  },
+                  "FromDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "ToDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "PageNumber": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "PageSize": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "Keyword": {
+                  "style": "form"
+                },
+                "TransactionType": {
+                  "style": "form"
+                },
+                "Status": {
+                  "style": "form"
+                },
+                "FromDate": {
+                  "style": "form"
+                },
+                "ToDate": {
+                  "style": "form"
+                },
+                "PageNumber": {
+                  "style": "form"
+                },
+                "PageSize": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

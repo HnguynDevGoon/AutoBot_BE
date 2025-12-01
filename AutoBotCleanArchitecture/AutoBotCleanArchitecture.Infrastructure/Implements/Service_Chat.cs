@@ -233,15 +233,13 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             try
             {
-                // 1. Tự lấy ID của User đang đăng nhập từ Token
+                // 1. Check Login
                 var (userIdString, _, _) = GetCurrentUserContext();
-
                 if (string.IsNullOrEmpty(userIdString))
                 {
                     return responseBool.responseObjectError(StatusCodes.Status401Unauthorized, "Bạn chưa đăng nhập.", false);
                 }
 
-                // Gán vào Request (để object request có đủ dữ liệu)
                 request.UserId = Guid.Parse(userIdString);
 
                 if (string.IsNullOrEmpty(request.GuestId))
@@ -249,29 +247,60 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     return responseBool.responseObjectSuccess("Không có dữ liệu khách cần đồng bộ.", false);
                 }
 
-                // 2. Tìm phòng chat cũ của Guest (mà chưa có chủ)
+                // 2. Tìm phòng chat Guest (Nguồn)
                 var guestRoom = await dbContext.chatRooms
+                    .Include(r => r.Messages)
                     .FirstOrDefaultAsync(r => r.GuestSessionId == request.GuestId && r.UserId == null);
 
                 if (guestRoom == null)
                 {
-                    // Không tìm thấy phòng cũ thì thôi, không tính là lỗi
-                    return responseBool.responseObjectSuccess("Không tìm thấy lịch sử chat cũ.", false);
+                    return responseBool.responseObjectSuccess("Không tìm thấy lịch sử chat khách cũ.", false);
                 }
 
-                // 3. Gán phòng này cho User hiện tại
-                guestRoom.UserId = request.UserId;
-                // guestRoom.GuestSessionId = null; // (Tuỳ chọn: Xóa GuestId cũ đi cho sạch)
+                // 3. Tìm phòng chat User hiện tại (Đích)
+                var userRoom = await dbContext.chatRooms
+                    .FirstOrDefaultAsync(r => r.UserId == request.UserId);
 
-                dbContext.chatRooms.Update(guestRoom);
+                if (userRoom == null)
+                {
+                    // TRƯỜNG HỢP A: User chưa có phòng nào -> Lấy luôn phòng Guest làm của mình
+                    guestRoom.UserId = request.UserId;
+                    guestRoom.GuestSessionId = null; 
+
+                    dbContext.chatRooms.Update(guestRoom);
+                }
+                else
+                {
+                    // TRƯỜNG HỢP B: User đã có phòng rồi -> GỘP TIN NHẮN 
+
+                    // B1: Chuyển hộ khẩu toàn bộ tin nhắn từ GuestRoom -> UserRoom
+                    if (guestRoom.Messages != null && guestRoom.Messages.Any())
+                    {
+                        foreach (var msg in guestRoom.Messages)
+                        {
+                            msg.ChatRoomId = userRoom.Id;
+
+                            // Nếu tin này do khách nhắn, gán luôn SenderId là User cho chính chủ
+                            if (msg.SenderId == null && !msg.IsAdminSender)
+                            {
+                                msg.SenderId = request.UserId;
+                            }
+                        }
+                    }
+
+                    // B2: Xóa phòng Guest đi (vì ruột đã chuyển sang UserRoom rồi)
+                    dbContext.chatRooms.Remove(guestRoom);
+                }
+
                 await dbContext.SaveChangesAsync();
 
-                return responseBool.responseObjectSuccess("Đồng bộ lịch sử chat thành công.", true);
+                return responseBool.responseObjectSuccess("Đồng bộ và gộp lịch sử chat thành công.", true);
             }
             catch (Exception ex)
             {
                 return responseBool.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, false);
             }
+
         }
     }
 }

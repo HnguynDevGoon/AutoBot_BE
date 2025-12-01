@@ -29,6 +29,22 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         {
             return Ok(await service_WalletTransaction.GetAllTransactionsAdmin(pageSize, pageNumber));
         }
+
+        [HttpPost("SearchTransactionsByAdmin")]
+        [Authorize(Roles = "Admin")] 
+        public async Task<IActionResult> SearchTransactionsByAdmin([FromForm] Request_SearchTransaction request)
+        {
+            return Ok(await service_WalletTransaction.SearchTransactionsByAdmin(request));
+        }
+
+        [HttpPost("SearchMyTransactions")]
+        [Authorize]
+        public async Task<IActionResult> SearchMyTransactions([FromForm] Request_SearchTransaction request)
+        {
+            // Không cần truyền UserId vì Service tự lấy từ Token
+            return Ok(await service_WalletTransaction.SearchMyTransactions(request));
+        }
+
         //[HttpPost("DeductMoney")]
         //[Authorize] 
         //public async Task<IActionResult> DeductMoney([FromBody] Request_DeductMoney request)
