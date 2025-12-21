@@ -19,7 +19,7 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         public User User { get; set; } = null!;
         public Guid? BotTradingId { get; set; }
         public BotTrading? BotTrading { get; set; }
-        public Guid WalletId { get; set; }
-        public Wallet Wallet { get; set; }
+        public Guid? WalletId { get; set; }
+        public Wallet? Wallet { get; set; }
     }
 }

@@ -999,8 +999,24 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PaymentController",
+    "Method": "BuyBotByWallet",
+    "RelativePath": "api/Payment/BuyBotByWallet",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Payment.Request_BuyBot",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PaymentController",
     "Method": "CreateBuyBotLink",
-    "RelativePath": "api/Payment/BuyBot/CreateLink",
+    "RelativePath": "api/Payment/CreateBuyBotLink",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -1052,8 +1068,8 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PaymentController",
-    "Method": "HandleWebhook",
-    "RelativePath": "api/Payment/PayOS/Webhook",
+    "Method": "ProcessWebhook",
+    "RelativePath": "api/Payment/ProcessWebhook",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -1078,22 +1094,6 @@
         "Name": "request",
         "Type": "AutoBotCleanArchitecture.Application.Requests.WithdrawMoney.Request_WithdrawMoney",
         "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PaymentController",
-    "Method": "VerifyDepositStatus",
-    "RelativePath": "api/Payment/VerifyDepositStatus",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Guid",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": []

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AutoBotCleanArchitecture.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251217095348_add3")]
-    partial class add3
+    [Migration("20251221121953_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,17 +219,27 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<long>("Amount")
-                        .HasColumnType("bigint");
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
 
-                    b.Property<Guid>("BotTradingId")
+                    b.Property<Guid?>("BotTradingId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("DurationMonths")
+                    b.Property<string>("CheckoutUrl")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("DurationMonths")
                         .HasColumnType("integer");
 
                     b.Property<long>("OrderCode")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("OrderType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -239,6 +249,10 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BotTradingId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("paymentOrders");
                 });
@@ -281,13 +295,13 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("BotTradingId")
+                    b.Property<Guid?>("BotTradingId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<long>("OrderCode")
@@ -300,7 +314,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Property<double>("PriceBot")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Status")
@@ -310,11 +324,16 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("WalletId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BotTradingId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("WalletId");
 
                     b.ToTable("purchaseHistories");
                 });
@@ -435,7 +454,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
-                            CreatedDate = new DateTime(2025, 12, 17, 9, 53, 47, 71, DateTimeKind.Utc).AddTicks(7507),
+                            CreatedDate = new DateTime(2025, 12, 21, 12, 19, 52, 361, DateTimeKind.Utc).AddTicks(4887),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,
@@ -645,6 +664,23 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.PaymentOrder", b =>
+                {
+                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.BotTrading", "BotTrading")
+                        .WithMany()
+                        .HasForeignKey("BotTradingId");
+
+                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.User", "User")
+                        .WithMany("PaymentOrders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BotTrading");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.PriceBot", b =>
                 {
                     b.HasOne("AutoBotCleanArchitecture.Domain.Entities.BotTrading", "BotTrading")
@@ -660,9 +696,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 {
                     b.HasOne("AutoBotCleanArchitecture.Domain.Entities.BotTrading", "BotTrading")
                         .WithMany("PurchaseHistories")
-                        .HasForeignKey("BotTradingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BotTradingId");
 
                     b.HasOne("AutoBotCleanArchitecture.Domain.Entities.User", "User")
                         .WithMany()
@@ -670,9 +704,15 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.Wallet", "Wallet")
+                        .WithMany("PurchaseHistories")
+                        .HasForeignKey("WalletId");
+
                     b.Navigation("BotTrading");
 
                     b.Navigation("User");
+
+                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.RefreshToken", b =>
@@ -726,7 +766,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.WalletTransaction", b =>
                 {
                     b.HasOne("AutoBotCleanArchitecture.Domain.Entities.Wallet", "Wallet")
-                        .WithMany("WalletTransactions")
+                        .WithMany()
                         .HasForeignKey("WalletId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -772,6 +812,8 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
 
                     b.Navigation("LogHistorys");
 
+                    b.Navigation("PaymentOrders");
+
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("UserBots");
@@ -783,7 +825,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
 
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Wallet", b =>
                 {
-                    b.Navigation("WalletTransactions");
+                    b.Navigation("PurchaseHistories");
                 });
 #pragma warning restore 612, 618
         }

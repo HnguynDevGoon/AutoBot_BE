@@ -1704,28 +1704,6 @@
         }
       }
     },
-    "/api/Payment/VerifyDepositStatus": {
-      "get": {
-        "tags": [
-          "Payment"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Payment/RequestWithdrawMoney": {
       "post": {
         "tags": [
@@ -1787,7 +1765,7 @@
         }
       }
     },
-    "/api/Payment/BuyBot/CreateLink": {
+    "/api/Payment/CreateBuyBotLink": {
       "post": {
         "tags": [
           "Payment"
@@ -1818,7 +1796,7 @@
         }
       }
     },
-    "/api/Payment/PayOS/Webhook": {
+    "/api/Payment/ProcessWebhook": {
       "post": {
         "tags": [
           "Payment"
@@ -1838,6 +1816,37 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/WebhookType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Payment/BuyBotByWallet": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_BuyBot"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_BuyBot"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_BuyBot"
               }
             }
           }

@@ -13,6 +13,8 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         public double Amount { get; set; }
         public string Status { get; set; }
         public string OrderType { get; set; }
+        public string? CheckoutUrl { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public Guid UserId { get; set; }
         public User User { get; set; } = null!;
         public Guid? BotTradingId { get; set; }

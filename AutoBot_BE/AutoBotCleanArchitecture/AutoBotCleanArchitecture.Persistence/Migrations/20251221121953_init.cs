@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AutoBotCleanArchitecture.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class add3 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,23 +43,6 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_contents", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "paymentOrders",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    OrderCode = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    BotTradingId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DurationMonths = table.Column<int>(type: "integer", nullable: false),
-                    Amount = table.Column<long>(type: "bigint", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_paymentOrders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -210,31 +193,30 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "purchaseHistories",
+                name: "paymentOrders",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    PriceBot = table.Column<double>(type: "double precision", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "text", nullable: false),
+                    OrderCode = table.Column<long>(type: "bigint", nullable: false),
+                    DurationMonths = table.Column<int>(type: "integer", nullable: true),
+                    Amount = table.Column<double>(type: "double precision", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    OrderType = table.Column<string>(type: "text", nullable: false),
+                    CheckoutUrl = table.Column<string>(type: "text", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    BotTradingId = table.Column<Guid>(type: "uuid", nullable: false),
-                    OrderCode = table.Column<long>(type: "bigint", nullable: false)
+                    BotTradingId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_purchaseHistories", x => x.Id);
+                    table.PrimaryKey("PK_paymentOrders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_purchaseHistories_botTradings_BotTradingId",
+                        name: "FK_paymentOrders_botTradings_BotTradingId",
                         column: x => x.BotTradingId,
                         principalTable: "botTradings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_purchaseHistories_users_UserId",
+                        name: "FK_paymentOrders_users_UserId",
                         column: x => x.UserId,
                         principalTable: "users",
                         principalColumn: "Id",
@@ -358,6 +340,43 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "purchaseHistories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PriceBot = table.Column<double>(type: "double precision", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    PaymentMethod = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    OrderCode = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BotTradingId = table.Column<Guid>(type: "uuid", nullable: true),
+                    WalletId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_purchaseHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_purchaseHistories_botTradings_BotTradingId",
+                        column: x => x.BotTradingId,
+                        principalTable: "botTradings",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_purchaseHistories_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_purchaseHistories_wallets_WalletId",
+                        column: x => x.WalletId,
+                        principalTable: "wallets",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "walletTransactions",
                 columns: table => new
                 {
@@ -393,7 +412,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDay", "CreatedDate", "Email", "FullName", "IsActive", "LockoutEnable", "LockoutEnd", "PassWord", "PhoneNumber", "RoleId", "TwoStep", "UrlAvatar", "UserName" },
-                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(2025, 12, 17, 9, 53, 47, 71, DateTimeKind.Utc).AddTicks(7507), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a", "0123456789", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), true, "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg", "Admin" });
+                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(2025, 12, 21, 12, 19, 52, 361, DateTimeKind.Utc).AddTicks(4887), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a", "0123456789", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), true, "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg", "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_chatMessages_ChatRoomId",
@@ -416,6 +435,16 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_paymentOrders_BotTradingId",
+                table: "paymentOrders",
+                column: "BotTradingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_paymentOrders_UserId",
+                table: "paymentOrders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_priceBots_BotTradingId",
                 table: "priceBots",
                 column: "BotTradingId");
@@ -435,6 +464,11 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 name: "IX_purchaseHistories_UserId",
                 table: "purchaseHistories",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_purchaseHistories_WalletId",
+                table: "purchaseHistories",
+                column: "WalletId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_refreshTokens_UserId",

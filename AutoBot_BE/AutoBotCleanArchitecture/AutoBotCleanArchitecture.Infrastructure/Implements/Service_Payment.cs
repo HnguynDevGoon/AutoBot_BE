@@ -14,6 +14,7 @@ using Net.payOS.Types;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace AutoBotCleanArchitecture.Infrastructure.Implements
 {
@@ -38,26 +39,59 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             _responsePaginationWithdrawMoney = responsePaginationWithdrawMoney;
         }
 
-
-
-        // Struct lưu tạm thông tin nạp tiền
-        public struct DepositOrder
+        // =================================================================================
+        // HÀM PHỤ TRỢ: QUẢN LÝ ĐƠN CŨ
+        // Logic: 
+        // 1. Nếu đơn cũ giống y hệt đơn mới (cùng tiền) và còn hạn -> Trả lại Link cũ.
+        // 2. Nếu đơn cũ khác tiền HOẶC hết hạn -> Hủy đơn cũ đi để tạo đơn mới.
+        // =================================================================================
+        private async Task<string?> HandlePendingOrder(long newAmount, string orderType, Guid userId, Guid? botId = null, int? duration = null)
         {
-            public Guid UserId;
-            public long OrderCode;
-            public double Amount;
+            // Tìm BẤT KỲ đơn nào đang Pending của User này thuộc loại này (Deposit/BuyBot)
+            // Không quan tâm số tiền cũ là bao nhiêu, cứ lôi đầu ra hết
+            var pendingOrder = await _context.paymentOrders
+                .FirstOrDefaultAsync(x => x.UserId == userId
+                                       && x.OrderType == orderType
+                                       && x.Status == "Pending");
+
+            if (pendingOrder == null) return null; // Không có đơn cũ -> Tạo mới thoải mái
+
+            // Case 1: Nếu đơn cũ GIỐNG HỆT đơn mới (Cùng số tiền/Bot) VÀ Chưa quá 15 phút
+            // -> Thì trả lại link cũ cho đỡ tốn tài nguyên
+            bool isSameOrder = false;
+            if (orderType == "Deposit")
+            {
+                isSameOrder = (pendingOrder.Amount == newAmount);
+            }
+            else if (orderType == "BuyBot")
+            {
+                isSameOrder = (pendingOrder.BotTradingId == botId && pendingOrder.DurationMonths == duration);
+            }
+
+            if (isSameOrder && pendingOrder.CreatedDate > DateTime.UtcNow.AddMinutes(-15))
+            {
+                if (!string.IsNullOrEmpty(pendingOrder.CheckoutUrl))
+                {
+                    return pendingOrder.CheckoutUrl; // Tái sử dụng
+                }
+            }
+
+            // Case 2: Nếu Khác mệnh giá HOẶC Đã hết hạn -> HỦY ĐƠN CŨ NGAY LẬP TỨC
+            try
+            {
+                await _payOS.cancelPaymentLink(pendingOrder.OrderCode);
+            }
+            catch { /* Bỏ qua nếu lỗi mạng hoặc đã hủy rồi */ }
+
+            _context.paymentOrders.Remove(pendingOrder);
+            await _context.SaveChangesAsync(); // Xóa xong lưu lại để dọn đường cho đơn mới
+
+            return null; // Trả về null để hàm chính tạo đơn mới
         }
 
-        public struct BuyBotOrder
-        {
-            public Guid UserId;
-            public Guid BotTradingId;
-            public int DurationMonths; // Số tháng mua
-            public double Amount;
-            public long OrderCode;
-        }
-
-        // 1. TẠO LINK THANH TOÁN
+        // =================================================================================
+        // 1. TẠO LINK NẠP TIỀN (DEPOSIT)
+        // =================================================================================
         public async Task<ResponseObject<string>> CreateWalletDepositLink(Request_Deposit request)
         {
             try
@@ -65,9 +99,29 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 if (request.Amount < 2000)
                     return _responseString.responseObjectError(StatusCodes.Status400BadRequest, "Số tiền nạp tối thiểu là 2000 VNĐ", null);
 
+                // --- XỬ LÝ ĐƠN CŨ ---
+                // Gọi hàm check. Nếu nó trả về Link nghĩa là dùng lại đơn cũ.
+                // Nếu nó trả về null nghĩa là nó đã xóa đơn cũ (nếu có) rồi.
+                string? existingUrl = await HandlePendingOrder((long)request.Amount, "Deposit", request.UserId);
+                if (existingUrl != null)
+                {
+                    return _responseString.responseObjectSuccess("Bạn có đơn nạp tiền chưa thanh toán (Link cũ).", existingUrl);
+                }
+
+                // --- TẠO ĐƠN MỚI ---
                 long orderCode = long.Parse(DateTime.UtcNow.ToString("yyMMddHHmmss"));
 
-                // LƯU VÀO DB THAY VÌ CACHE
+                var paymentData = new PaymentData(
+                    orderCode,
+                    (int)request.Amount,
+                    "Nap tien vao vi",
+                    new List<ItemData> { new ItemData("Nap tien", 1, (int)request.Amount) },
+                    "http://localhost:3000/fail",
+                    "http://localhost:3000/success"
+                );
+
+                CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
+
                 var order = new PaymentOrder
                 {
                     Id = Guid.NewGuid(),
@@ -75,19 +129,14 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     UserId = request.UserId,
                     Amount = request.Amount,
                     Status = "Pending",
-                    OrderType = "Deposit" // Giao dịch nạp tiền
+                    OrderType = "Deposit",
+                    CreatedDate = DateTime.UtcNow,
+                    CheckoutUrl = createPayment.checkoutUrl
                 };
                 await _context.paymentOrders.AddAsync(order);
                 await _context.SaveChangesAsync();
 
-                var paymentData = new PaymentData(
-                    orderCode, request.Amount, "Nap tien vao vi",
-                    new List<ItemData> { new ItemData("Nap tien", 1, request.Amount) },
-                    "http://localhost:3000/fail", "http://localhost:3000/success"
-                );
-
-                CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
-                return _responseString.responseObjectSuccess("Thành công", createPayment.checkoutUrl);
+                return _responseString.responseObjectSuccess("Tạo link nạp tiền thành công", createPayment.checkoutUrl);
             }
             catch (Exception ex)
             {
@@ -95,89 +144,245 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
+        // =================================================================================
+        // 2. TẠO LINK MUA BOT (PAYOS)
+        // =================================================================================
+        public async Task<ResponseObject<string>> CreateBuyBotLink(Request_BuyBot request)
+        {
+            try
+            {
+                var user = await _context.users.FindAsync(request.UserId);
+                if (user == null) return _responseString.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
+
+                var bot = await _context.botTradings.FindAsync(request.BotTradingId);
+                if (bot == null) return _responseString.responseObjectError(StatusCodes.Status404NotFound, "Bot không tồn tại", null);
+
+                var pricePackage = await _context.priceBots.FindAsync(request.PriceBotId);
+                if (pricePackage == null) return _responseString.responseObjectError(StatusCodes.Status404NotFound, "Gói giá không tồn tại", null);
+
+                if (pricePackage.BotTradingId != request.BotTradingId)
+                    return _responseString.responseObjectError(StatusCodes.Status400BadRequest, "Gói giá này không thuộc về Bot bạn chọn", null);
+
+                int amount = (int)pricePackage.Price;
+                if (amount < 2000) return _responseString.responseObjectError(StatusCodes.Status400BadRequest, "Giá trị đơn hàng quá thấp (<2000đ)", null);
+
+                // --- XỬ LÝ ĐƠN CŨ ---
+                string? existingUrl = await HandlePendingOrder((long)amount, "BuyBot", request.UserId, request.BotTradingId, pricePackage.Month);
+                if (existingUrl != null)
+                {
+                    return _responseString.responseObjectSuccess("Bạn có đơn mua Bot chưa thanh toán (Link cũ).", existingUrl);
+                }
+
+                // --- TẠO ĐƠN MỚI ---
+                long orderCode = long.Parse(DateTime.UtcNow.ToString("yyMMddHHmmss"));
+                string description = $"Mua {bot.NameBot} {pricePackage.Month} thang";
+
+                var paymentData = new PaymentData(
+                    orderCode,
+                    amount,
+                    description,
+                    new List<ItemData> { new ItemData(description, 1, amount) },
+                    cancelUrl: "http://localhost:3000/fail",
+                    returnUrl: "http://localhost:3000/success"
+                );
+
+                CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
+
+                var order = new PaymentOrder
+                {
+                    Id = Guid.NewGuid(),
+                    OrderCode = orderCode,
+                    UserId = request.UserId,
+                    BotTradingId = request.BotTradingId,
+                    DurationMonths = pricePackage.Month,
+                    Amount = (long)pricePackage.Price,
+                    Status = "Pending",
+                    OrderType = "BuyBot",
+                    CreatedDate = DateTime.UtcNow,
+                    CheckoutUrl = createPayment.checkoutUrl
+                };
+
+                await _context.paymentOrders.AddAsync(order);
+                await _context.SaveChangesAsync();
+
+                return _responseString.responseObjectSuccess("Tạo link mua Bot thành công", createPayment.checkoutUrl);
+            }
+            catch (Exception ex)
+            {
+                return _responseString.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
+            }
+        }
+
+        // =================================================================================
+        // 3. MUA BOT BẰNG VÍ (WALLET)
+        // =================================================================================
+        public async Task<ResponseObject<bool>> BuyBotByWallet(Request_BuyBot request)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var user = await _context.users.FindAsync(request.UserId);
+                if (user == null) return _responseBool.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", false);
+
+                var bot = await _context.botTradings.FindAsync(request.BotTradingId);
+                if (bot == null) return _responseBool.responseObjectError(StatusCodes.Status404NotFound, "Bot không tồn tại", false);
+
+                var pricePackage = await _context.priceBots.FindAsync(request.PriceBotId);
+                if (pricePackage == null) return _responseBool.responseObjectError(StatusCodes.Status404NotFound, "Gói giá không tồn tại", false);
+
+                if (pricePackage.BotTradingId != request.BotTradingId)
+                    return _responseBool.responseObjectError(StatusCodes.Status400BadRequest, "Gói giá này không thuộc về Bot bạn chọn", false);
+
+                var wallet = await _context.wallets.FirstOrDefaultAsync(w => w.UserId == request.UserId);
+                if (wallet == null) return _responseBool.responseObjectError(StatusCodes.Status400BadRequest, "Bạn chưa có ví tiền.", false);
+
+                if (wallet.Balance < pricePackage.Price)
+                    return _responseBool.responseObjectError(StatusCodes.Status400BadRequest, $"Số dư không đủ. Cần {pricePackage.Price:N0}đ", false);
+
+                // Trừ tiền
+                wallet.Balance -= pricePackage.Price;
+                _context.wallets.Update(wallet);
+
+                // Cấp Bot
+                var userBot = await _context.userBots.FirstOrDefaultAsync(x => x.UserId == request.UserId && x.BotTradingId == request.BotTradingId);
+                DateTime startDate = DateTime.UtcNow;
+                DateTime newExpiredDate;
+
+                if (userBot == null)
+                {
+                    newExpiredDate = startDate.AddMonths(pricePackage.Month);
+                    userBot = new UserBot { Id = Guid.NewGuid(), UserId = request.UserId, BotTradingId = request.BotTradingId, ExpiredDate = newExpiredDate };
+                    await _context.userBots.AddAsync(userBot);
+                }
+                else
+                {
+                    startDate = userBot.ExpiredDate > DateTime.UtcNow ? userBot.ExpiredDate : DateTime.UtcNow;
+                    newExpiredDate = startDate.AddMonths(pricePackage.Month);
+                    userBot.ExpiredDate = newExpiredDate;
+                    _context.userBots.Update(userBot);
+                }
+
+                long orderCode = long.Parse(DateTime.UtcNow.ToString("yyMMddHHmmss"));
+                var history = new PurchaseHistory
+                {
+                    Id = Guid.NewGuid(),
+                    OrderCode = orderCode,
+                    UserId = request.UserId,
+                    WalletId = wallet.Id,
+                    BotTradingId = request.BotTradingId,
+                    StartDate = startDate,
+                    EndDate = newExpiredDate,
+                    PriceBot = pricePackage.Price,
+                    Date = DateTime.UtcNow,
+                    PaymentMethod = "Wallet",
+                    Status = "Paid"
+                };
+                await _context.purchaseHistories.AddAsync(history);
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return _responseBool.responseObjectSuccess("Mua Bot bằng ví thành công!", true);
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                var errorMsg = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                Console.WriteLine($"[WALLET ERROR] {errorMsg}");
+                return _responseBool.responseObjectError(StatusCodes.Status500InternalServerError, $"Lỗi xử lý: {errorMsg}", false);
+            }
+        }
+
+        // =================================================================================
+        // 4. WEBHOOK
+        // =================================================================================
+        public async Task<ResponseObject<bool>> ProcessWebhook(WebhookType webhookData)
+        {
+            try
+            {
+                Console.WriteLine($"[Webhook] Code: {webhookData.code}, Desc: {webhookData.desc}");
+                WebhookData verifiedData = _payOS.verifyPaymentWebhookData(webhookData);
+
+                if (webhookData.code == "00" && webhookData.desc == "success")
+                {
+                    var order = await _context.paymentOrders
+                        .FirstOrDefaultAsync(x => x.OrderCode == verifiedData.orderCode);
+
+                    if (order == null) return _responseBool.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy đơn hàng.", false);
+                    if (order.Status == "Success") return _responseBool.responseObjectSuccess("Đơn hàng đã thành công trước đó.", true);
+
+                    if (order.OrderType == "BuyBot")
+                    {
+                        return await ActivateBotAfterPayment(order.OrderCode, verifiedData.amount);
+                    }
+                    else if (order.OrderType == "Deposit")
+                    {
+                        return await ActivateDepositAfterPayment(order.OrderCode, verifiedData.amount);
+                    }
+                }
+                return _responseBool.responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi đơn hàng", false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Webhook Error] {ex.Message}");
+                return _responseBool.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, false);
+            }
+        }
+
+        // =================================================================================
+        // 5. CÁC HÀM KÍCH HOẠT
+        // =================================================================================
         public async Task<ResponseObject<bool>> ActivateBotAfterPayment(long orderCode, double amount)
         {
             try
             {
-                // 1. Tìm đúng dòng đang Pending
-                var orderData = await _context.paymentOrders
-                    .FirstOrDefaultAsync(x => x.OrderCode == orderCode && x.Status == "Pending");
+                var orderData = await _context.paymentOrders.FirstOrDefaultAsync(x => x.OrderCode == orderCode);
+                if (orderData == null) return _responseBool.responseObjectError(StatusCodes.Status404NotFound, "Không có đơn hàng.", false);
 
-                if (orderData == null) return _responseBool.responseObjectError(StatusCodes.Status400BadRequest, "Không có đơn hàng.", false);
-
-                // 2. Chống xử lý trùng
-                var isExist = await _context.purchaseHistories.AnyAsync(x => x.OrderCode == orderCode);
-                if (isExist) return _responseBool.responseObjectError(StatusCodes.Status400BadRequest, "Đơn hàng đã tồn tại.", false);
-
-                // --- CHECK NULL QUAN TRỌNG ---
-                // Vì bảng PaymentOrder giờ dùng chung cho cả nạp tiền (có thể null), 
-                // nhưng đây là hàm Mua Bot nên bắt buộc phải có BotId và Duration.
-                if (orderData.BotTradingId == null || orderData.DurationMonths == null)
-                {
-                    Console.WriteLine("[ERROR] Đơn hàng mua Bot nhưng thiếu thông tin BotId hoặc Duration.");
-                    return _responseBool.responseObjectError(StatusCodes.Status400BadRequest, "Lỗi.", false);
-                }
-
-                // 3. Logic tính toán ngày gia hạn
-                // Dùng .Value để lấy giá trị thực từ biến nullable
                 var botId = orderData.BotTradingId.Value;
                 var duration = orderData.DurationMonths.Value;
-
-                var userBot = await _context.userBots
-                    .FirstOrDefaultAsync(x => x.UserId == orderData.UserId && x.BotTradingId == botId);
+                var userBot = await _context.userBots.FirstOrDefaultAsync(x => x.UserId == orderData.UserId && x.BotTradingId == botId);
 
                 DateTime startDate = DateTime.UtcNow;
                 DateTime newExpiredDate;
 
                 if (userBot == null)
                 {
-                    // Mua mới
                     newExpiredDate = startDate.AddMonths(duration);
-                    userBot = new UserBot
-                    {
-                        Id = Guid.NewGuid(),
-                        UserId = orderData.UserId,
-                        BotTradingId = botId,
-                        ExpiredDate = newExpiredDate
-                    };
+                    userBot = new UserBot { Id = Guid.NewGuid(), UserId = orderData.UserId, BotTradingId = botId, ExpiredDate = newExpiredDate };
                     await _context.userBots.AddAsync(userBot);
                 }
                 else
                 {
-                    // Gia hạn
                     startDate = userBot.ExpiredDate > DateTime.UtcNow ? userBot.ExpiredDate : DateTime.UtcNow;
                     newExpiredDate = startDate.AddMonths(duration);
                     userBot.ExpiredDate = newExpiredDate;
                     _context.userBots.Update(userBot);
                 }
 
-                // 4. Ghi history
                 var history = new PurchaseHistory
                 {
                     Id = Guid.NewGuid(),
                     OrderCode = orderCode,
                     UserId = orderData.UserId,
                     BotTradingId = botId,
-
-                    PriceBot = amount, // Không cần ép kiểu nữa vì tham số đã là double
-
+                    PriceBot = amount,
                     StartDate = startDate,
                     EndDate = newExpiredDate,
                     Date = DateTime.UtcNow,
                     PaymentMethod = "PayOS",
-                    Status = "Paid"
+                    Status = "Paid",
+                    WalletId = null
                 };
                 await _context.purchaseHistories.AddAsync(history);
 
-                // 5. Update trạng thái
                 orderData.Status = "Success";
-
                 await _context.SaveChangesAsync();
-                return _responseBool.responseObjectSuccess("Thanh toán thành công. Bot đã được kích hoạt.", true);
+                return _responseBool.responseObjectSuccess("Kích hoạt Bot thành công.", true);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[DB ERROR] {ex.Message}");
+                Console.WriteLine($"[DB ERROR - BUYBOT] {ex.Message}");
                 return _responseBool.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, false);
             }
         }
@@ -186,25 +391,15 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             try
             {
-                var orderData = await _context.paymentOrders
-                    .FirstOrDefaultAsync(x => x.OrderCode == orderCode && x.Status == "Pending");
+                var orderData = await _context.paymentOrders.FirstOrDefaultAsync(x => x.OrderCode == orderCode);
+                if (orderData == null) return _responseBool.responseObjectError(StatusCodes.Status404NotFound, "Không có đơn hàng.", false);
 
-                if (orderData == null)
-                {
-                    return _responseBool.responseObjectError(StatusCodes.Status404NotFound, "Đơn hàng không tồn tại hoặc đã được xử lý.", false);
-                }
-
-                var isExist = await _context.purchaseHistories.AnyAsync(x => x.OrderCode == orderCode);
-                if (isExist)
-                {
-                    return _responseBool.responseObjectSuccess("Giao dịch này đã được xử lý thành công trước đó.", true);
-                }
                 var wallet = await _context.wallets.FirstOrDefaultAsync(w => w.UserId == orderData.UserId);
-
                 if (wallet == null)
                 {
                     wallet = new Wallet { Id = Guid.NewGuid(), UserId = orderData.UserId, Balance = 0 };
                     await _context.wallets.AddAsync(wallet);
+                    await _context.SaveChangesAsync();
                 }
 
                 wallet.Balance += amount;
@@ -214,11 +409,10 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     Id = Guid.NewGuid(),
                     OrderCode = orderCode,
                     UserId = orderData.UserId,
-
+                    WalletId = wallet.Id,
                     BotTradingId = null,
                     StartDate = null,
                     EndDate = null,
-
                     PriceBot = amount,
                     Date = DateTime.UtcNow,
                     PaymentMethod = "PayOS",
@@ -227,26 +421,24 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 await _context.purchaseHistories.AddAsync(history);
 
                 orderData.Status = "Success";
-
                 await _context.SaveChangesAsync();
-
-                return _responseBool.responseObjectSuccess("Nạp tiền vào ví thành công.", true);
+                return _responseBool.responseObjectSuccess("Nạp tiền thành công.", true);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[DB ERROR - DEPOSIT] {ex.Message}");
-                return _responseBool.responseObjectError(StatusCodes.Status500InternalServerError, $"Lỗi hệ thống: {ex.Message}", false);
+                return _responseBool.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, false);
             }
         }
 
+        // =================================================================================
+        // 6. RÚT TIỀN (GIỮ NGUYÊN)
+        // =================================================================================
         public async Task<ResponseObject<bool>> RequestWithdrawMoney(Request_WithdrawMoney request)
         {
             try
             {
-                if (request.BankAmount <= 0)
-                {
-                    return new ResponseObject<bool>(StatusCodes.Status400BadRequest, "Số tiền rút không hợp lệ", false);
-                }
+                if (request.BankAmount <= 0) return new ResponseObject<bool>(StatusCodes.Status400BadRequest, "Số tiền rút không hợp lệ", false);
 
                 var withdraw = new WithdrawMoney
                 {
@@ -268,7 +460,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
             catch (Exception ex)
             {
-                return new ResponseObject<bool>(StatusCodes.Status400BadRequest, "a", false);
+                return new ResponseObject<bool>(StatusCodes.Status400BadRequest, "Lỗi", false);
             }
         }
 
@@ -276,12 +468,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             try
             {
-                var query = _context.withdrawMoneys
-                    .Include(w => w.User)
-                    .AsQueryable();
-
+                var query = _context.withdrawMoneys.Include(w => w.User).AsQueryable();
                 var totalItems = await query.CountAsync();
-
                 var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 
                 var data = await query
@@ -313,11 +501,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     TotalPages = totalPages
                 };
 
-                // 6. Trả về kết quả
-                if (data.Count == 0 && pageNumber > 1)
-                {
-                    return _responsePaginationWithdrawMoney.responseObjectSuccess("Trang này không có dữ liệu.", paginationData);
-                }
+                if (data.Count == 0 && pageNumber > 1) return _responsePaginationWithdrawMoney.responseObjectSuccess("Trang này không có dữ liệu.", paginationData);
 
                 return _responsePaginationWithdrawMoney.responseObjectSuccess("Lấy danh sách rút tiền thành công", paginationData);
             }
@@ -326,309 +510,5 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return _responsePaginationWithdrawMoney.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
         }
-
-        //public async Task<ResponseObject<string>> CreateBuyBotLink(Request_BuyBot request)
-        //{
-        //    try
-        //    {
-        //        // A. Validate dữ liệu
-        //        var user = await _context.users.FindAsync(request.UserId);
-        //        if (user == null) return _responseString.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
-
-        //        var bot = await _context.botTradings.FindAsync(request.BotTradingId);
-        //        if (bot == null) return _responseString.responseObjectError(StatusCodes.Status404NotFound, "Bot không tồn tại", null);
-
-        //        // Tìm gói giá để lấy số tiền
-        //        var pricePackage = await _context.priceBots.FindAsync(request.PriceBotId);
-        //        if (pricePackage == null) return _responseString.responseObjectError(StatusCodes.Status404NotFound, "Gói giá không tồn tại", null);
-
-        //        // Validate gói giá có thuộc Bot này không
-        //        if (pricePackage.BotTradingId != request.BotTradingId)
-        //            return _responseString.responseObjectError(StatusCodes.Status400BadRequest, "Gói giá này không thuộc về Bot bạn chọn", null);
-
-        //        // B. Tạo Payment Data
-        //        int amount = (int)pricePackage.Price; // PayOS nhận int
-        //        if (amount < 2000) return _responseString.responseObjectError(StatusCodes.Status400BadRequest, "Giá trị đơn hàng quá thấp (<2000đ)", null);
-
-        //        long orderCode = long.Parse(DateTime.UtcNow.ToString("yyMMddHHmmss"));
-        //        string description = $"Mua {bot.NameBot} {pricePackage.Month} thang"; // Không dấu, ngắn gọn
-        //        if (description.Length > 25) description = description.Substring(0, 25);
-
-        //        var items = new List<ItemData> { new ItemData(description, 1, amount) };
-        //        var paymentData = new PaymentData(
-        //            orderCode,
-        //            amount,
-        //            description,
-        //            items,
-        //            cancelUrl: "http://localhost:3000/fail", // Link FE
-        //            returnUrl: "http://localhost:3000/success" // Link FE
-        //        );
-
-        //        CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
-
-        //        // C. Lưu Cache (Để tí nữa Verify biết là đang mua cái gì)
-        //        var orderData = new BuyBotOrder
-        //        {
-        //            UserId = request.UserId,
-        //            BotTradingId = request.BotTradingId,
-        //            DurationMonths = pricePackage.Month,
-        //            Amount = pricePackage.Price,
-        //            OrderCode = orderCode
-        //        };
-
-        //        // Key Cache khác với key nạp tiền nhé ("BuyBot_...")
-        //        _cache.Set($"BuyBot_{orderCode}", orderData, TimeSpan.FromMinutes(15));
-
-        //        return _responseString.responseObjectSuccess("Tạo link mua Bot thành công", createPayment.checkoutUrl);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return _responseString.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
-        //    }
-        //}
-
-        public async Task<ResponseObject<string>> CreateBuyBotLink(Request_BuyBot request)
-        {
-            try
-            {
-                // A. Validate dữ liệu (Giữ nguyên phần tìm User, Bot, PricePackage của bạn)
-                var user = await _context.users.FindAsync(request.UserId);
-                if (user == null) return _responseString.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
-
-                var bot = await _context.botTradings.FindAsync(request.BotTradingId);
-                if (bot == null) return _responseString.responseObjectError(StatusCodes.Status404NotFound, "Bot không tồn tại", null);
-
-                var pricePackage = await _context.priceBots.FindAsync(request.PriceBotId);
-                if (pricePackage == null) return _responseString.responseObjectError(StatusCodes.Status404NotFound, "Gói giá không tồn tại", null);
-
-                if (pricePackage.BotTradingId != request.BotTradingId)
-                    return _responseString.responseObjectError(StatusCodes.Status400BadRequest, "Gói giá này không thuộc về Bot bạn chọn", null);
-
-                // B. Tạo Payment Data
-                int amount = (int)pricePackage.Price;
-                if (amount < 2000) return _responseString.responseObjectError(StatusCodes.Status400BadRequest, "Giá trị đơn hàng quá thấp (<2000đ)", null);
-
-                // Tạo OrderCode duy nhất
-                long orderCode = long.Parse(DateTime.UtcNow.ToString("yyMMddHHmmss"));
-                amount = (int)pricePackage.Price;
-                string description = $"Mua {bot.NameBot} {pricePackage.Month} thang";
-
-                var paymentData = new PaymentData(
-                    orderCode,
-                    amount,
-                    description,
-                    new List<ItemData> { new ItemData(description, 1, amount) },
-                    cancelUrl: "http://localhost:3000/fail",
-                    returnUrl: "http://localhost:3000/success"
-                );
-
-                CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
-
-                // C. LƯU VÀO ENTITY PAYMENTORDER CỦA BẠN
-                var order = new PaymentOrder
-                {
-                    Id = Guid.NewGuid(),
-                    OrderCode = orderCode,
-                    UserId = request.UserId,
-                    BotTradingId = request.BotTradingId,
-                    DurationMonths = pricePackage.Month,
-                    Amount = (long)pricePackage.Price, // Gán vào trường Amount (long)
-                    Status = "Pending", // Trạng thái chờ xử lý
-                    OrderType = "BuyBot"
-                };
-
-                await _context.paymentOrders.AddAsync(order);
-                await _context.SaveChangesAsync();
-
-                return _responseString.responseObjectSuccess("Tạo link mua Bot thành công", createPayment.checkoutUrl);
-            }
-            catch (Exception ex)
-            {
-                return _responseString.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
-            }
-        }
-
-        // 2. XÁC THỰC VÀ KÍCH HOẠT BOT (Verify)
-        //public async Task<ResponseObject<bool>> VerifyBuyBotStatus(long orderCode)
-        //{
-        //    try
-        //    {
-        //        // A. Lấy thông tin từ Cache
-        //        if (!_cache.TryGetValue($"BuyBot_{orderCode}", out BuyBotOrder orderData))
-        //        {
-        //            return _responseBool.responseObjectError(StatusCodes.Status404NotFound, "Đơn hàng đã hết hạn hoặc không tồn tại.", false);
-        //        }
-
-        //        // B. Check PayOS
-        //        PaymentLinkInformation paymentInfo = await _payOS.getPaymentLinkInformation(orderCode);
-
-        //        if (paymentInfo.status == "PAID")
-        //        {
-        //            // C. LOGIC GIA HẠN / KÍCH HOẠT (QUAN TRỌNG)
-
-        //            // Tìm xem user đã có bot này chưa
-        //            var userBot = await _context.userBots
-        //                .FirstOrDefaultAsync(x => x.UserId == orderData.UserId && x.BotTradingId == orderData.BotTradingId);
-
-        //            DateTime newExpiredDate;
-
-        //            if (userBot == null)
-        //            {
-        //                // Trường hợp 1: Mua mới tinh
-        //                newExpiredDate = DateTime.UtcNow.AddMonths(orderData.DurationMonths);
-
-        //                userBot = new UserBot
-        //                {
-        //                    Id = Guid.NewGuid(),
-        //                    UserId = orderData.UserId,
-        //                    BotTradingId = orderData.BotTradingId,
-        //                    ExpiredDate = newExpiredDate,
-        //                };
-        //                await _context.userBots.AddAsync(userBot);
-        //            }
-        //            else
-        //            {
-        //                // Trường hợp 2: Gia hạn
-        //                if (userBot.ExpiredDate > DateTime.UtcNow)
-        //                {
-        //                    // Nếu còn hạn -> Cộng nối tiếp vào ngày hết hạn cũ
-        //                    userBot.ExpiredDate = userBot.ExpiredDate.AddMonths(orderData.DurationMonths);
-        //                }
-        //                else
-        //                {
-        //                    // Nếu đã hết hạn -> Tính từ ngày hôm nay
-        //                    userBot.ExpiredDate = DateTime.UtcNow.AddMonths(orderData.DurationMonths);
-        //                }
-        //                _context.userBots.Update(userBot);
-        //            }
-
-        //            // D. Ghi Log PurchaseHistory
-        //            var history = new PurchaseHistory
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                UserId = orderData.UserId,
-        //                BotTradingId = orderData.BotTradingId, // Có cái này là ngon rồi
-        //                PriceBot = orderData.Amount,
-        //                PaymentMethod = "PayOS",
-        //                Status = "Paid",
-        //                StartDate = DateTime.UtcNow,
-        //                EndDate = DateTime.UtcNow.AddMonths(orderData.DurationMonths), // Lưu để đối chiếu
-        //                Date = DateTime.UtcNow
-        //            };
-        //            await _context.purchaseHistories.AddAsync(history);
-
-        //            // E. Lưu DB và Xóa Cache
-        //            await _context.SaveChangesAsync();
-        //            _cache.Remove($"BuyBot_{orderCode}");
-
-        //            return _responseBool.responseObjectSuccess("Thanh toán thành công. Bot đã được kích hoạt.", true);
-        //        }
-
-        //        return _responseBool.responseObjectError(StatusCodes.Status400BadRequest, "Chưa thanh toán xong.", false);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return _responseBool.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, false);
-        //    }
-        //}
-
-        // SỬA LẠI TRONG PAYMENT SERVICE
-        //public async Task<bool> ActivateBotAfterPayment(long orderCode, long amount)
-        //{
-        //    try
-        //    {
-        //        // 1. Lấy thông tin từ Cache (Hoặc DB nếu bạn đã chuyển sang DB)
-        //        if (!_cache.TryGetValue($"BuyBot_{orderCode}", out BuyBotOrder orderData))
-        //        {
-        //            return false;
-        //        }
-
-        //        // 2. Kiểm tra tránh trùng lặp (Idempotency)
-        //        // Check xem OrderCode này đã có trong lịch sử chưa
-        //        var isExist = await _context.purchaseHistories.AnyAsync(x => x.OrderCode == orderCode);
-        //        if (isExist) return true;
-
-        //        // 3. Logic kích hoạt/gia hạn (Giữ nguyên của bạn)
-        //        var userBot = await _context.userBots
-        //            .FirstOrDefaultAsync(x => x.UserId == orderData.UserId && x.BotTradingId == orderData.BotTradingId);
-
-        //        if (userBot == null)
-        //        {
-        //            userBot = new UserBot
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                UserId = orderData.UserId,
-        //                BotTradingId = orderData.BotTradingId,
-        //                ExpiredDate = DateTime.UtcNow.AddMonths(orderData.DurationMonths),
-        //            };
-        //            await _context.userBots.AddAsync(userBot);
-        //        }
-        //        else
-        //        {
-        //            userBot.ExpiredDate = (userBot.ExpiredDate > DateTime.UtcNow ? userBot.ExpiredDate : DateTime.UtcNow)
-        //                                  .AddMonths(orderData.DurationMonths);
-        //            _context.userBots.Update(userBot);
-        //        }
-
-        //        // 4. Ghi Log PurchaseHistory
-        //        var history = new PurchaseHistory
-        //        {
-        //            Id = Guid.NewGuid(),
-        //            OrderCode = orderCode, // Cần thêm field này vào Model để quản lý
-        //            UserId = orderData.UserId,
-        //            BotTradingId = orderData.BotTradingId,
-        //            PriceBot = amount,
-        //            PaymentMethod = "PayOS_Webhook",
-        //            Status = "Paid",
-        //            Date = DateTime.UtcNow
-        //        };
-        //        await _context.purchaseHistories.AddAsync(history);
-
-        //        await _context.SaveChangesAsync();
-        //        _cache.Remove($"BuyBot_{orderCode}");
-
-        //        return true;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        public async Task<ResponseObject<bool>> ProcessWebhook(WebhookType webhookData)
-        {
-            try
-            {
-                // 1. Xác thực chữ ký PayOS
-                WebhookData verifiedData = _payOS.verifyPaymentWebhookData(webhookData);
-
-                // 2. Kiểm tra trạng thái thành công
-                if (webhookData.code == "00" && webhookData.desc == "success")
-                {
-                    // 3. Tìm thông tin đơn hàng trong DB
-                    var order = await _context.paymentOrders
-                        .FirstOrDefaultAsync(x => x.OrderCode == verifiedData.orderCode && x.Status == "Pending");
-
-                    if (order == null) return _responseBool.responseObjectError(StatusCodes.Status400BadRequest, "Không tìm thấy đơn hàng.", false);
-
-                    // 4. Kiểm tra chuỗi string để điều hướng
-                    if (order.OrderType == "BuyBot")
-                    {
-                        return await ActivateBotAfterPayment(order.OrderCode, verifiedData.amount);
-                    }
-                    else if (order.OrderType == "Deposit")
-                    {
-                        return await ActivateDepositAfterPayment(order.OrderCode, verifiedData.amount);
-                    }
-                }
-                return _responseBool.responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi đơn hàng", false);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Webhook Error] {ex.Message}");
-                return _responseBool.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, false);
-            }
-        }
     }
 }
-

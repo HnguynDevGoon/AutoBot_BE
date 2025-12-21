@@ -57,5 +57,12 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(result);
         }
 
+        [HttpPost("BuyBotByWallet")]
+        public async Task<IActionResult> BuyBotByWallet(Request_BuyBot request)
+        {
+            var result = await _servicePayment.BuyBotByWallet(request);
+            return Ok(result);
+        }
+
     }
 }

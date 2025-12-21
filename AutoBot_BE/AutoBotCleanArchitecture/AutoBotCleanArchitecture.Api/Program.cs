@@ -40,9 +40,13 @@ builder.Services.AddCors(options =>
 //);
 
 // --- Dùng Postgres ---
+// --- Dùng Postgres (Đã cấu hình ưu tiên Railway) ---
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? builder.Configuration.GetConnectionString("PostgresCon");
+
 builder.Services.AddDbContext<AppDbContext>(opt =>
-   opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresCon"))
+    opt.UseNpgsql(connectionString)
 );
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddSwaggerGen(x =>
