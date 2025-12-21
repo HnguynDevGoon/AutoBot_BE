@@ -2,6 +2,9 @@
 using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Responses;
+using AutoBotCleanArchitecture.Domain.Constants;
+// Thêm namespace này để dùng cho phần Seeding User
+using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Infrastructure.Hubs;
 using AutoBotCleanArchitecture.Infrastructure.Implements;
 using AutoBotCleanArchitecture.Persistence.DBContext;
@@ -15,10 +18,11 @@ using System;
 using System.Text;
 using System.Text.Json;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Thêm CORS
+// ==========================================
+// 1. CẤU HÌNH CORS
+// ==========================================
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -32,53 +36,51 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Connect with database
-
-//---Dùng SQL Server ---
-//builder.Services.AddDbContext<AppDbContext>(opt =>
-//    opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"))
-//);
-
-// --- Dùng Postgres ---
-// --- Dùng Postgres (Đã cấu hình ưu tiên Railway) ---
+// ==========================================
+// 2. CẤU HÌNH DATABASE
+// ==========================================
+// Ưu tiên lấy biến môi trường DATABASE_URL từ Railway
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? builder.Configuration.GetConnectionString("PostgresCon");
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
-    opt.UseNpgsql(connectionString)
+   opt.UseNpgsql(connectionString)
 );
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+// ==========================================
+// 3. CẤU HÌNH SWAGGER & AUTH
+// ==========================================
 builder.Services.AddSwaggerGen(x =>
 {
     x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Swagger eShop Solution", Version = "v1" });
     x.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
-        Description = "Làm theo m?u này. Example: Bearer {Token} ",
+        Description = "Làm theo mẫu này. Example: Bearer {Token} ",
         Name = "Authorization",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
         Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
     x.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                  {
-                    {
-                      new OpenApiSecurityScheme
-                      {
-                        Reference = new OpenApiReference
-                          {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                          },
-                          Scheme = "oauth2",
-                          Name = "Bearer",
-                          In = ParameterLocation.Header,
-                        },
-                        new List<string>()
-                      }
-                    });
-    //x.OperationFilter<SecurityRequirementsOperationFilter>();
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+            },
+            new List<string>()
+        }
+    });
 });
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
@@ -88,37 +90,33 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateAudience = false,
         ValidateIssuer = false,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+            // Cần đảm bảo biến này đã được thêm trong Variables trên Railway
             builder.Configuration.GetSection("AppSettings:SecretKey").Value!))
     };
 
-    // --- BẮT ĐẦU PHẦN THÊM ĐỂ BÁO LỖI 401 ---
     options.Events = new JwtBearerEvents
     {
         OnChallenge = async context =>
         {
             context.HandleResponse();
-
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             context.Response.ContentType = "application/json";
-
             var response = new
             {
                 StatusCode = 401,
                 Message = "Vui lòng làm theo mẫu Bearer {token}"
             };
-
-            // Ghi lỗi ra response
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     };
 });
 
 
-// Add services to the container.
+// ==========================================
+// 4. REGISTER SERVICES (DI)
+// ==========================================
 builder.Services.AddHttpClient();
-
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddSignalR();
 
 builder.Services.AddSingleton<PayOS>(sp =>
@@ -133,7 +131,7 @@ builder.Services.AddSingleton<PayOS>(sp =>
 
 builder.Services.AddScoped<ResponseBase>();
 
-//DTO
+// DTOs
 builder.Services.AddScoped<ResponseObject<DTO_Role>>();
 builder.Services.AddScoped<ResponseObject<DTO_User>>();
 builder.Services.AddScoped<ResponseObject<DTO_Token>>();
@@ -166,9 +164,6 @@ builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_BotTrading>>>()
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WithdrawMoney>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PriceBots>>>();
 
-
-
-
 // Converter
 builder.Services.AddScoped<Converter_Role>();
 builder.Services.AddScoped<Converter_User>();
@@ -180,7 +175,6 @@ builder.Services.AddScoped<Converter_Content>();
 builder.Services.AddScoped<Converter_BotTrading>();
 builder.Services.AddScoped<Converter_UserBot>();
 builder.Services.AddScoped<Converter_PurchaseHistory>();
-
 
 // IService, Service
 builder.Services.AddScoped<IService_Role, Service_Role>();
@@ -196,37 +190,89 @@ builder.Services.AddScoped<IService_ChatRoom, Service_ChatRoom>();
 builder.Services.AddScoped<IService_BotTrading, Service_BotTrading>();
 builder.Services.AddScoped<IService_PurchaseHistory, Service_PurchaseHistory>();
 
-
-
-
-
 builder.Services.AddMemoryCache();
-
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
+// ==========================================
+// 5. PIPELINE & MIDDLEWARE
+// ==========================================
+
+// Bật Swagger cho cả môi trường Production (Railway)
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.MapHub<ChatHub>("/chatHub");
 
-app.UseHttpsRedirection();
+// [QUAN TRỌNG] Tắt dòng này để tránh lỗi vòng lặp Redirect trên Railway
+// app.UseHttpsRedirection(); 
 
 app.UseCors("AllowAll");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Tự động chuyển hướng trang chủ về Swagger
+app.MapGet("/", async context =>
+{
+    context.Response.Redirect("/swagger/index.html");
+    await Task.CompletedTask;
+});
+
+// ==========================================
+// 6. AUTO MIGRATION & SEEDING (SỬA LỖI 500)
+// ==========================================
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+
+        // 1. Tự động tạo bảng Database
+        context.Database.Migrate();
+        Console.WriteLine("--> [Success] Cap nhat Database thanh cong!");
+
+        // 2. Tạo User Admin mặc định nếu chưa có
+        // LƯU Ý: Bạn cần kiểm tra lại tên Entity 'User' và các thuộc tính bên dưới có đúng với code của bạn không
+        if (!context.users.Any())
+        {
+            Console.WriteLine("--> [Seeding] Dang tao du lieu mau...");
+
+            // Ví dụ tạo User Admin (Pass: Admin@123)
+            // Nếu bạn dùng mã hóa mật khẩu, hãy thay chuỗi bên dưới bằng chuỗi đã mã hóa
+            var adminUser = new User
+            {
+                Id = DefaultRoles.ADMIN_USER_ID,
+                UserName = "Admin",
+                Email = "huynhnguyen13122005@gmail.com",
+                FullName = "Quản Trị Viên",
+                PhoneNumber = "0123456789",
+                BirthDay = new DateOnly(2000, 1, 1),
+                PassWord = "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a",
+                IsActive = true,
+                CreatedDate = DateTime.UtcNow,
+                LockoutEnable = false,
+                AccessFailedCount = 0,
+                UrlAvatar = "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg",
+                TwoStep = true,
+                RoleId = DefaultRoles.ADMIN_ID
+                            };
+
+            context.users.Add(adminUser);
+            context.SaveChanges();
+            Console.WriteLine("--> [Success] Da tao User: Admin");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("--> [Error] Loi khi cap nhat Database: " + ex.Message);
+    }
+}
 
 app.Run();
