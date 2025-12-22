@@ -183,6 +183,7 @@ builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_Content>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_BotTrading>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WithdrawMoney>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PriceBots>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>>();
 
 // Converter
 builder.Services.AddScoped<Converter_Role>();

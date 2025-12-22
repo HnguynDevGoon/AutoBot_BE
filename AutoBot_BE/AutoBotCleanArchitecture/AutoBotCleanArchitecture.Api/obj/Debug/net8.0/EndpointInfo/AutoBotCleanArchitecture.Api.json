@@ -1337,25 +1337,6 @@
         "tags": [
           "Device"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_GetDevices"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_GetDevices"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_GetDevices"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1375,6 +1356,13 @@
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          },
+          {
+            "name": "fingerprint",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1858,30 +1846,31 @@
         }
       }
     },
-    "/api/PurchaseHistory": {
-      "post": {
+    "/api/PurchaseHistory/GetPayOSHistory": {
+      "get": {
         "tags": [
           "PurchaseHistory"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_AddPurchaseHistory"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_AddPurchaseHistory"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_AddPurchaseHistory"
-              }
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1889,10 +1878,116 @@
         }
       }
     },
-    "/api/PurchaseHistory/GetMyHistory": {
+    "/api/PurchaseHistory/GetWalletHistory": {
       "get": {
         "tags": [
           "PurchaseHistory"
+        ],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/PurchaseHistory/GetMyLastPurchase": {
+      "get": {
+        "tags": [
+          "PurchaseHistory"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/PurchaseHistory/GetMyHistoryByMonth": {
+      "get": {
+        "tags": [
+          "PurchaseHistory"
+        ],
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/PurchaseHistory/GetMyHistoryByYear": {
+      "get": {
+        "tags": [
+          "PurchaseHistory"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/PurchaseHistory/DeletePurchaseHistory": {
+      "delete": {
+        "tags": [
+          "PurchaseHistory"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -2015,69 +2110,6 @@
             "schema": {
               "type": "integer",
               "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/PurchaseHistory/UpdatePurchaseHistory": {
-      "post": {
-        "tags": [
-          "PurchaseHistory"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_AddPurchaseHistory"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_AddPurchaseHistory"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_AddPurchaseHistory"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/PurchaseHistory/DeletePurchaseHistory": {
-      "delete": {
-        "tags": [
-          "PurchaseHistory"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
             }
           }
         ],
@@ -2645,28 +2677,6 @@
         },
         "additionalProperties": false
       },
-      "Request_AddPurchaseHistory": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "priceBot": {
-            "type": "number",
-            "format": "double"
-          },
-          "durationDays": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "Request_BotTrading": {
         "type": "object",
         "properties": {
@@ -2839,16 +2849,6 @@
           "idToken": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Request_GetDevices": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string",
-            "format": "uuid"
           }
         },
         "additionalProperties": false
@@ -3454,7 +3454,7 @@
     "securitySchemes": {
       "Bearer": {
         "type": "apiKey",
-        "description": "Làm theo m?u này. Example: Bearer {Token} ",
+        "description": "Bearer {Token}",
         "name": "Authorization",
         "in": "header"
       }

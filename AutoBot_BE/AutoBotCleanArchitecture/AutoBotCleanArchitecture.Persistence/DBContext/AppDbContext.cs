@@ -82,6 +82,10 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
             builder.Entity<PriceBot>()
                 .HasIndex(pb => new { pb.Month, pb.BotTradingId })
                 .IsUnique();
+
+            builder.Entity<UserDevice>()
+            .HasIndex(d => new { d.UserId, d.Fingerprint })
+            .IsUnique();
         }
     }
 }

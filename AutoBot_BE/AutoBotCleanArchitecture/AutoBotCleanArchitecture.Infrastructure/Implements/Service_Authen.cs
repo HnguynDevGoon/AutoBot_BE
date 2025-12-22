@@ -285,17 +285,14 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
         public async Task<ResponseObject<DTO_Token>> UserLogin(Request_UserLogin request)
         {
+            // 1. Validate Input
             if (string.IsNullOrWhiteSpace(request.LoginIdentifier) ||
                 string.IsNullOrWhiteSpace(request.PassWord))
             {
-                return responseObjectToken.responseObjectError(
-                    StatusCodes.Status400BadRequest,
-                    "Giá trị nhập không hợp lệ",
-                    null
-                );
+                return responseObjectToken.responseObjectError(StatusCodes.Status400BadRequest, "Giá trị nhập không hợp lệ", null);
             }
 
-            // Tìm user
+            // 2. Tìm User
             var identifier = request.LoginIdentifier;
             var user = await dbContext.users
                 .FirstOrDefaultAsync(x =>
@@ -306,76 +303,56 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
             if (user == null)
             {
-                return responseObjectToken.responseObjectError(
-                    StatusCodes.Status400BadRequest,
-                    "Tên tài khoản hoặc mật khẩu không hợp lệ!",
-                    null
-                );
+                return responseObjectToken.responseObjectError(StatusCodes.Status400BadRequest, "Tên tài khoản hoặc mật khẩu không hợp lệ!", null);
             }
 
-            // ========== 1. CHECK LOCKOUT ==========
+            // 3. Check Lockout (Khóa tài khoản)
             if (user.LockoutEnable == true)
             {
                 if (user.LockoutEnd > DateTime.UtcNow)
                 {
-                    var secondsLeft = Math.Ceiling(
-                        (user.LockoutEnd - DateTime.UtcNow).TotalSeconds
-                    );
-
-                    return responseObjectToken.responseObjectError(
-                        StatusCodes.Status423Locked,
-                        $"Tài khoản đang bị khóa. Vui lòng thử lại sau {secondsLeft} giây.",
-                        null
-                    );
+                    var secondsLeft = Math.Ceiling((user.LockoutEnd - DateTime.UtcNow).TotalSeconds);
+                    return responseObjectToken.responseObjectError(StatusCodes.Status423Locked, $"Tài khoản đang bị khóa. Vui lòng thử lại sau {secondsLeft} giây.", null);
                 }
-
-                // hết hạn lock → reset
+                // Hết hạn khóa -> Reset
                 user.AccessFailedCount = 0;
                 user.LockoutEnable = false;
             }
 
-            // ========== 2. PASSWORD SAI ==========
+            // 4. Check Password
             if (!BCrypt.Net.BCrypt.Verify(request.PassWord, user.PassWord))
             {
                 user.AccessFailedCount++;
-
                 if (user.AccessFailedCount >= 5)
                 {
                     user.LockoutEnd = DateTime.UtcNow.AddMinutes(1);
                     user.LockoutEnable = true;
                 }
-
                 await dbContext.SaveChangesAsync();
-                return responseObjectToken.responseObjectError(
-                    StatusCodes.Status400BadRequest,
-                    "Tên tài khoản hoặc mật khẩu không hợp lệ!",
-                    null
-                );
+                return responseObjectToken.responseObjectError(StatusCodes.Status400BadRequest, "Tên tài khoản hoặc mật khẩu không hợp lệ!", null);
             }
 
-            // ========== 3. PASSWORD ĐÚNG ==========
+            // Reset count nếu login đúng
             if (user.AccessFailedCount > 0)
             {
                 user.AccessFailedCount = 0;
             }
 
-            // ========== 4. CHECK ACTIVE ==========
+            // 5. Check Active (Kích hoạt email)
             if (user.IsActive != true)
             {
                 var oldCodes = dbContext.confirmEmails.Where(x => x.UserId == user.Id);
-                if (oldCodes.Any())
-                {
-                    dbContext.confirmEmails.RemoveRange(oldCodes);
-                }
+                if (oldCodes.Any()) dbContext.confirmEmails.RemoveRange(oldCodes);
 
                 Random r = new Random();
                 int code = r.Next(100000, 999999);
 
+                // Gửi mail (Giữ nguyên logic của ông)
                 var emailTo = new EmailTo();
                 emailTo.Mail = user.Email;
                 emailTo.Subject = "Kích hoạt tài khoản";
                 emailTo.Content = $"Mã xác nhận của bạn là: {code}. Mã của bạn sẽ hết hạn sau 2 phút !";
-                emailTo.SendEmailAsync(emailTo);   // GIỮ NGUYÊN CÁCH GỌI
+                emailTo.SendEmailAsync(emailTo);
 
                 var confirmEmail = new ConfirmEmail();
                 confirmEmail.Code = code.ToString();
@@ -387,21 +364,14 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 await dbContext.confirmEmails.AddAsync(confirmEmail);
                 await dbContext.SaveChangesAsync();
 
-                return responseObjectToken.responseObjectError(
-                    StatusCodes.Status401Unauthorized,
-                    "Tài khoản chưa được xác thực. Chúng tôi đã gửi lại mã xác nhận đến email của bạn.",
-                    null
-                );
+                return responseObjectToken.responseObjectError(StatusCodes.Status401Unauthorized, "Tài khoản chưa được xác thực. Chúng tôi đã gửi lại mã xác nhận đến email của bạn.", null);
             }
 
-            // ========== 5. TWO-STEP OTP ==========
+            // 6. Check Two-Step (2FA)
             if (user.TwoStep == true)
             {
                 var oldCodes = dbContext.confirmEmails.Where(x => x.UserId == user.Id);
-                if (oldCodes.Any())
-                {
-                    dbContext.confirmEmails.RemoveRange(oldCodes);
-                }
+                if (oldCodes.Any()) dbContext.confirmEmails.RemoveRange(oldCodes);
 
                 Random r = new Random();
                 int code = r.Next(100000, 999999);
@@ -410,7 +380,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 emailTo.Mail = user.Email;
                 emailTo.Subject = "Mã xác thực 2 bước";
                 emailTo.Content = $"Mã xác nhận đăng nhập của bạn là: {code}. Mã sẽ hết hạn sau 2 phút!";
-                emailTo.SendEmailAsync(emailTo);    // GIỮ NGUYÊN CÁCH GỌI
+                emailTo.SendEmailAsync(emailTo);
 
                 var confirmEmail = new ConfirmEmail();
                 confirmEmail.Code = code.ToString();
@@ -422,45 +392,93 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 await dbContext.confirmEmails.AddAsync(confirmEmail);
                 await dbContext.SaveChangesAsync();
 
-                return responseObjectToken.responseObjectError(
-                    StatusCodes.Status412PreconditionFailed,
-                    "Tài khoản đã bật xác thực 2 bước. Vui lòng nhập mã OTP được gửi qua email.",
-                    null
-                );
+                return responseObjectToken.responseObjectError(StatusCodes.Status412PreconditionFailed, "Tài khoản đã bật xác thực 2 bước. Vui lòng nhập mã OTP được gửi qua email.", null);
             }
 
-
-            // ========== 6. TẠO TOKEN ==========
+            // 7. Tạo Token
             var dtoToken = await GenerateAccessToken(user);
 
-            // ========== 7. QUẢN LÝ THIẾT BỊ ==========
-            var device = await dbContext.userDevices
-                .FirstOrDefaultAsync(d =>
-                    d.UserId == user.Id &&
-                    d.Fingerprint == request.Fingerprint
-                );
+            // ========== 8. QUẢN LÝ THIẾT BỊ (ĐOẠN QUAN TRỌNG ĐỂ FIX LỖI 23505) ==========
 
-            if (device == null)
+            // Clean chuỗi fingerprint
+            var clientFingerprint = request.Fingerprint?.Trim();
+
+            // Tìm xem thiết bị đã có chưa
+            var device = await dbContext.userDevices
+                .FirstOrDefaultAsync(d => d.UserId == user.Id && d.Fingerprint == clientFingerprint);
+
+            if (device != null)
             {
-                await dbContext.userDevices.AddAsync(new UserDevice
+                // CASE A: Đã có -> Update Token mới
+                device.AccessToken = dtoToken.AccessToken;
+                device.RefreshToken = dtoToken.RefreshToken;
+                device.LastUpdatedAt = DateTime.UtcNow;
+
+                await dbContext.SaveChangesAsync();
+            }
+            else
+            {
+                // CASE B: Chưa có -> Tạo mới (Dùng Try-Catch để bắt Race Condition)
+                var newDevice = new UserDevice
                 {
                     Id = Guid.NewGuid(),
                     UserId = user.Id,
-                    Fingerprint = request.Fingerprint,
+                    Fingerprint = clientFingerprint,
                     AccessToken = dtoToken.AccessToken,
                     RefreshToken = dtoToken.RefreshToken,
                     CreatedAt = DateTime.UtcNow,
                     LastUpdatedAt = DateTime.UtcNow
-                });
-            }
-            else
-            {
-                device.AccessToken = dtoToken.AccessToken;
-                device.RefreshToken = dtoToken.RefreshToken;
-                device.LastUpdatedAt = DateTime.UtcNow;
+                };
+
+                try
+                {
+                    await dbContext.userDevices.AddAsync(newDevice);
+                    await dbContext.SaveChangesAsync(); // Cố gắng Insert
+                }
+                catch (DbUpdateException ex)
+                {
+                    // Kiểm tra xem có phải lỗi trùng lặp Postgres (23505) không
+                    bool isDuplicate = false;
+                    if (ex.InnerException is Npgsql.PostgresException pgEx && pgEx.SqlState == "23505")
+                    {
+                        isDuplicate = true;
+                    }
+
+                    if (isDuplicate)
+                    {
+                        // ==> XẢY RA XUNG ĐỘT: Request khác đã tạo xong rồi.
+
+                        // 1. Hủy theo dõi cái entity bị lỗi để tránh EF bị kẹt
+                        dbContext.Entry(newDevice).State = EntityState.Detached;
+
+                        // 2. Query lại để lấy cái thằng vừa được tạo bởi request kia
+                        var existingRetry = await dbContext.userDevices
+                            .FirstOrDefaultAsync(d => d.UserId == user.Id && d.Fingerprint == clientFingerprint);
+
+                        // 3. Update đè lên nó
+                        if (existingRetry != null)
+                        {
+                            existingRetry.AccessToken = dtoToken.AccessToken;
+                            existingRetry.RefreshToken = dtoToken.RefreshToken;
+                            existingRetry.LastUpdatedAt = DateTime.UtcNow;
+
+                            dbContext.userDevices.Update(existingRetry);
+                            await dbContext.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        // Nếu lỗi khác (không phải trùng lặp) thì ném ra ngoài
+                        throw;
+                    }
+                }
             }
 
-            await dbContext.SaveChangesAsync();
+            // Lưu các thay đổi khác (ví dụ reset AccessFailedCount) nếu chưa lưu
+            if (dbContext.ChangeTracker.HasChanges())
+            {
+                await dbContext.SaveChangesAsync();
+            }
 
             return responseObjectToken.responseObjectSuccess(
                 "Đăng nhập thành công",

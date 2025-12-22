@@ -15,7 +15,7 @@ namespace AutoBotCleanArchitecture.Application.DTOs
         public string PaymentMethod { get; set; }
         public string Status { get; set; }
         public DateTime Date { get; set; }
-
+        public string NameBot { get; set; }
         public Guid UserId { get; set; }
         public string UserName { get; set; }
     }

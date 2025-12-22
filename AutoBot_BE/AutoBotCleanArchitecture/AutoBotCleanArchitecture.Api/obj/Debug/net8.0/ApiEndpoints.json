@@ -784,6 +784,11 @@
         "Name": "userId",
         "Type": "System.Guid",
         "IsRequired": false
+      },
+      {
+        "Name": "fingerprint",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -795,13 +800,7 @@
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.Device.Request_GetDevices",
-        "IsRequired": true
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -1100,22 +1099,6 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
-    "Method": "Create",
-    "RelativePath": "api/PurchaseHistory",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.PurchaseHistory.Request_AddPurchaseHistory",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
     "Method": "Delete",
     "RelativePath": "api/PurchaseHistory/DeletePurchaseHistory",
     "HttpMethod": "DELETE",
@@ -1174,12 +1157,70 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
-    "Method": "GetMyHistory",
-    "RelativePath": "api/PurchaseHistory/GetMyHistory",
+    "Method": "GetMyHistoryByMonth",
+    "RelativePath": "api/PurchaseHistory/GetMyHistoryByMonth",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "month",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
+    "Method": "GetMyHistoryByYear",
+    "RelativePath": "api/PurchaseHistory/GetMyHistoryByYear",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
+    "Method": "GetMyLastPurchase",
+    "RelativePath": "api/PurchaseHistory/GetMyLastPurchase",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
+    "Method": "GetPayOSHistory",
+    "RelativePath": "api/PurchaseHistory/GetPayOSHistory",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -1289,21 +1330,21 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
-    "Method": "Update",
-    "RelativePath": "api/PurchaseHistory/UpdatePurchaseHistory",
-    "HttpMethod": "POST",
+    "Method": "GetWalletHistory",
+    "RelativePath": "api/PurchaseHistory/GetWalletHistory",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Guid",
+        "Name": "pageNumber",
+        "Type": "System.Int32",
         "IsRequired": false
       },
       {
-        "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.PurchaseHistory.Request_AddPurchaseHistory",
-        "IsRequired": true
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

@@ -1,6 +1,7 @@
 ﻿using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Responses;
+using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Persistence.DBContext;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
 
             var user = _httpContextAccessor.HttpContext?.User;
-            var idClaim = user?.FindFirst("Id"); 
+            var idClaim = user?.FindFirst("Id");
 
             if (idClaim == null)
             {
@@ -37,7 +38,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 throw new UnauthorizedAccessException("Token không hợp lệ hoặc thiếu User ID.");
             }
 
-            Guid currentUserId = Guid.Parse(idClaim.Value); 
+            Guid currentUserId = Guid.Parse(idClaim.Value);
 
             var devices = await dbContext.userDevices
                 .Where(d => d.UserId == currentUserId)
@@ -57,29 +58,12 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         }
 
 
-        public async Task<List<DTO_UserDevice>> GetAccessTokens() 
+        public async Task<UserDevice> GetAccessTokens(Guid userId, string fingerprint)
         {
+            var device = await dbContext.userDevices
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.Fingerprint == fingerprint);
 
-            var user = _httpContextAccessor.HttpContext?.User;
-            var idClaim = user?.FindFirst("Id");
-
-            if (idClaim == null)
-            {
-                throw new UnauthorizedAccessException("Token không hợp lệ hoặc thiếu User ID.");
-            }
-
-            Guid currentUserId = Guid.Parse(idClaim.Value);
-    
-            var devices = await dbContext.userDevices
-                .Where(d => d.UserId == currentUserId) 
-                .Select(d => new DTO_UserDevice
-                {
-                    AccessToken = d.AccessToken,
-                    RefreshToken = d.RefreshToken,
-                })
-                .ToListAsync();
-
-            return devices ?? new List<DTO_UserDevice>();
+            return device;
         }
 
         public async Task<ResponseObject<List<DTO_UserDevice>>> LogoutAllDevices()

@@ -21,7 +21,7 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 PaymentMethod = entity.PaymentMethod,
                 Status = entity.Status,
                 Date = entity.Date,
-
+                NameBot = entity.BotTrading?.NameBot,
                 UserId = entity.UserId,
                 UserName = entity.User != null ? entity.User.FullName : "Unknown User"
             };

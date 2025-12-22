@@ -1,5 +1,4 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
-using AutoBotCleanArchitecture.Application.Requests.PurchaseHistory;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,95 +11,132 @@ namespace AutoBotCleanArchitecture.Api.Controllers
     [ApiController]
     public class PurchaseHistoryController : ControllerBase
     {
-        private readonly IService_PurchaseHistory service_PurchaseHistory;
+        private readonly IService_PurchaseHistory servicePurchaseHistory;
 
-        public PurchaseHistoryController(IService_PurchaseHistory service_PurchaseHistory)
+        public PurchaseHistoryController(IService_PurchaseHistory servicePurchaseHistory)
         {
-            this.service_PurchaseHistory = service_PurchaseHistory;
+            this.servicePurchaseHistory = servicePurchaseHistory;
         }
 
-        [HttpPost]
+        // =================================================================================
+        // PHẦN 1: USER API (CÁ NHÂN - DÙNG TOKEN)
+        // =================================================================================
+
+        [HttpGet("GetPayOSHistory")]
+        public async Task<IActionResult> GetPayOSHistory(int pageNumber = 1, int pageSize = 10)
+        {
+            var result = await servicePurchaseHistory.GetMyHistoryByPaymentMethod("PayOS", pageNumber, pageSize);
+            return Ok(result);
+        }
+
+        [HttpGet("GetWalletHistory")]
+        public async Task<IActionResult> GetWalletHistory(int pageNumber = 1, int pageSize = 10)
+        {
+            var result = await servicePurchaseHistory.GetMyHistoryByPaymentMethod("Wallet", pageNumber, pageSize);
+            return Ok(result);
+        }
+
+        // 2. Xem giao dịch gần nhất của tôi
+        [HttpGet("GetMyLastPurchase")]
         [Authorize]
-        public async Task<IActionResult> Create(Request_AddPurchaseHistory request)
+        public async Task<IActionResult> GetMyLastPurchase()
         {
-            return Ok(await service_PurchaseHistory.AddPurchaseHistory(request));
+            return Ok(await servicePurchaseHistory.GetMyLastPurchase());
         }
 
-        [HttpGet("GetMyHistory")]
+        // 3. Lọc theo tháng (Của tôi)
+        [HttpGet("GetMyHistoryByMonth")]
         [Authorize]
-        public async Task<IActionResult> GetMyHistory()
+        public async Task<IActionResult> GetMyHistoryByMonth(int month, int year)
         {
-            return Ok(await service_PurchaseHistory.GetMyHistory());
+            return Ok(await servicePurchaseHistory.GetMyHistoryByMonth(month, year));
         }
 
-        [HttpGet("GetAll")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAll()
+        // 4. Lọc theo năm (Của tôi)
+        [HttpGet("GetMyHistoryByYear")]
+        [Authorize]
+        public async Task<IActionResult> GetMyHistoryByYear(int year)
         {
-            return Ok(await service_PurchaseHistory.GetAll());
+            return Ok(await servicePurchaseHistory.GetMyHistoryByYear(year));
         }
 
-        [HttpGet("GetByUser")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetByUser(Guid userId)
-        {
-            return Ok(await service_PurchaseHistory.GetByUser(userId));
-        }
 
-        [HttpGet("GetLastPurchaseByUser")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetLastByUser(Guid userId)
-        {
-            return Ok(await service_PurchaseHistory.GetLastPurchaseByUser(userId));
-        }
+        // =================================================================================
+        // PHẦN 2: ADMIN API (QUẢN LÝ - CẦN USERID)
+        // =================================================================================
 
-        [HttpGet("GetPurchaseHistoriesMonthByUser")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetByMonthUser(Guid userId, int month, int year)
-        {
-            return Ok(await service_PurchaseHistory.GetPurchaseHistoriesMonthByUser(userId, month, year));
-        }
-
-        [HttpGet("GetPurchaseHistoriesYearByUser")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetByYearUser(Guid userId, int year)
-        {
-            return Ok(await service_PurchaseHistory.GetPurchaseHistoriesYearByUser(userId, year));
-        }
-
-        [HttpPost("UpdatePurchaseHistory")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update(Guid id, Request_AddPurchaseHistory request)
-        {
-            return Ok(await service_PurchaseHistory.UpdatePurchaseHistory(id, request));
-        }
-
+        // 1. Xóa lịch sử (Chỉ Admin)
         [HttpDelete("DeletePurchaseHistory")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await service_PurchaseHistory.DeletePurchaseHistory(id));
+            return Ok(await servicePurchaseHistory.DeletePurchaseHistory(id));
         }
+
+        // 2. Xem tất cả lịch sử hệ thống
+        [HttpGet("GetAll")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await servicePurchaseHistory.GetAll());
+        }
+
+        // 3. Xem lịch sử của user cụ thể
+        [HttpGet("GetByUser")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetByUser(Guid userId)
+        {
+            return Ok(await servicePurchaseHistory.GetByUser(userId));
+        }
+
+        // 4. Xem giao dịch cuối của user cụ thể
+        [HttpGet("GetLastPurchaseByUser")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetLastByUser(Guid userId)
+        {
+            return Ok(await servicePurchaseHistory.GetLastPurchaseByUser(userId));
+        }
+
+        // 5. Lọc tháng của user cụ thể
+        [HttpGet("GetPurchaseHistoriesMonthByUser")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetByMonthUser(Guid userId, int month, int year)
+        {
+            return Ok(await servicePurchaseHistory.GetPurchaseHistoriesMonthByUser(userId, month, year));
+        }
+
+        // 6. Lọc năm của user cụ thể
+        [HttpGet("GetPurchaseHistoriesYearByUser")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetByYearUser(Guid userId, int year)
+        {
+            return Ok(await servicePurchaseHistory.GetPurchaseHistoriesYearByUser(userId, year));
+        }
+
+
+        // =================================================================================
+        // PHẦN 3: THỐNG KÊ DOANH THU (ADMIN)
+        // =================================================================================
 
         [HttpGet("GetRevenueByMonth")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetRevenueMonth(int month, int year)
         {
-            return Ok(await service_PurchaseHistory.GetRevenueByMonth(month, year));
+            return Ok(await servicePurchaseHistory.GetRevenueByMonth(month, year));
         }
 
         [HttpGet("GetRevenueByYear")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetRevenueYear(int year)
         {
-            return Ok(await service_PurchaseHistory.GetRevenueByYear(year));
+            return Ok(await servicePurchaseHistory.GetRevenueByYear(year));
         }
 
         [HttpGet("GetRevenueByDateRange")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetRevenueRange(DateTime from, DateTime to)
         {
-            return Ok(await service_PurchaseHistory.GetRevenueByDateRange(from, to));
+            return Ok(await servicePurchaseHistory.GetRevenueByDateRange(from, to));
         }
     }
 }

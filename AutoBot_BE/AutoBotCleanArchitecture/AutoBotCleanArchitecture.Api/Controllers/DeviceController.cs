@@ -1,4 +1,5 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
+using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Infrastructure.Implements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,9 +27,9 @@ namespace AutoBotCleanArchitecture.Api.Controllers
 
         [HttpGet("GetAccessTokens")]
         //[Authorize]
-        public async Task<IActionResult> GetAccessTokens()
+        public async Task<IActionResult> GetAccessTokens(Guid userId, string fingerprint)
         {
-            return Ok(await service_Device.GetAccessTokens());
+            return Ok(await service_Device.GetAccessTokens(userId, fingerprint));
         }
 
         [HttpPost("LogoutAllDevices")]

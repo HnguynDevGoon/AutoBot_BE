@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Requests\Device\" />
+    <Folder Include="Requests\PurchaseHistory\" />
   </ItemGroup>
 
 </Project>

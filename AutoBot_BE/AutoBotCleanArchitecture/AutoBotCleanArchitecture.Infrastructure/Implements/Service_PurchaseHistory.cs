@@ -1,7 +1,6 @@
 ﻿using AutoBotCleanArchitecture.Application.Converters;
 using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
-using AutoBotCleanArchitecture.Application.Requests.PurchaseHistory;
 using AutoBotCleanArchitecture.Application.Responses;
 using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Persistence.DBContext;
@@ -10,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AutoBotCleanArchitecture.Infrastructure.Implements
@@ -18,265 +18,276 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
     {
         private readonly AppDbContext dbContext;
         private readonly Converter_PurchaseHistory converter;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        // Các Response Object
-        private readonly ResponseObject<DTO_PurchaseHistory> responseSingle;
-        private readonly ResponseObject<List<DTO_PurchaseHistory>> responseList;
-        private readonly ResponseObject<DTO_RevenueResponse> responseRevenue;
+        private readonly ResponseObject<DTO_PurchaseHistory> responseObjectPurchase;
+        private readonly ResponseObject<List<DTO_PurchaseHistory>> responseObjectListPurchase;
+        private readonly ResponseObject<ResponsePagination<DTO_PurchaseHistory>> responseObjectPaginationPurchase;
+        private readonly ResponseObject<DTO_RevenueResponse> responseObjectRevenue;
         private readonly ResponseBase responseBase;
 
         public Service_PurchaseHistory(
             AppDbContext dbContext,
             Converter_PurchaseHistory converter,
             IHttpContextAccessor httpContextAccessor,
-            ResponseObject<DTO_PurchaseHistory> responseSingle,
-            ResponseObject<List<DTO_PurchaseHistory>> responseList,
-            ResponseObject<DTO_RevenueResponse> responseRevenue,
+            ResponseObject<DTO_PurchaseHistory> responseObjectPurchase,
+            ResponseObject<List<DTO_PurchaseHistory>> responseObjectListPurchase,
+            ResponseObject<ResponsePagination<DTO_PurchaseHistory>> responseObjectPaginationPurchase,
+            ResponseObject<DTO_RevenueResponse> responseObjectRevenue,
             ResponseBase responseBase)
         {
             this.dbContext = dbContext;
             this.converter = converter;
-            _httpContextAccessor = httpContextAccessor;
-            this.responseSingle = responseSingle;
-            this.responseList = responseList;
-            this.responseRevenue = responseRevenue;
+            this.httpContextAccessor = httpContextAccessor;
+            this.responseObjectPurchase = responseObjectPurchase;
+            this.responseObjectListPurchase = responseObjectListPurchase;
+            this.responseObjectPaginationPurchase = responseObjectPaginationPurchase;
+            this.responseObjectRevenue = responseObjectRevenue;
             this.responseBase = responseBase;
         }
 
-        // 1. ADD (Thêm mới)
-        public async Task<ResponseObject<DTO_PurchaseHistory>> AddPurchaseHistory(Request_AddPurchaseHistory request)
+        // =================================================================================
+        // PHẦN 1: USER (CÁ NHÂN) - TỰ ĐỘNG CHECK TOKEN
+        // (Logic lấy ID được viết trực tiếp trong hàm)
+        // =================================================================================
+
+        public async Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetMyHistoryByPaymentMethod(string paymentMethod, int pageNumber, int pageSize)
         {
             try
             {
-                var userExists = await dbContext.users.AnyAsync(x => x.Id == request.UserId);
-                if (!userExists) return responseSingle.responseObjectError(StatusCodes.Status404NotFound, "User không tồn tại", null);
+                // --- COPY LOGIC LẤY USER ID ---
+                var user = httpContextAccessor.HttpContext?.User;
+                var userIdString = user?.FindFirst("Id")?.Value;
+                if (string.IsNullOrEmpty(userIdString)) userIdString = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                var entity = new PurchaseHistory
+                if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
                 {
-                    Id = Guid.NewGuid(),
-                    UserId = request.UserId,
-                    PriceBot = request.PriceBot,
-                    PaymentMethod = request.PaymentMethod,
-                    Date = DateTime.UtcNow,
-                    StartDate = DateTime.UtcNow,
-                    // Nếu request có DurationDays thì cộng vào, nếu logic cũ gửi EndDate thì sửa lại chỗ này
-                    EndDate = DateTime.UtcNow.AddDays(request.DurationDays),
-                    Status = "Paid"
+                    return responseObjectPaginationPurchase.responseObjectError(StatusCodes.Status401Unauthorized, "Vui lòng đăng nhập.", null);
+                }
+                // ------------------------------
+
+                if (pageNumber < 1) pageNumber = 1;
+                if (pageSize < 1) pageSize = 10;
+
+                // Query có lọc thêm PaymentMethod
+                var query = dbContext.purchaseHistories
+                    .Include(x => x.User).Include(x => x.BotTrading)
+                    .Where(x => x.UserId == userId && x.PaymentMethod == paymentMethod) // <--- Lọc ở đây
+                    .OrderByDescending(x => x.Date);
+
+                // Tính toán phân trang
+                var totalItems = await query.CountAsync();
+                var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+                var dtos = items.Select(x => converter.EntityToDTO(x)).ToList();
+
+                var pagedResult = new ResponsePagination<DTO_PurchaseHistory>
+                {
+                    Items = dtos,
+                    CurrentPage = pageNumber,
+                    PageSize = pageSize,
+                    TotalItems = totalItems,
+                    TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
                 };
 
-                await dbContext.purchaseHistories.AddAsync(entity);
-                await dbContext.SaveChangesAsync();
-
-                await dbContext.Entry(entity).Reference(x => x.User).LoadAsync();
-
-                return responseSingle.responseObjectSuccess("Thêm thành công", converter.EntityToDTO(entity));
+                return responseObjectPaginationPurchase.responseObjectSuccess($"Lấy lịch sử {paymentMethod} thành công.", pagedResult);
             }
             catch (Exception ex)
             {
-                return responseSingle.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
+                return responseObjectPaginationPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
         }
 
-        // 2. UPDATE (Cập nhật - Hồi nãy thiếu cái này)
-        // Ông cần tạo Request_UpdatePurchaseHistory tương ứng nhé
-        public async Task<ResponseObject<DTO_PurchaseHistory>> UpdatePurchaseHistory(Guid id, Request_AddPurchaseHistory request)
+        // 2. Xem giao dịch gần nhất của tôi
+        public async Task<ResponseObject<DTO_PurchaseHistory>> GetMyLastPurchase()
         {
             try
             {
-                var entity = await dbContext.purchaseHistories.FindAsync(id);
-                if (entity == null) return responseSingle.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy", null);
+                var user = httpContextAccessor.HttpContext?.User;
+                var userIdString = user?.FindFirst("Id")?.Value;
+                if (string.IsNullOrEmpty(userIdString)) userIdString = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                // Map dữ liệu cập nhật
-                entity.PriceBot = request.PriceBot;
-                entity.PaymentMethod = request.PaymentMethod;
-                // entity.Status = request.Status; // Nếu trong Request có Status
-                // Cập nhật ngày tháng nếu cần...
+                if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+                {
+                    return responseObjectPurchase.responseObjectError(StatusCodes.Status401Unauthorized, "Vui lòng đăng nhập.", null);
+                }
 
-                dbContext.purchaseHistories.Update(entity);
-                await dbContext.SaveChangesAsync();
+                var entity = await dbContext.purchaseHistories
+                    .Include(x => x.User).Include(x => x.BotTrading)
+                    .Where(x => x.UserId == userId)
+                    .OrderByDescending(x => x.Date)
+                    .FirstOrDefaultAsync();
 
-                // Load User để trả về DTO đầy đủ
-                await dbContext.Entry(entity).Reference(x => x.User).LoadAsync();
-
-                return responseSingle.responseObjectSuccess("Cập nhật thành công", converter.EntityToDTO(entity));
+                if (entity == null) return responseObjectPurchase.responseObjectError(StatusCodes.Status404NotFound, "Bạn chưa có giao dịch nào.", null);
+                return responseObjectPurchase.responseObjectSuccess("Thành công.", converter.EntityToDTO(entity));
             }
-            catch (Exception ex)
-            {
-                return responseSingle.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
-            }
+            catch (Exception ex) { return responseObjectPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
-        // 3. DELETE (Xóa)
+        // 3. Lọc lịch sử theo tháng của tôi
+        public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyHistoryByMonth(int month, int year)
+        {
+            try
+            {
+                var user = httpContextAccessor.HttpContext?.User;
+                var userIdString = user?.FindFirst("Id")?.Value;
+                if (string.IsNullOrEmpty(userIdString)) userIdString = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+                {
+                    return responseObjectListPurchase.responseObjectError(StatusCodes.Status401Unauthorized, "Vui lòng đăng nhập.", null);
+                }
+
+                var list = await dbContext.purchaseHistories
+                    .Include(x => x.User).Include(x => x.BotTrading)
+                    .Where(x => x.UserId == userId && x.Date.Month == month && x.Date.Year == year)
+                    .OrderByDescending(x => x.Date)
+                    .ToListAsync();
+                return responseObjectListPurchase.responseObjectSuccess($"Lịch sử tháng {month}/{year}.", list.Select(x => converter.EntityToDTO(x)).ToList());
+            }
+            catch (Exception ex) { return responseObjectListPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
+        }
+
+        // 4. Lọc lịch sử theo năm của tôi
+        public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyHistoryByYear(int year)
+        {
+            try
+            {
+                var user = httpContextAccessor.HttpContext?.User;
+                var userIdString = user?.FindFirst("Id")?.Value;
+                if (string.IsNullOrEmpty(userIdString)) userIdString = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+                {
+                    return responseObjectListPurchase.responseObjectError(StatusCodes.Status401Unauthorized, "Vui lòng đăng nhập.", null);
+                }
+
+                var list = await dbContext.purchaseHistories
+                    .Include(x => x.User).Include(x => x.BotTrading)
+                    .Where(x => x.UserId == userId && x.Date.Year == year)
+                    .OrderByDescending(x => x.Date)
+                    .ToListAsync();
+                return responseObjectListPurchase.responseObjectSuccess($"Lịch sử năm {year}.", list.Select(x => converter.EntityToDTO(x)).ToList());
+            }
+            catch (Exception ex) { return responseObjectListPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
+        }
+
+
+        // =================================================================================
+        // PHẦN 2: ADMIN (QUẢN LÝ) - CẦN TRUYỀN USERID VÀO
+        // =================================================================================
+
         public async Task<ResponseBase> DeletePurchaseHistory(Guid id)
         {
             try
             {
                 var item = await dbContext.purchaseHistories.FindAsync(id);
                 if (item == null) return responseBase.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy.");
-
                 dbContext.purchaseHistories.Remove(item);
                 await dbContext.SaveChangesAsync();
-                return responseBase.ResponseSuccess("Xóa thành công");
+                return responseBase.ResponseSuccess("Xóa thành công.");
             }
-            catch (Exception ex)
-            {
-                return responseBase.ResponseError(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            catch (Exception ex) { return responseBase.ResponseError(StatusCodes.Status500InternalServerError, ex.Message); }
         }
 
-        // 4. GET LAST PURCHASE (Lấy đơn hàng cuối cùng của User - Hồi nãy thiếu)
-        public async Task<ResponseObject<DTO_PurchaseHistory>> GetLastPurchaseByUser(Guid userId)
-        {
-            try
-            {
-                var entity = await dbContext.purchaseHistories
-                    .Include(x => x.User)
-                    .Where(x => x.UserId == userId)
-                    .OrderByDescending(x => x.Date) // Sắp xếp ngày mới nhất lên đầu
-                    .FirstOrDefaultAsync(); // Lấy thằng đầu tiên (chính là thằng mới nhất)
-
-                if (entity == null) return responseSingle.responseObjectError(StatusCodes.Status404NotFound, "Chưa có giao dịch nào", null);
-
-                return responseSingle.responseObjectSuccess("Lấy giao dịch gần nhất thành công", converter.EntityToDTO(entity));
-            }
-            catch (Exception ex)
-            {
-                return responseSingle.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
-            }
-        }
-
-        // 5. GET ALL (Lấy tất cả)
         public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetAll()
         {
             try
             {
                 var list = await dbContext.purchaseHistories
-                    .Include(x => x.User)
+                    .Include(x => x.User).Include(x => x.BotTrading)
                     .OrderByDescending(x => x.Date)
                     .ToListAsync();
-
-                var dtos = list.Select(x => converter.EntityToDTO(x)).ToList();
-                return responseList.responseObjectSuccess("Lấy danh sách thành công", dtos);
+                return responseObjectListPurchase.responseObjectSuccess("Lấy tất cả thành công.", list.Select(x => converter.EntityToDTO(x)).ToList());
             }
-            catch (Exception ex)
-            {
-                return responseList.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
-            }
+            catch (Exception ex) { return responseObjectListPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
-        // 6. GET BY USER (Lấy tất cả của 1 User)
         public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetByUser(Guid userId)
         {
             try
             {
                 var list = await dbContext.purchaseHistories
-                    .Include(x => x.User)
+                    .Include(x => x.User).Include(x => x.BotTrading)
                     .Where(x => x.UserId == userId)
                     .OrderByDescending(x => x.Date)
                     .ToListAsync();
-
-                var dtos = list.Select(x => converter.EntityToDTO(x)).ToList();
-                return responseList.responseObjectSuccess("Lấy danh sách của user thành công", dtos);
+                return responseObjectListPurchase.responseObjectSuccess("Lấy danh sách user thành công.", list.Select(x => converter.EntityToDTO(x)).ToList());
             }
-            catch (Exception ex)
-            {
-                return responseList.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
-            }
+            catch (Exception ex) { return responseObjectListPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
-        // 7. GET MY HISTORY (Tự lấy ID từ Token)
-        public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyHistory()
+        public async Task<ResponseObject<DTO_PurchaseHistory>> GetLastPurchaseByUser(Guid userId)
         {
             try
             {
-                var context = _httpContextAccessor.HttpContext;
-                var userIdString = context?.User?.FindFirst("Id")?.Value;
+                var entity = await dbContext.purchaseHistories
+                    .Include(x => x.User).Include(x => x.BotTrading)
+                    .Where(x => x.UserId == userId)
+                    .OrderByDescending(x => x.Date)
+                    .FirstOrDefaultAsync();
 
-                if (string.IsNullOrEmpty(userIdString))
-                    return responseList.responseObjectError(StatusCodes.Status401Unauthorized, "Bạn chưa đăng nhập.", null);
-
-                return await GetByUser(Guid.Parse(userIdString));
+                if (entity == null) return responseObjectPurchase.responseObjectError(StatusCodes.Status404NotFound, "User chưa có giao dịch nào.", null);
+                return responseObjectPurchase.responseObjectSuccess("Thành công.", converter.EntityToDTO(entity));
             }
-            catch (Exception ex)
-            {
-                return responseList.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
-            }
+            catch (Exception ex) { return responseObjectPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
-        // 8. GET HISTORY BY MONTH (Lọc theo tháng của User - Hồi nãy thiếu)
         public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetPurchaseHistoriesMonthByUser(Guid userId, int month, int year)
         {
             try
             {
                 var list = await dbContext.purchaseHistories
-                    .Include(x => x.User)
+                    .Include(x => x.User).Include(x => x.BotTrading)
                     .Where(x => x.UserId == userId && x.Date.Month == month && x.Date.Year == year)
+                    .OrderByDescending(x => x.Date)
                     .ToListAsync();
-
-                var dtos = list.Select(x => converter.EntityToDTO(x)).ToList();
-                return responseList.responseObjectSuccess($"Lịch sử tháng {month}/{year}", dtos);
+                return responseObjectListPurchase.responseObjectSuccess($"Lịch sử tháng {month}/{year}.", list.Select(x => converter.EntityToDTO(x)).ToList());
             }
-            catch (Exception ex)
-            {
-                return responseList.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
-            }
+            catch (Exception ex) { return responseObjectListPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
-        // 9. GET HISTORY BY YEAR (Lọc theo năm của User - Hồi nãy thiếu)
         public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetPurchaseHistoriesYearByUser(Guid userId, int year)
         {
             try
             {
                 var list = await dbContext.purchaseHistories
-                    .Include(x => x.User)
+                    .Include(x => x.User).Include(x => x.BotTrading)
                     .Where(x => x.UserId == userId && x.Date.Year == year)
+                    .OrderByDescending(x => x.Date)
                     .ToListAsync();
-
-                var dtos = list.Select(x => converter.EntityToDTO(x)).ToList();
-                return responseList.responseObjectSuccess($"Lịch sử năm {year}", dtos);
+                return responseObjectListPurchase.responseObjectSuccess($"Lịch sử năm {year}.", list.Select(x => converter.EntityToDTO(x)).ToList());
             }
-            catch (Exception ex)
-            {
-                return responseList.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
-            }
+            catch (Exception ex) { return responseObjectListPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
-        // --- CÁC HÀM DOANH THU (ADMIN) ---
+
+        // =================================================================================
+        // PHẦN 3: THỐNG KÊ DOANH THU (ADMIN)
+        // =================================================================================
 
         private DTO_RevenueResponse CalculateRevenue(List<PurchaseHistory> list)
         {
-            return new DTO_RevenueResponse
-            {
-                TotalRevenue = list.Sum(x => x.PriceBot),
-                Purchases = list.Select(x => converter.EntityToDTO(x)).ToList()
-            };
+            return new DTO_RevenueResponse { TotalRevenue = list.Sum(x => x.PriceBot), Purchases = list.Select(x => converter.EntityToDTO(x)).ToList() };
         }
 
         public async Task<ResponseObject<DTO_RevenueResponse>> GetRevenueByMonth(int month, int year)
         {
             try
             {
-                var list = await dbContext.purchaseHistories
-                    .Include(x => x.User)
-                    .Where(x => x.Date.Month == month && x.Date.Year == year)
-                    .ToListAsync();
-                return responseRevenue.responseObjectSuccess($"Doanh thu tháng {month}/{year}", CalculateRevenue(list));
+                var list = await dbContext.purchaseHistories.Include(x => x.User).Include(x => x.BotTrading).Where(x => x.Date.Month == month && x.Date.Year == year).ToListAsync();
+                return responseObjectRevenue.responseObjectSuccess($"Doanh thu tháng {month}/{year}.", CalculateRevenue(list));
             }
-            catch (Exception ex) { return responseRevenue.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
+            catch (Exception ex) { return responseObjectRevenue.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
         public async Task<ResponseObject<DTO_RevenueResponse>> GetRevenueByYear(int year)
         {
             try
             {
-                var list = await dbContext.purchaseHistories
-                    .Include(x => x.User)
-                    .Where(x => x.Date.Year == year)
-                    .ToListAsync();
-                return responseRevenue.responseObjectSuccess($"Doanh thu năm {year}", CalculateRevenue(list));
+                var list = await dbContext.purchaseHistories.Include(x => x.User).Include(x => x.BotTrading).Where(x => x.Date.Year == year).ToListAsync();
+                return responseObjectRevenue.responseObjectSuccess($"Doanh thu năm {year}.", CalculateRevenue(list));
             }
-            catch (Exception ex) { return responseRevenue.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
+            catch (Exception ex) { return responseObjectRevenue.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
         public async Task<ResponseObject<DTO_RevenueResponse>> GetRevenueByDateRange(DateTime from, DateTime to)
@@ -284,13 +295,10 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             try
             {
                 var toDate = to.Date.AddDays(1).AddTicks(-1);
-                var list = await dbContext.purchaseHistories
-                    .Include(x => x.User)
-                    .Where(x => x.Date >= from && x.Date <= toDate)
-                    .ToListAsync();
-                return responseRevenue.responseObjectSuccess("Doanh thu theo khoảng thời gian", CalculateRevenue(list));
+                var list = await dbContext.purchaseHistories.Include(x => x.User).Include(x => x.BotTrading).Where(x => x.Date >= from && x.Date <= toDate).ToListAsync();
+                return responseObjectRevenue.responseObjectSuccess("Doanh thu theo khoảng thời gian.", CalculateRevenue(list));
             }
-            catch (Exception ex) { return responseRevenue.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
+            catch (Exception ex) { return responseObjectRevenue.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
     }
 }
