@@ -1,5 +1,4 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
-using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Infrastructure.Implements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

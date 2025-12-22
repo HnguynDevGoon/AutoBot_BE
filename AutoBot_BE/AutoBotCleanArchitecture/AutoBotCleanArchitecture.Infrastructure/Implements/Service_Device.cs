@@ -134,7 +134,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 if (context == null)
                 {
                     return new ResponseObject<DTO_UserDevice>()
-                        .responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi Context", null);
+.responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi Context", null);
                 }
 
                 // 1. Lấy UserId từ JWT

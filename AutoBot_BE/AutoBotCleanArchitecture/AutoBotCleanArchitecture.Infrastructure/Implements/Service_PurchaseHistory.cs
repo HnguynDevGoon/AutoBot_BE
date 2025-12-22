@@ -55,7 +55,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             try
             {
-                // --- COPY LOGIC LẤY USER ID ---
                 var user = httpContextAccessor.HttpContext?.User;
                 var userIdString = user?.FindFirst("Id")?.Value;
                 if (string.IsNullOrEmpty(userIdString)) userIdString = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;

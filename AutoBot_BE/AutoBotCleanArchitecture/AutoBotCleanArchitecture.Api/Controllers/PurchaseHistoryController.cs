@@ -23,6 +23,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         // =================================================================================
 
         [HttpGet("GetPayOSHistory")]
+        [Authorize]
         public async Task<IActionResult> GetPayOSHistory(int pageNumber = 1, int pageSize = 10)
         {
             var result = await servicePurchaseHistory.GetMyHistoryByPaymentMethod("PayOS", pageNumber, pageSize);
@@ -30,6 +31,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpGet("GetWalletHistory")]
+        [Authorize]
         public async Task<IActionResult> GetWalletHistory(int pageNumber = 1, int pageSize = 10)
         {
             var result = await servicePurchaseHistory.GetMyHistoryByPaymentMethod("Wallet", pageNumber, pageSize);
