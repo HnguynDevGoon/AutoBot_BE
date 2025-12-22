@@ -1,5 +1,4 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
-using AutoBotCleanArchitecture.Application.Requests.Device;
 using AutoBotCleanArchitecture.Application.Requests.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
