@@ -1,4 +1,4 @@
-﻿using AutoBotCleanArchitecture.Application.DTOs;
+using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Responses;
 using AutoBotCleanArchitecture.Persistence.DBContext;
@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AutoBotCleanArchitecture.Infrastructure.Implements
@@ -25,61 +24,72 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             this.responseListDevice = responseListDevice;
         }
 
-        public async Task<List<DTO_UserDevice>> GetDevices()
+        // --- HÀM PHỤ: LẤY USER ID TỪ TOKEN (Dùng chung cho gọn) ---
+        private Guid GetUserIdFromContext()
         {
-
             var user = _httpContextAccessor.HttpContext?.User;
-            var idClaim = user?.FindFirst("Id"); 
+            var idClaim = user?.FindFirst("Id"); // Hoặc ClaimTypes.NameIdentifier tùy cấu hình Token của ông
 
-            if (idClaim == null)
+            if (idClaim == null || string.IsNullOrEmpty(idClaim.Value))
             {
-
                 throw new UnauthorizedAccessException("Token không hợp lệ hoặc thiếu User ID.");
             }
 
-            Guid currentUserId = Guid.Parse(idClaim.Value); 
-
-            var devices = await dbContext.userDevices
-                .Where(d => d.UserId == currentUserId)
-                .Select(d => new DTO_UserDevice
-                {
-                    Id = d.Id,
-                    UserId = d.UserId,
-                    Fingerprint = d.Fingerprint,
-                    AccessToken = d.AccessToken,
-                    RefreshToken = d.RefreshToken,
-                    CreatedAt = d.CreatedAt,
-                    LastActive = d.LastUpdatedAt
-                })
-                .ToListAsync();
-
-            return devices ?? new List<DTO_UserDevice>();
+            return Guid.Parse(idClaim.Value);
         }
 
-
-        public async Task<List<DTO_UserDevice>> GetAccessTokens() 
+        public async Task<List<DTO_UserDevice>> GetDevices()
         {
-
-            var user = _httpContextAccessor.HttpContext?.User;
-            var idClaim = user?.FindFirst("Id");
-
-            if (idClaim == null)
+            try
             {
-                throw new UnauthorizedAccessException("Token không hợp lệ hoặc thiếu User ID.");
+                Guid currentUserId = GetUserIdFromContext();
+
+                // Dùng AsNoTracking() để chỉ đọc, tránh lỗi tracking linh tinh
+                var devices = await dbContext.userDevices
+                    .AsNoTracking()
+                    .Where(d => d.UserId == currentUserId)
+                    .Select(d => new DTO_UserDevice
+                    {
+                        Id = d.Id,
+                        UserId = d.UserId,
+                        Fingerprint = d.Fingerprint,
+                        AccessToken = d.AccessToken,
+                        RefreshToken = d.RefreshToken,
+                        CreatedAt = d.CreatedAt,
+                        LastActive = d.LastUpdatedAt
+                    })
+                    .ToListAsync();
+
+                return devices ?? new List<DTO_UserDevice>();
             }
+            catch
+            {
+                return new List<DTO_UserDevice>(); // Trả về rỗng nếu lỗi xác thực
+            }
+        }
 
-            Guid currentUserId = Guid.Parse(idClaim.Value);
-    
-            var devices = await dbContext.userDevices
-                .Where(d => d.UserId == currentUserId) 
-                .Select(d => new DTO_UserDevice
-                {
-                    AccessToken = d.AccessToken,
-                    RefreshToken = d.RefreshToken,
-                })
-                .ToListAsync();
+        public async Task<List<DTO_UserDevice>> GetAccessTokens()
+        {
+            try
+            {
+                Guid currentUserId = GetUserIdFromContext();
 
-            return devices ?? new List<DTO_UserDevice>();
+                var devices = await dbContext.userDevices
+                    .AsNoTracking()
+                    .Where(d => d.UserId == currentUserId)
+                    .Select(d => new DTO_UserDevice
+                    {
+                        AccessToken = d.AccessToken,
+                        RefreshToken = d.RefreshToken,
+                    })
+                    .ToListAsync();
+
+                return devices ?? new List<DTO_UserDevice>();
+            }
+            catch
+            {
+                return new List<DTO_UserDevice>();
+            }
         }
 
         public async Task<ResponseObject<List<DTO_UserDevice>>> LogoutAllDevices()
@@ -89,132 +99,98 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 var context = _httpContextAccessor.HttpContext;
                 if (context == null) return responseListDevice.responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi Context", null);
 
-                // 1. Tự lấy UserId từ Token
-                var userIdString = context.User?.FindFirst("Id")?.Value;
-                if (string.IsNullOrEmpty(userIdString))
-                {
-                    return responseListDevice.responseObjectError(StatusCodes.Status401Unauthorized, "Bạn chưa đăng nhập.", null);
-                }
-                var userId = Guid.Parse(userIdString);
-
-                // 2. Tự lấy Access Token hiện tại từ Header
-                // (Lấy chuỗi "Bearer ...", sau đó cắt bỏ chữ "Bearer " đi)
-                string currentToken = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-                if (string.IsNullOrEmpty(currentToken))
-                {
-                    return responseListDevice.responseObjectError(StatusCodes.Status401Unauthorized, "Token không hợp lệ.", null);
+                // 1. Lấy ID
+                Guid userId;
+                try 
+                { 
+                    userId = GetUserIdFromContext(); 
+                } 
+                catch 
+                { 
+                    return responseListDevice.responseObjectError(StatusCodes.Status401Unauthorized, "Bạn chưa đăng nhập.", null); 
                 }
 
-                // 3. Logic xóa DB (Xóa của User này NHƯNG giữ lại Token đang dùng)
-                // Dùng .Select() để map sang DTO luôn cho gọn
+                // 2. Lấy Token hiện tại (Xử lý chuỗi kỹ hơn)
+                string authHeader = context.Request.Headers["Authorization"].ToString();
+                if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+                {
+                    return responseListDevice.responseObjectError(StatusCodes.Status401Unauthorized, "Token không hợp lệ (Format sai).", null);
+                }
+                string currentToken = authHeader.Substring("Bearer ".Length).Trim();
+
+                // 3. Tìm các thiết bị CẦN XÓA (Khác token hiện tại)
                 var devicesToDelete = await dbContext.userDevices
-                    .Where(d => d.UserId == userId && d.AccessToken != currentToken)
-                    .Select(d => new DTO_UserDevice
-                    {
-                        Id = d.Id,
-                        // User = d.UserId, // Không cần trả về ID vì biết là của mình rồi
-                        Fingerprint = d.Fingerprint,
-                        AccessToken = d.AccessToken,
-                        RefreshToken = d.RefreshToken,
-                        CreatedAt = d.CreatedAt,
-                        LastActive = d.LastUpdatedAt
-                    })
+                    .Where(d => d.UserId == userId && d.AccessToken != currentToken) // So sánh Token
                     .ToListAsync();
+
                 if (devicesToDelete == null || devicesToDelete.Count == 0)
                 {
                     return responseListDevice.responseObjectSuccess("Không có thiết bị khác để đăng xuất.", new List<DTO_UserDevice>());
                 }
 
-                // 4. Thực hiện xóa (Phải query lại Entity để xóa)
-                var entitiesToDelete = await dbContext.userDevices
-                    .Where(d => d.UserId == userId && d.AccessToken != currentToken)
-                    .ToListAsync();
+                // Lưu lại thông tin để trả về trước khi xóa
+                var deletedInfo = devicesToDelete.Select(d => new DTO_UserDevice
+                {
+                    Id = d.Id,
+                    Fingerprint = d.Fingerprint,
+                    LastActive = d.LastUpdatedAt
+                }).ToList();
 
-                dbContext.userDevices.RemoveRange(entitiesToDelete);
+                // 4. Xóa
+                dbContext.userDevices.RemoveRange(devicesToDelete);
                 await dbContext.SaveChangesAsync();
 
-                return responseListDevice.responseObjectSuccess($"Đã đăng xuất {devicesToDelete.Count} thiết bị khác.", devicesToDelete);
+                return responseListDevice.responseObjectSuccess($"Đã đăng xuất {deletedInfo.Count} thiết bị khác.", deletedInfo);
             }
             catch (Exception ex)
             {
                 return responseListDevice.responseObjectError(StatusCodes.Status500InternalServerError, $"Lỗi Server: {ex.Message}", null);
             }
         }
+
         public async Task<ResponseObject<DTO_UserDevice>> UserLogout()
         {
             try
             {
                 var context = _httpContextAccessor.HttpContext;
+                if (context == null) return new ResponseObject<DTO_UserDevice>().responseObjectError(500, "Lỗi Context", null);
 
-                if (context == null)
-                {
-                    return new ResponseObject<DTO_UserDevice>()
-                        .responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi Context", null);
-                }
+                // 1. Lấy ID
+                Guid userId;
+                try { userId = GetUserIdFromContext(); } catch { return new ResponseObject<DTO_UserDevice>().responseObjectError(401, "Chưa đăng nhập", null); }
 
-                // 1. Lấy UserId từ JWT
-                var userIdString = context.User?.FindFirst("Id")?.Value;
-                if (string.IsNullOrEmpty(userIdString))
-                {
-                    return new ResponseObject<DTO_UserDevice>()
-                        .responseObjectError(StatusCodes.Status401Unauthorized, "Bạn chưa đăng nhập.", null);
-                }
+                // 2. Lấy Token
+                string authHeader = context.Request.Headers["Authorization"].ToString();
+                if (string.IsNullOrEmpty(authHeader)) return new ResponseObject<DTO_UserDevice>().responseObjectError(401, "Thiếu Token", null);
+                
+                string currentToken = authHeader.Replace("Bearer ", "").Trim();
 
-                var userId = Guid.Parse(userIdString);
-
-                // 2. Lấy Access Token hiện tại từ Header
-                string currentToken = context.Request.Headers["Authorization"]
-                    .ToString()
-                    .Replace("Bearer ", "");
-
-                if (string.IsNullOrEmpty(currentToken))
-                {
-                    return new ResponseObject<DTO_UserDevice>()
-                        .responseObjectError(StatusCodes.Status401Unauthorized, "Token không hợp lệ.", null);
-                }
-
-                // 3. Lấy userDevice tương ứng với token hiện tại
+                // 3. Tìm thiết bị hiện tại
                 var currentDevice = await dbContext.userDevices
-                    .FirstOrDefaultAsync(d =>
-                        d.UserId == userId &&
-                        d.AccessToken == currentToken
-                    );
+                    .FirstOrDefaultAsync(d => d.UserId == userId && d.AccessToken == currentToken);
 
                 if (currentDevice == null)
                 {
-                    return new ResponseObject<DTO_UserDevice>()
-                        .responseObjectError(StatusCodes.Status404NotFound,
-                        "Không tìm thấy thiết bị để đăng xuất.", null);
+                    // Trường hợp Token hợp lệ (về mặt crypto) nhưng không có trong DB (đã bị xóa trước đó)
+                    return new ResponseObject<DTO_UserDevice>().responseObjectError(404, "Phiên đăng nhập không tồn tại hoặc đã đăng xuất.", null);
                 }
 
-                // 4. Xóa accessToken + refreshToken
-                currentDevice.AccessToken = null;
+                // 4. Xóa Token (Soft Delete hoặc Hard Delete tùy ông)
+                // Ở đây tôi làm theo kiểu Hard Delete dòng này luôn cho sạch
+                dbContext.userDevices.Remove(currentDevice);
+                
+                // Nếu muốn giữ lại lịch sử thì dùng:
+                currentDevice.AccessToken = null; 
                 currentDevice.RefreshToken = null;
-                currentDevice.LastUpdatedAt = DateTime.UtcNow;
 
                 await dbContext.SaveChangesAsync();
 
-                // 5. Trả về DTO
-                var resultDTO = new DTO_UserDevice
-                {
-                    Id = currentDevice.Id,
-                    UserId = currentDevice.UserId,
-                    Fingerprint = currentDevice.Fingerprint,
-                    AccessToken = null,
-                    RefreshToken = null,
-                    CreatedAt = currentDevice.CreatedAt,
-                    LastActive = currentDevice.LastUpdatedAt
-                };
-
-                return new ResponseObject<DTO_UserDevice>()
-                    .responseObjectSuccess("Đăng xuất thành công.", resultDTO);
+                // 5. Trả về kết quả
+                return new ResponseObject<DTO_UserDevice>().responseObjectSuccess("Đăng xuất thành công.", new DTO_UserDevice { Id = currentDevice.Id });
             }
             catch (Exception ex)
             {
-                return new ResponseObject<DTO_UserDevice>()
-                    .responseObjectError(StatusCodes.Status500InternalServerError,
-                    $"Lỗi Server: {ex.Message}", null);
+                return new ResponseObject<DTO_UserDevice>().responseObjectError(500, ex.Message, null);
             }
         }
 
@@ -222,58 +198,29 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             try
             {
-                var context = _httpContextAccessor.HttpContext;
-                if (context == null) return new ResponseObject<DTO_UserDevice>().responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi Context", null);
+                // 1. Lấy ID
+                Guid userId;
+                try { userId = GetUserIdFromContext(); } catch { return new ResponseObject<DTO_UserDevice>().responseObjectError(401, "Chưa đăng nhập", null); }
 
-                // 1. Check Login
-                var userIdString = context.User?.FindFirst("Id")?.Value;
-                if (string.IsNullOrEmpty(userIdString))
-                {
-                    return new ResponseObject<DTO_UserDevice>().responseObjectError(StatusCodes.Status401Unauthorized, "Bạn chưa đăng nhập.", null);
-                }
-                var userId = Guid.Parse(userIdString);
-
-                // 2. Tìm thiết bị (Check đúng ID và đúng Chủ sở hữu)
+                // 2. Tìm thiết bị (Bắt buộc phải check UserId để tránh xóa dùm người khác)
                 var targetDevice = await dbContext.userDevices
                     .FirstOrDefaultAsync(d => d.Id == deviceId && d.UserId == userId);
 
                 if (targetDevice == null)
                 {
-                    return new ResponseObject<DTO_UserDevice>().responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy thiết bị.", null);
+                    return new ResponseObject<DTO_UserDevice>().responseObjectError(404, "Không tìm thấy thiết bị.", null);
                 }
 
-                // 3. Tạo DTO kết quả (Làm bước này TRƯỚC khi xóa/sửa để giữ lại thông tin)
-                var resultDTO = new DTO_UserDevice
-                {
-                    Id = targetDevice.Id,
-                    UserId = targetDevice.UserId, // Hoặc User = targetDevice.UserId tùy tên biến DTO của ông
-                    Fingerprint = targetDevice.Fingerprint,
-                    AccessToken = null, // Vì sắp logout nên trả về null cho đúng ngữ cảnh
-                    RefreshToken = null,
-                    CreatedAt = targetDevice.CreatedAt,
-                    LastActive = DateTime.UtcNow // Thời điểm bị đá
-                };
-
-                // 4. Thực hiện Đăng xuất
-
-                // CÁCH A: XÓA HẲN (Hard Delete - Khuyên dùng cho chức năng "Đá thiết bị")
+                // 3. Xóa
                 dbContext.userDevices.Remove(targetDevice);
-
-                // CÁCH B: CẬP NHẬT NULL (Soft Delete - Nếu ông muốn giữ lịch sử)
-                // targetDevice.AccessToken = null;
-                // targetDevice.RefreshToken = null;
-                // targetDevice.LastUpdatedAt = DateTime.UtcNow;
-
                 await dbContext.SaveChangesAsync();
 
-                // 5. Trả về thông tin thiết bị vừa bị xử lý
-                return new ResponseObject<DTO_UserDevice>().responseObjectSuccess("Đăng xuất thiết bị thành công.", resultDTO);
+                return new ResponseObject<DTO_UserDevice>().responseObjectSuccess("Đăng xuất thiết bị thành công.", new DTO_UserDevice { Id = deviceId });
             }
             catch (Exception ex)
             {
-                return new ResponseObject<DTO_UserDevice>().responseObjectError(StatusCodes.Status500InternalServerError, $"Lỗi Server: {ex.Message}", null);
+                return new ResponseObject<DTO_UserDevice>().responseObjectError(500, ex.Message, null);
             }
         }
-
     }
 }
