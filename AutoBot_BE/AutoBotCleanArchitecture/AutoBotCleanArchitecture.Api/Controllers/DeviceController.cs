@@ -1,5 +1,4 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
-using AutoBotCleanArchitecture.Application.Requests.Device;
 using AutoBotCleanArchitecture.Infrastructure.Implements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,16 +19,16 @@ namespace AutoBotCleanArchitecture.Api.Controllers
 
         [HttpPost("GetDevices")]
         [Authorize]
-        public async Task<IActionResult> GetDevices(Request_GetDevices request)
+        public async Task<IActionResult> GetDevices()
         {
-            return Ok(await service_Device.GetDevices(request));
+            return Ok(await service_Device.GetDevices());
         }
 
         [HttpGet("GetAccessTokens")]
         //[Authorize]
-        public async Task<IActionResult> GetAccessTokens(Guid userId)
+        public async Task<IActionResult> GetAccessTokens()
         {
-            return Ok(await service_Device.GetAccessTokens(userId));
+            return Ok(await service_Device.GetAccessTokens());
         }
 
         [HttpPost("LogoutAllDevices")]

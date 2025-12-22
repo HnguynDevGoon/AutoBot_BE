@@ -1,6 +1,5 @@
 ﻿using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
-using AutoBotCleanArchitecture.Application.Requests.Device;
 using AutoBotCleanArchitecture.Application.Responses;
 using AutoBotCleanArchitecture.Persistence.DBContext;
 using Microsoft.AspNetCore.Http;
@@ -26,10 +25,22 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             this.responseListDevice = responseListDevice;
         }
 
-        public async Task<List<DTO_UserDevice>> GetDevices(Request_GetDevices request)
+        public async Task<List<DTO_UserDevice>> GetDevices()
         {
+
+            var user = _httpContextAccessor.HttpContext?.User;
+            var idClaim = user?.FindFirst("Id"); 
+
+            if (idClaim == null)
+            {
+
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc thiếu User ID.");
+            }
+
+            Guid currentUserId = Guid.Parse(idClaim.Value); 
+
             var devices = await dbContext.userDevices
-                .Where(d => d.UserId == request.UserId)
+                .Where(d => d.UserId == currentUserId)
                 .Select(d => new DTO_UserDevice
                 {
                     Id = d.Id,
@@ -42,20 +53,25 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 })
                 .ToListAsync();
 
-            // Trả về danh sách rỗng nếu không có thiết bị
-            if (devices == null || devices.Count == 0)
-                devices = new List<DTO_UserDevice>();
-
-            return devices;
+            return devices ?? new List<DTO_UserDevice>();
         }
 
-        public async Task<List<DTO_UserDevice>> GetAccessTokens(Guid userId)
-        {
-            if (userId == Guid.Empty)
-                return new List<DTO_UserDevice>();
 
+        public async Task<List<DTO_UserDevice>> GetAccessTokens() 
+        {
+
+            var user = _httpContextAccessor.HttpContext?.User;
+            var idClaim = user?.FindFirst("Id");
+
+            if (idClaim == null)
+            {
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc thiếu User ID.");
+            }
+
+            Guid currentUserId = Guid.Parse(idClaim.Value);
+    
             var devices = await dbContext.userDevices
-                .Where(d => d.UserId == userId)
+                .Where(d => d.UserId == currentUserId) 
                 .Select(d => new DTO_UserDevice
                 {
                     AccessToken = d.AccessToken,
@@ -63,8 +79,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 })
                 .ToListAsync();
 
-            return devices;
+            return devices ?? new List<DTO_UserDevice>();
         }
+
         public async Task<ResponseObject<List<DTO_UserDevice>>> LogoutAllDevices()
         {
             try

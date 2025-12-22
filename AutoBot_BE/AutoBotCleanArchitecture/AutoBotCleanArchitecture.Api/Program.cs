@@ -142,8 +142,11 @@ builder.Services.AddSingleton<PayOS>(sp =>
 });
 
 builder.Services.AddHttpClient();
+
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddSignalR();
+
 builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ResponseBase>();
@@ -218,9 +221,11 @@ app.UseSwaggerUI();
 app.MapHub<ChatHub>("/chatHub");
 
 app.UseHttpsRedirection();
+
 app.UseCors("AllowAll");
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
