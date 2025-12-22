@@ -180,8 +180,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 dbContext.userDevices.Remove(currentDevice);
                 
                 // Nếu muốn giữ lại lịch sử thì dùng:
-                currentDevice.AccessToken = null; 
-                currentDevice.RefreshToken = null;
+                // currentDevice.AccessToken = null; 
+                // currentDevice.RefreshToken = null;
 
                 await dbContext.SaveChangesAsync();
 
