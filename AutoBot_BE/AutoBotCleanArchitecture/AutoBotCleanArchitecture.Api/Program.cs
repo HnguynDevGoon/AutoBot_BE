@@ -167,6 +167,8 @@ builder.Services.AddScoped<ResponseObject<DTO_RevenueResponse>>();
 builder.Services.AddScoped<ResponseObject<DTO_PriceBots>>();
 builder.Services.AddScoped<ResponseObject<DTO_BotTrading>>();
 builder.Services.AddScoped<ResponseObject<DTO_OtherContent>>();
+builder.Services.AddScoped<ResponseObject<DTO_ProfitLoss>>();
+builder.Services.AddScoped<ResponseObject<DTO_Review>>();
 
 
 // Response Object DataType
@@ -194,6 +196,10 @@ builder.Services.AddScoped<ResponseObject<List<DTO_PurchaseHistory>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_PriceBots>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_BotSignal>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_OtherContent>>>();
+builder.Services.AddScoped<ResponseObject<List<DTO_ProfitLoss>>>();
+builder.Services.AddScoped<ResponseObject<List<DTO_Review>>>();
+
+
 
 
 // Converter
@@ -209,6 +215,8 @@ builder.Services.AddScoped<Converter_UserBot>();
 builder.Services.AddScoped<Converter_PurchaseHistory>();
 builder.Services.AddScoped<Converter_BotSignal>();
 builder.Services.AddScoped<Converter_OtherContent>();
+builder.Services.AddScoped<Converter_ProfitLoss>();
+builder.Services.AddScoped<Converter_Review>();
 
 
 
@@ -227,6 +235,9 @@ builder.Services.AddScoped<IService_BotTrading, Service_BotTrading>();
 builder.Services.AddScoped<IService_PurchaseHistory, Service_PurchaseHistory>();
 builder.Services.AddScoped<IService_BotSignal, Service_BotSignal>();
 builder.Services.AddScoped<IService_OtherContent, Service_OtherContent>();
+builder.Services.AddScoped<IService_ProfitLoss, Service_ProfitLoss>();
+builder.Services.AddScoped<IService_Review, Service_Review>();
+
 
 
 

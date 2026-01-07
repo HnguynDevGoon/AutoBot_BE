@@ -33,13 +33,18 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             this.responseObjectList = responseObjectList;
         }
 
-        // GET BY OTHER TYPE - Lấy theo OtherType
+        // GET BY OTHER TYPE - Lấy theo OtherType (Gần đúng)
         public async Task<ResponseObject<List<DTO_OtherContent>>> GetByOtherType(string otherType)
         {
             try
             {
+                if (string.IsNullOrEmpty(otherType))
+                {
+                    return responseObjectList.responseObjectSuccess("Danh sách rỗng", new List<DTO_OtherContent>());
+                }
+
                 var otherContents = await dbContext.otherContents
-                    .Where(x => x.OtherType == otherType)
+                    .Where(x => x.OtherType.Contains(otherType))
                     .ToListAsync();
 
                 var dtoList = otherContents.Select(x => converter_OtherContent.EntityToDTO(x)).ToList();
@@ -89,7 +94,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 await dbContext.SaveChangesAsync();
 
                 var dto = converter_OtherContent.EntityToDTO(entity);
-                return responseObject.responseObjectError(StatusCodes.Status201Created, "Tạo mới thành công", dto);
+                return responseObject.responseObjectSuccess("Tạo mới thành công", dto);
             }
             catch (Exception ex)
             {

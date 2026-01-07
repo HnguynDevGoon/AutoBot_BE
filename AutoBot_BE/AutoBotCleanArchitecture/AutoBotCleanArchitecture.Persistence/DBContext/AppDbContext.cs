@@ -34,7 +34,7 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
         public DbSet<ProfitLoss> profitLosses { get; set; }
         public DbSet<BotSignal> botSignals { get; set; }
         public DbSet<OtherContent> otherContents { get; set; }
-
+        public DbSet<Review> reviews { get; set; }
 
 
 

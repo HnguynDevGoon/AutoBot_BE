@@ -1,0 +1,24 @@
+﻿using AutoBotCleanArchitecture.Application.DTOs;
+using AutoBotCleanArchitecture.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AutoBotCleanArchitecture.Application.Converters
+{
+    public class Converter_Review
+    {
+        public DTO_Review EntityToDTO(Review review)
+        {
+            return new DTO_Review
+            {
+                Id = review.Id,
+                FullName = review.FullName,
+                Rate = review.Rate,
+                UrlAvatar = review.UrlAvatar
+            };
+        }
+    }
+}
