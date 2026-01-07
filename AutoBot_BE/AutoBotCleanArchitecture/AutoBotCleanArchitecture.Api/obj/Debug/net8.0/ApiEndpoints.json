@@ -371,6 +371,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.BotSignalController",
+    "Method": "AddSignal",
+    "RelativePath": "api/BotSignal/AddSignal",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "text",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.BotSignalController",
+    "Method": "GetSignals",
+    "RelativePath": "api/BotSignal/GetSignals",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoBotCleanArchitecture.API.Controllers.BotTradingController",
     "Method": "CreateBot",
     "RelativePath": "api/BotTrading/CreateBot",
@@ -997,6 +1023,86 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.OtherContentController",
+    "Method": "CreateOtherContent",
+    "RelativePath": "api/OtherContent/CreateOtherContent",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.OtherContent.Request_CreateOtherContent",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.OtherContentController",
+    "Method": "DeleteOtherContent",
+    "RelativePath": "api/OtherContent/DeleteOtherContent",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.OtherContentController",
+    "Method": "GetByOtherType",
+    "RelativePath": "api/OtherContent/GetByOtherType",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "otherType",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.OtherContentController",
+    "Method": "GetOtherContentById",
+    "RelativePath": "api/OtherContent/GetOtherContentById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.OtherContentController",
+    "Method": "UpdateOtherContent",
+    "RelativePath": "api/OtherContent/UpdateOtherContent",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.OtherContent.Request_UpdateOtherContent",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PaymentController",
     "Method": "BuyBotByWallet",
     "RelativePath": "api/Payment/BuyBotByWallet",
@@ -1157,6 +1263,16 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
+    "Method": "GetMyBoughtBots",
+    "RelativePath": "api/PurchaseHistory/GetMyBoughtBots",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
     "Method": "GetMyHistoryByMonth",
     "RelativePath": "api/PurchaseHistory/GetMyHistoryByMonth",
     "HttpMethod": "GET",
@@ -1194,33 +1310,43 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
-    "Method": "GetMyLastPurchase",
-    "RelativePath": "api/PurchaseHistory/GetMyLastPurchase",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
-    "Method": "GetPayOSHistory",
-    "RelativePath": "api/PurchaseHistory/GetPayOSHistory",
+    "Method": "GetMyHistoryDynamic",
+    "RelativePath": "api/PurchaseHistory/GetMyHistoryDynamic",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "pageNumber",
-        "Type": "System.Int32",
+        "Name": "orderType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "paymentMethod",
+        "Type": "System.String",
         "IsRequired": false
       },
       {
         "Name": "pageSize",
         "Type": "System.Int32",
         "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
+    "Method": "GetMyLastPurchase",
+    "RelativePath": "api/PurchaseHistory/GetMyLastPurchase",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -1330,23 +1456,12 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
-    "Method": "GetWalletHistory",
-    "RelativePath": "api/PurchaseHistory/GetWalletHistory",
+    "Method": "GetTotalSpentOnBots",
+    "RelativePath": "api/PurchaseHistory/GetTotalSpentOnBots",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "pageNumber",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "pageSize",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

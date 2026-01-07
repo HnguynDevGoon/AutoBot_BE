@@ -22,19 +22,11 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         // PHẦN 1: USER API (CÁ NHÂN - DÙNG TOKEN)
         // =================================================================================
 
-        [HttpGet("GetPayOSHistory")]
+        [HttpGet("GetMyHistoryDynamic")]
         [Authorize]
-        public async Task<IActionResult> GetPayOSHistory(int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> GetMyHistoryDynamic(string orderType, string paymentMethod, int pageSize, int pageNumber)
         {
-            var result = await servicePurchaseHistory.GetMyHistoryByPaymentMethod("PayOS", pageNumber, pageSize);
-            return Ok(result);
-        }
-
-        [HttpGet("GetWalletHistory")]
-        [Authorize]
-        public async Task<IActionResult> GetWalletHistory(int pageNumber = 1, int pageSize = 10)
-        {
-            var result = await servicePurchaseHistory.GetMyHistoryByPaymentMethod("Wallet", pageNumber, pageSize);
+            var result = await servicePurchaseHistory.GetMyHistoryDynamic(orderType, paymentMethod, pageSize, pageNumber);
             return Ok(result);
         }
 
@@ -62,6 +54,19 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(await servicePurchaseHistory.GetMyHistoryByYear(year));
         }
 
+        [HttpGet("GetMyBoughtBots")]
+        [Authorize]
+        public async Task<IActionResult> GetMyBoughtBots()
+        {
+            return Ok(await servicePurchaseHistory.GetMyBoughtBots());
+        }
+
+        [HttpGet("GetTotalSpentOnBots")]
+        [Authorize]
+        public async Task<IActionResult> GetTotalSpentOnBots()
+        {
+            return Ok(await servicePurchaseHistory.GetTotalSpentOnBots());
+        }
 
         // =================================================================================
         // PHẦN 2: ADMIN API (QUẢN LÝ - CẦN USERID)

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AutoBotCleanArchitecture.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251221121953_init")]
+    [Migration("20260107081403_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -24,6 +24,27 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.BotSignal", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Signal")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("botSignals");
+                });
 
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.BotTrading", b =>
                 {
@@ -213,6 +234,33 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.ToTable("logHistories");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.OtherContent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OtherType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("otherContents");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.PaymentOrder", b =>
                 {
                     b.Property<Guid>("Id")
@@ -289,6 +337,28 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.ToTable("priceBots");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.ProfitLoss", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("profitLosses");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.PurchaseHistory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -306,6 +376,10 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
 
                     b.Property<long>("OrderCode")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("OrderType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
@@ -454,7 +528,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
-                            CreatedDate = new DateTime(2025, 12, 21, 12, 19, 52, 361, DateTimeKind.Utc).AddTicks(4887),
+                            CreatedDate = new DateTime(2026, 1, 7, 8, 14, 1, 592, DateTimeKind.Utc).AddTicks(8654),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,
@@ -519,6 +593,9 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Fingerprint")
+                        .IsUnique();
 
                     b.ToTable("userDevices");
                 });
@@ -692,6 +769,15 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Navigation("BotTrading");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.ProfitLoss", b =>
+                {
+                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.User", "User")
+                        .WithMany("ProfitLoss")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.PurchaseHistory", b =>
                 {
                     b.HasOne("AutoBotCleanArchitecture.Domain.Entities.BotTrading", "BotTrading")
@@ -813,6 +899,8 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Navigation("LogHistorys");
 
                     b.Navigation("PaymentOrders");
+
+                    b.Navigation("ProfitLoss");
 
                     b.Navigation("RefreshTokens");
 

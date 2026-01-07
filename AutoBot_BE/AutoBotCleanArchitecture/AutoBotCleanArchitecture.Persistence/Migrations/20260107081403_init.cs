@@ -14,6 +14,20 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "botSignals",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Signal = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<double>(type: "double precision", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_botSignals", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "botTradings",
                 columns: table => new
                 {
@@ -43,6 +57,21 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_contents", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "otherContents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Icon = table.Column<string>(type: "text", nullable: false),
+                    OtherType = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_otherContents", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,6 +253,25 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "profitLosses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_profitLosses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_profitLosses_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "refreshTokens",
                 columns: table => new
                 {
@@ -350,6 +398,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     PaymentMethod = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    OrderType = table.Column<string>(type: "text", nullable: false),
                     OrderCode = table.Column<long>(type: "bigint", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     BotTradingId = table.Column<Guid>(type: "uuid", nullable: true),
@@ -412,7 +461,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDay", "CreatedDate", "Email", "FullName", "IsActive", "LockoutEnable", "LockoutEnd", "PassWord", "PhoneNumber", "RoleId", "TwoStep", "UrlAvatar", "UserName" },
-                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(2025, 12, 21, 12, 19, 52, 361, DateTimeKind.Utc).AddTicks(4887), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a", "0123456789", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), true, "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg", "Admin" });
+                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(2026, 1, 7, 8, 14, 1, 592, DateTimeKind.Utc).AddTicks(8654), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a", "0123456789", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), true, "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg", "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_chatMessages_ChatRoomId",
@@ -456,6 +505,11 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_profitLosses_UserId",
+                table: "profitLosses",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_purchaseHistories_BotTradingId",
                 table: "purchaseHistories",
                 column: "BotTradingId");
@@ -486,6 +540,12 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_userDevices_UserId_Fingerprint",
+                table: "userDevices",
+                columns: new[] { "UserId", "Fingerprint" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_users_RoleId",
                 table: "users",
                 column: "RoleId");
@@ -511,6 +571,9 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "botSignals");
+
+            migrationBuilder.DropTable(
                 name: "chatMessages");
 
             migrationBuilder.DropTable(
@@ -523,10 +586,16 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 name: "logHistories");
 
             migrationBuilder.DropTable(
+                name: "otherContents");
+
+            migrationBuilder.DropTable(
                 name: "paymentOrders");
 
             migrationBuilder.DropTable(
                 name: "priceBots");
+
+            migrationBuilder.DropTable(
+                name: "profitLosses");
 
             migrationBuilder.DropTable(
                 name: "purchaseHistories");

@@ -677,6 +677,49 @@
         }
       }
     },
+    "/api/BotSignal/GetSignals": {
+      "get": {
+        "tags": [
+          "BotSignal"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/BotSignal/AddSignal": {
+      "post": {
+        "tags": [
+          "BotSignal"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/BotTrading/GetListBot": {
       "get": {
         "tags": [
@@ -1661,6 +1704,133 @@
         }
       }
     },
+    "/api/OtherContent/GetByOtherType": {
+      "get": {
+        "tags": [
+          "OtherContent"
+        ],
+        "parameters": [
+          {
+            "name": "otherType",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/OtherContent/GetOtherContentById": {
+      "get": {
+        "tags": [
+          "OtherContent"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/OtherContent/CreateOtherContent": {
+      "post": {
+        "tags": [
+          "OtherContent"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_CreateOtherContent"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_CreateOtherContent"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_CreateOtherContent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/OtherContent/UpdateOtherContent": {
+      "put": {
+        "tags": [
+          "OtherContent"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_UpdateOtherContent"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_UpdateOtherContent"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_UpdateOtherContent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/OtherContent/DeleteOtherContent": {
+      "delete": {
+        "tags": [
+          "OtherContent"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Payment/CreateWalletDepositLink": {
       "post": {
         "tags": [
@@ -1846,19 +2016,24 @@
         }
       }
     },
-    "/api/PurchaseHistory/GetPayOSHistory": {
+    "/api/PurchaseHistory/GetMyHistoryDynamic": {
       "get": {
         "tags": [
           "PurchaseHistory"
         ],
         "parameters": [
           {
-            "name": "pageNumber",
+            "name": "orderType",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 1
+              "type": "string"
+            }
+          },
+          {
+            "name": "paymentMethod",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           },
           {
@@ -1866,40 +2041,15 @@
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32",
-              "default": 10
+              "format": "int32"
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/PurchaseHistory/GetWalletHistory": {
-      "get": {
-        "tags": [
-          "PurchaseHistory"
-        ],
-        "parameters": [
+          },
           {
             "name": "pageNumber",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32",
-              "default": 1
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
+              "format": "int32"
             }
           }
         ],
@@ -1966,6 +2116,30 @@
               "format": "int32"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/PurchaseHistory/GetMyBoughtBots": {
+      "get": {
+        "tags": [
+          "PurchaseHistory"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/PurchaseHistory/GetTotalSpentOnBots": {
+      "get": {
+        "tags": [
+          "PurchaseHistory"
         ],
         "responses": {
           "200": {
@@ -2775,6 +2949,28 @@
         },
         "additionalProperties": false
       },
+      "Request_CreateOtherContent": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "nullable": true
+          },
+          "otherType": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Request_CreatePinWallet": {
         "type": "object",
         "properties": {
@@ -3174,6 +3370,32 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Request_UpdateOtherContent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "nullable": true
+          },
+          "otherType": {
             "type": "string",
             "nullable": true
           }

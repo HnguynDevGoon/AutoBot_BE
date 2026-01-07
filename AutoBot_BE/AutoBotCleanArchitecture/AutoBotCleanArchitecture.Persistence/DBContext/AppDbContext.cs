@@ -31,6 +31,11 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
         public DbSet<UserBot> userBots { get; set; }
         public DbSet<PurchaseHistory> purchaseHistories { get; set; }
         public DbSet<PaymentOrder> paymentOrders { get; set; }
+        public DbSet<ProfitLoss> profitLosses { get; set; }
+        public DbSet<BotSignal> botSignals { get; set; }
+        public DbSet<OtherContent> otherContents { get; set; }
+
+
 
 
 

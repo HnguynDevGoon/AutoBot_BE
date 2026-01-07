@@ -51,10 +51,11 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         // (Logic lấy ID được viết trực tiếp trong hàm)
         // =================================================================================
 
-        public async Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetMyHistoryByPaymentMethod(string paymentMethod, int pageNumber, int pageSize)
+        public async Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetMyHistoryDynamic(string orderType, string paymentMethod, int pageSize, int pageNumber)
         {
             try
             {
+                // --- 1. LẤY USER ID TỪ TOKEN (GIỮ NGUYÊN FORM CỦA ÔNG) ---
                 var user = httpContextAccessor.HttpContext?.User;
                 var userIdString = user?.FindFirst("Id")?.Value;
                 if (string.IsNullOrEmpty(userIdString)) userIdString = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -63,18 +64,32 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 {
                     return responseObjectPaginationPurchase.responseObjectError(StatusCodes.Status401Unauthorized, "Vui lòng đăng nhập.", null);
                 }
-                // ------------------------------
 
+                // --- 2. PHÂN TRANG ---
                 if (pageNumber < 1) pageNumber = 1;
                 if (pageSize < 1) pageSize = 10;
 
-                // Query có lọc thêm PaymentMethod
+                // --- 3. QUERY LINH HOẠT ---
                 var query = dbContext.purchaseHistories
                     .Include(x => x.User).Include(x => x.BotTrading)
-                    .Where(x => x.UserId == userId && x.PaymentMethod == paymentMethod) // <--- Lọc ở đây
-                    .OrderByDescending(x => x.Date);
+                    .Where(x => x.UserId == userId) // Luôn lọc theo thằng đang login
+                    .AsQueryable();
 
-                // Tính toán phân trang
+                // Nếu có truyền orderType thì mới lọc
+                if (!string.IsNullOrEmpty(orderType))
+                {
+                    query = query.Where(x => x.OrderType == orderType);
+                }
+
+                // Nếu có truyền paymentMethod thì mới lọc
+                if (!string.IsNullOrEmpty(paymentMethod))
+                {
+                    query = query.Where(x => x.PaymentMethod == paymentMethod);
+                }
+
+                query = query.OrderByDescending(x => x.Date);
+
+                // --- 4. THỰC THI ---
                 var totalItems = await query.CountAsync();
                 var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
                 var dtos = items.Select(x => converter.EntityToDTO(x)).ToList();
@@ -88,7 +103,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
                 };
 
-                return responseObjectPaginationPurchase.responseObjectSuccess($"Lấy lịch sử {paymentMethod} thành công.", pagedResult);
+                return responseObjectPaginationPurchase.responseObjectSuccess("Lấy lịch sử thành công.", pagedResult);
             }
             catch (Exception ex)
             {
@@ -170,6 +185,66 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             catch (Exception ex) { return responseObjectListPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
+        // 5. Giao dịch Bot đã hoàn thành
+        public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyBoughtBots()
+        {
+            try
+            {
+                var user = httpContextAccessor.HttpContext?.User;
+                var userIdString = user?.FindFirst("Id")?.Value ?? user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+                {
+                    return responseObjectListPurchase.responseObjectError(StatusCodes.Status401Unauthorized, "Vui lòng đăng nhập.", null);
+                }
+
+                // 2. Truy vấn từ PurchaseHistory
+                var list = await dbContext.purchaseHistories
+                    .Include(x => x.BotTrading) 
+                    .Where(x => x.UserId == userId
+                             && x.BotTradingId != null  
+                             && x.Status == "Paid")  
+                    .OrderByDescending(x => x.StartDate) 
+                    .ToListAsync();
+
+                return responseObjectListPurchase.responseObjectSuccess(
+                    "Lấy danh sách Bot đã mua thành công.",
+                    list.Select(x => converter.EntityToDTO(x)).ToList()
+                );
+            }
+            catch (Exception ex)
+            {
+                return responseObjectListPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
+            }
+        }
+
+        // 6. Tổng tiền đã sử dụng mua Bot
+        public async Task<ResponseObject<double>> GetTotalSpentOnBots()
+        {
+            try
+            {
+                var user = httpContextAccessor.HttpContext?.User;
+                var userIdString = user?.FindFirst("Id")?.Value ?? user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+                {
+                    return new ResponseObject<double>().responseObjectError(StatusCodes.Status401Unauthorized, "Vui lòng đăng nhập.", 0);
+                }
+
+                double totalSum = await dbContext.purchaseHistories
+                    .Where(x => x.UserId == userId
+                             && x.BotTradingId != null  
+                             && x.Status == "Paid")     
+                    .SumAsync(x => x.PriceBot);         
+
+                return new ResponseObject<double>().responseObjectSuccess(
+                    $"Tổng tiền bạn đã đầu tư vào Bot là: {totalSum:N0}", totalSum);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseObject<double>().responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, 0);
+            }
+        }
 
         // =================================================================================
         // PHẦN 2: ADMIN (QUẢN LÝ) - CẦN TRUYỀN USERID VÀO
@@ -214,6 +289,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
             catch (Exception ex) { return responseObjectListPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
+
 
         public async Task<ResponseObject<DTO_PurchaseHistory>> GetLastPurchaseByUser(Guid userId)
         {

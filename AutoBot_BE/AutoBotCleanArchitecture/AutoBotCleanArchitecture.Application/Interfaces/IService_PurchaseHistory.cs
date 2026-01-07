@@ -11,10 +11,12 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         // =======================================================
         // 1. GROUP USER (CÁ NHÂN - TOKEN)
         // =======================================================
-        Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetMyHistoryByPaymentMethod(string paymentMethod, int pageIndex, int pageSize);
         Task<ResponseObject<DTO_PurchaseHistory>> GetMyLastPurchase();
         Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyHistoryByMonth(int month, int year);
         Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyHistoryByYear(int year);
+        Task<ResponseObject<double>> GetTotalSpentOnBots();
+        Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyBoughtBots();
+        Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetMyHistoryDynamic(string orderType, string paymentMethod, int pageSize, int pageNumber);
 
 
         // =======================================================

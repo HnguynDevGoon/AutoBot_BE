@@ -14,6 +14,7 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         public string PaymentMethod { get; set; }
         public string Status { get; set; }
         public DateTime Date { get; set; }
+        public string OrderType { get; set; }
         public long OrderCode { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; } = null!;

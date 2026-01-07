@@ -275,7 +275,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     PriceBot = pricePackage.Price,
                     Date = DateTime.UtcNow,
                     PaymentMethod = "Wallet",
-                    Status = "Paid"
+                    Status = "Paid",
+                    OrderType = "BuyBot",
                 };
                 await _context.purchaseHistories.AddAsync(history);
 
@@ -372,7 +373,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     Date = DateTime.UtcNow,
                     PaymentMethod = "PayOS",
                     Status = "Paid",
-                    WalletId = null
+                    WalletId = null,
+                    OrderType = "BuyBot",
                 };
                 await _context.purchaseHistories.AddAsync(history);
 
@@ -416,7 +418,9 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     PriceBot = amount,
                     Date = DateTime.UtcNow,
                     PaymentMethod = "PayOS",
-                    Status = "Paid"
+                    Status = "Paid",
+                    OrderType = "Deposit",
+
                 };
                 await _context.purchaseHistories.AddAsync(history);
 

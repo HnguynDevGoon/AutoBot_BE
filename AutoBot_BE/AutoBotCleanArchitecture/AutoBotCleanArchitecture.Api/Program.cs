@@ -166,6 +166,23 @@ builder.Services.AddScoped<ResponseObject<DTO_PurchaseHistory>>();
 builder.Services.AddScoped<ResponseObject<DTO_RevenueResponse>>();
 builder.Services.AddScoped<ResponseObject<DTO_PriceBots>>();
 builder.Services.AddScoped<ResponseObject<DTO_BotTrading>>();
+builder.Services.AddScoped<ResponseObject<DTO_OtherContent>>();
+
+
+// Response Object DataType
+builder.Services.AddScoped<ResponseObject<string>>();
+builder.Services.AddScoped<ResponseObject<bool>>();
+
+// Response Object Pagination
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_User>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WalletTransaction>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_Content>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_BotTrading>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WithdrawMoney>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PriceBots>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>>();
+
+// Response Object List, IList
 builder.Services.AddScoped<ResponseObject<IList<DTO_LogHistory>>>();
 builder.Services.AddScoped<ResponseObject<IList<DTO_WalletTransaction>>>();
 builder.Services.AddScoped<ResponseObject<IList<DTO_ChatMessage>>>();
@@ -175,15 +192,9 @@ builder.Services.AddScoped<ResponseObject<List<DTO_BotTrading>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_UserBot>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_PurchaseHistory>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_PriceBots>>>();
-builder.Services.AddScoped<ResponseObject<string>>();
-builder.Services.AddScoped<ResponseObject<bool>>();
-builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_User>>>();
-builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WalletTransaction>>>();
-builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_Content>>>();
-builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_BotTrading>>>();
-builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WithdrawMoney>>>();
-builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PriceBots>>>();
-builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>>();
+builder.Services.AddScoped<ResponseObject<List<DTO_BotSignal>>>();
+builder.Services.AddScoped<ResponseObject<List<DTO_OtherContent>>>();
+
 
 // Converter
 builder.Services.AddScoped<Converter_Role>();
@@ -196,6 +207,10 @@ builder.Services.AddScoped<Converter_Content>();
 builder.Services.AddScoped<Converter_BotTrading>();
 builder.Services.AddScoped<Converter_UserBot>();
 builder.Services.AddScoped<Converter_PurchaseHistory>();
+builder.Services.AddScoped<Converter_BotSignal>();
+builder.Services.AddScoped<Converter_OtherContent>();
+
+
 
 // Service
 builder.Services.AddScoped<IService_Role, Service_Role>();
@@ -210,6 +225,10 @@ builder.Services.AddScoped<IService_Content, Service_Content>();
 builder.Services.AddScoped<IService_ChatRoom, Service_ChatRoom>();
 builder.Services.AddScoped<IService_BotTrading, Service_BotTrading>();
 builder.Services.AddScoped<IService_PurchaseHistory, Service_PurchaseHistory>();
+builder.Services.AddScoped<IService_BotSignal, Service_BotSignal>();
+builder.Services.AddScoped<IService_OtherContent, Service_OtherContent>();
+
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

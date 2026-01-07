@@ -33,6 +33,8 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         public ICollection<WithdrawMoney>? WithdrawMoneys { get; set; }
         public ICollection<UserBot>? UserBots { get; set; }
         public ICollection<PaymentOrder>? PaymentOrders { get; set; }
+        public ICollection<ProfitLoss>? ProfitLoss { get; set; }
+
 
     }
 }
