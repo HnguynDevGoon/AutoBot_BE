@@ -20,6 +20,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseObject<bool>> ActivateBotAfterPayment(long orderCode, double amount);
         Task<ResponseObject<bool>> ProcessWebhook(WebhookType webhookData);
         Task<ResponseObject<bool>> BuyBotByWallet(Request_BuyBot request);
+        Task<ResponseObject<bool>> ConfirmWithdrawTransfer(Guid withdrawId);
 
 
     }

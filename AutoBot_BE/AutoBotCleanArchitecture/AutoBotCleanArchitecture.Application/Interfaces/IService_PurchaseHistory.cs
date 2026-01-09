@@ -27,6 +27,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseObject<List<DTO_PurchaseHistory>>> GetAll();
 
         Task<ResponseObject<List<DTO_PurchaseHistory>>> GetByUser(Guid userId);
+        Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetAllHistoryDynamicForAdmin(string orderType, string paymentMethod, int pageSize, int pageNumber);
 
         // --- [ĐÂY NÈ, ÔNG ĐANG THIẾU 3 DÒNG NÀY NÊN NÓ BÁO LỖI NÈ] ---
 

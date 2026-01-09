@@ -1001,6 +1001,37 @@
         }
       }
     },
+    "/api/BotTrading/SearchPriceBotByAdmin": {
+      "post": {
+        "tags": [
+          "BotTrading"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_SearchPriceBotByAdmin"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_SearchPriceBotByAdmin"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_SearchPriceBotByAdmin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/BotTrading/UpdatePriceBot": {
       "post": {
         "tags": [
@@ -3597,6 +3628,32 @@
         "properties": {
           "keyword": {
             "type": "string",
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Request_SearchPriceBotByAdmin": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "discount": {
+            "type": "boolean",
             "nullable": true
           },
           "pageNumber": {

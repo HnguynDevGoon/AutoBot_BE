@@ -84,6 +84,13 @@ namespace AutoBotCleanArchitecture.API.Controllers
             return Ok(await service_BotTrading.SearchBotTradingByAdmin(request));
         }
 
+        [HttpPost("SearchPriceBotByAdmin")]
+        public async Task<IActionResult> SearchPriceBotByAdmin(Request_SearchPriceBotByAdmin request)
+        {
+            return Ok(await service_BotTrading.SearchPriceBotByAdmin(request));
+
+        }
+
         [HttpPost("UpdatePriceBot")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdatePriceBot(Request_UpdatePriceBot request)

@@ -22,5 +22,6 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseBase> DeletePriceBot(Guid id);
         Task<ResponseObject<ResponsePagination<DTO_BotTrading>>> SearchBotTradingByAdmin(Request_SearchBotTradingByAdmin request);
         Task<ResponseObject<DTO_PriceBots>> UpdatePriceBot(Request_UpdatePriceBot request);
+        Task<ResponseObject<ResponsePagination<DTO_PriceBots>>> SearchPriceBotByAdmin(Request_SearchPriceBotByAdmin request);
     }
 }

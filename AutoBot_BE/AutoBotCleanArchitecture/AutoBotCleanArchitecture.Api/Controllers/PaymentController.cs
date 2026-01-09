@@ -2,6 +2,8 @@
 using AutoBotCleanArchitecture.Application.Requests.Payment;
 using AutoBotCleanArchitecture.Application.Requests.Wallet;
 using AutoBotCleanArchitecture.Application.Requests.WithdrawMoney;
+using AutoBotCleanArchitecture.Application.Responses;
+using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Net.payOS;
@@ -64,5 +66,11 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(result);
         }
 
+        [HttpPost("ConfirmWithdrawTransfer")]
+        public async Task<IActionResult> ConfirmWithdrawTransfer(Guid withdrawId)
+        {
+            return Ok(await _servicePayment.ConfirmWithdrawTransfer(withdrawId));
+
+        }
     }
 }

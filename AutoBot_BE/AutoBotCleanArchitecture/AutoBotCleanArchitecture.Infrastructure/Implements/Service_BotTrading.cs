@@ -477,6 +477,95 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
+        public async Task<ResponseObject<ResponsePagination<DTO_PriceBots>>> SearchPriceBotByAdmin(Request_SearchPriceBotByAdmin request)
+        {
+            try
+            {
+                var query = dbContext.priceBots
+                    .Include(x => x.BotTrading) // Include để lấy tên Bot
+                    .AsQueryable();
+
+                // 1. Lọc Keyword
+                if (!string.IsNullOrWhiteSpace(request.Keyword))
+                {
+                    var keyword = request.Keyword.Trim().ToLower();
+                    query = query.Where(x =>
+                        x.BotTrading.NameBot.ToLower().Contains(keyword) ||
+                        x.DescriptionBot.ToLower().Contains(keyword)
+                    );
+                }
+
+                IOrderedQueryable<PriceBot>? orderedQuery = null;
+
+                // 2. Sort Price
+                if (request.Price.HasValue)
+                {
+                    orderedQuery = request.Price.Value
+                        ? query.OrderBy(x => x.Price)
+                        : query.OrderByDescending(x => x.Price);
+                }
+
+                // 3. Sort Discount
+                if (request.Discount.HasValue)
+                {
+                    orderedQuery = orderedQuery == null
+                        ? (request.Discount.Value
+                            ? query.OrderBy(x => x.Discount)
+                            : query.OrderByDescending(x => x.Discount))
+                        : (request.Discount.Value
+                            ? orderedQuery.ThenBy(x => x.Discount)
+                            : orderedQuery.ThenByDescending(x => x.Discount));
+                }
+
+                // 4. Mặc định sort theo ID nếu không chọn gì
+                if (orderedQuery == null)
+                {
+                    orderedQuery = query.OrderByDescending(x => x.Id);
+                }
+
+                // 5. Phân trang
+                var totalItems = await orderedQuery.CountAsync();
+                var totalPages = (int)Math.Ceiling((double)totalItems / request.PageSize);
+
+                var prices = await orderedQuery
+                    .Skip((request.PageNumber - 1) * request.PageSize)
+                    .Take(request.PageSize)
+                    .ToListAsync();
+
+                // Map sang DTO
+                var priceDtos = prices.Select(b => new DTO_PriceBots
+                {
+                    Id = b.Id,
+                    Month = b.Month,
+                    Price = b.Price,
+                    Discount = b.Discount,
+                    Description = b.DescriptionBot,
+                    BotTradingId = b.BotTradingId,
+                    NameBot = b.BotTrading.NameBot
+                }).ToList();
+
+                var paginationData = new ResponsePagination<DTO_PriceBots>
+                {
+                    Items = priceDtos,
+                    CurrentPage = request.PageNumber,
+                    PageSize = request.PageSize,
+                    TotalItems = totalItems,
+                    TotalPages = totalPages
+                };
+
+                if (priceDtos.Count == 0)
+                {
+                    return responsePaginationPriceBot.responseObjectSuccess("Không tìm thấy kết quả nào phù hợp.", paginationData);
+                }
+
+                return responsePaginationPriceBot.responseObjectSuccess("Tìm kiếm thành công", paginationData);
+            }
+            catch (Exception ex)
+            {
+                return responsePaginationPriceBot.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
+            }
+        }
+
         //10. Update Price Bot
         public async Task<ResponseObject<DTO_PriceBots>> UpdatePriceBot(Request_UpdatePriceBot request)
         {

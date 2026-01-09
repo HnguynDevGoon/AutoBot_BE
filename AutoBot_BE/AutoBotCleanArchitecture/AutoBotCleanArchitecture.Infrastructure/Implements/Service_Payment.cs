@@ -514,5 +514,75 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return _responsePaginationWithdrawMoney.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
         }
+
+        public async Task<ResponseObject<bool>> ConfirmWithdrawTransfer(Guid withdrawId)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // 1. Tìm yêu cầu rút tiền
+                var withdrawRequest = await _context.withdrawMoneys.FindAsync(withdrawId);
+                if (withdrawRequest == null)
+                {
+                    return _responseBool.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy yêu cầu rút tiền.", false);
+                }
+
+                if (withdrawRequest.Status == "Success" || withdrawRequest.Status == "True")
+                {
+                    return _responseBool.responseObjectError(StatusCodes.Status400BadRequest, "Yêu cầu này đã được xử lý trước đó.", false);
+                }
+
+                // 2. Tìm Ví của User để trừ tiền (Nếu logic của bạn là trừ lúc duyệt)
+                // Hoặc kiểm tra lại số dư nếu logic là trừ lúc tạo lệnh (tùy vào business rule của bạn)
+                // Ở đây tôi giả định là Trừ tiền lúc Admin duyệt (an toàn hơn)
+                var wallet = await _context.wallets.FirstOrDefaultAsync(w => w.UserId == withdrawRequest.UserId);
+                if (wallet == null)
+                {
+                    return _responseBool.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không có ví.", false);
+                }
+
+                if (wallet.Balance < withdrawRequest.BankAmount)
+                {
+                    return _responseBool.responseObjectError(StatusCodes.Status400BadRequest, "Số dư ví không đủ để thực hiện rút tiền.", false);
+                }
+
+                // 3. Trừ tiền
+                wallet.Balance -= (double)withdrawRequest.BankAmount;
+                _context.wallets.Update(wallet);
+
+                // 4. Cập nhật trạng thái Withdraw thành Success (hoặc True)
+                withdrawRequest.Status = "Success"; // Hoặc "True" tùy convention của bạn
+                _context.withdrawMoneys.Update(withdrawRequest);
+
+                // 5. Lưu vào PurchaseHistory (Lịch sử giao dịch)
+                var history = new PurchaseHistory
+                {
+                    Id = Guid.NewGuid(),
+                    OrderCode = long.Parse(DateTime.UtcNow.ToString("yyMMddHHmmss")), // Tạo mã đơn ảo
+                    UserId = withdrawRequest.UserId,
+                    WalletId = wallet.Id,
+                    BotTradingId = null,
+                    PriceBot = (double)withdrawRequest.BankAmount,
+                    StartDate = null,
+                    EndDate = null,
+                    Date = DateTime.UtcNow,
+                    PaymentMethod = "BankTransfer", 
+                    Status = "Paid",             
+                    OrderType = "Withdraw",
+                };
+                await _context.purchaseHistories.AddAsync(history);
+
+                // 6. Commit Transaction
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return _responseBool.responseObjectSuccess("Xác nhận chuyển tiền thành công.", true);
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return _responseBool.responseObjectError(StatusCodes.Status500InternalServerError, "Lỗi hệ thống: " + ex.Message, false);
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
+using AutoBotCleanArchitecture.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -120,6 +121,12 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(await servicePurchaseHistory.GetPurchaseHistoriesYearByUser(userId, year));
         }
 
+        [HttpGet("GetAllHistoryDynamicForAdmin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllHistoryDynamicForAdmin(string orderType, string paymentMethod, int pageSize, int pageNumber)
+        {
+            return Ok(await servicePurchaseHistory.GetAllHistoryDynamicForAdmin(orderType, paymentMethod, pageSize, pageNumber));
+        }
 
         // =================================================================================
         // PHẦN 3: THỐNG KÊ DOANH THU (ADMIN)
