@@ -1,7 +1,7 @@
 ﻿using AutoBotCleanArchitecture.Application.Converters;
 using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
-using AutoBotCleanArchitecture.Application.Requests.Review; // Nhớ using cái Request vừa tạo
+using AutoBotCleanArchitecture.Application.Requests.Review; 
 using AutoBotCleanArchitecture.Application.Responses;
 using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Persistence.DBContext;
@@ -17,7 +17,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
     public class Service_Review : IService_Review
     {
         private readonly AppDbContext dbContext;
-        private readonly Converter_Review converter_Review; 
+        private readonly Converter_Review converter_Review;
         private readonly ResponseBase responseBase;
         private readonly ResponseObject<DTO_Review> responseObject;
         private readonly ResponseObject<List<DTO_Review>> responseObjectList;
@@ -83,7 +83,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 {
                     FullName = request.FullName,
                     UrlAvatar = request.UrlAvatar,
-                    Rate = request.Rate
+                    Rate = request.Rate,
+                    Description = request.Description
                 };
 
                 await dbContext.reviews.AddAsync(review);
@@ -97,7 +98,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        // 4. UPDATE (Cập nhật - Post/Put)
+        // 4. UPDATE 
         public async Task<ResponseObject<DTO_Review>> UpdateReview(Request_UpdateReview request)
         {
             try
@@ -108,10 +109,15 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy để cập nhật.", null);
                 }
 
-                // Cập nhật dữ liệu
-                review.FullName = request.FullName;
-                review.UrlAvatar = request.UrlAvatar;
-                review.Rate = request.Rate;
+
+                review.FullName = !string.IsNullOrEmpty(request.FullName) ? request.FullName : review.FullName;
+
+                review.UrlAvatar = !string.IsNullOrEmpty(request.UrlAvatar) ? request.UrlAvatar : review.UrlAvatar;
+
+                review.Description = !string.IsNullOrEmpty(request.Description) ? request.Description : review.Description;
+
+                review.Rate = (request.Rate > 0) ? request.Rate : review.Rate;
+
 
                 dbContext.reviews.Update(review);
                 await dbContext.SaveChangesAsync();

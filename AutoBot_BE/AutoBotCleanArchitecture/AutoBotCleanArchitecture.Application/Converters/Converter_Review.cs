@@ -17,7 +17,8 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 Id = review.Id,
                 FullName = review.FullName,
                 Rate = review.Rate,
-                UrlAvatar = review.UrlAvatar
+                UrlAvatar = review.UrlAvatar,
+                Description = review.Description,
             };
         }
     }

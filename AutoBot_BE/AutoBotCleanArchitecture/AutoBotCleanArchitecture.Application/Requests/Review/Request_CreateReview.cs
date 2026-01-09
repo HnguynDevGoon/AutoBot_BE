@@ -10,6 +10,7 @@ namespace AutoBotCleanArchitecture.Application.Requests.Review
     {
         public string FullName { get; set; }
         public string UrlAvatar { get; set; }
+        public string Description { get; set; }
         public int Rate { get; set; }
     }
 }
