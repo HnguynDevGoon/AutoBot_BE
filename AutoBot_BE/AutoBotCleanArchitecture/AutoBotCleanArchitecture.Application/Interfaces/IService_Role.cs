@@ -11,10 +11,10 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
 {
     public interface IService_Role
     {
-        public ResponseBase CreateRole(Request_CreateRole request);
-        public ResponseObject<DTO_Role> UpdateRole(Request_UpdateRole request);
-        public IQueryable<DTO_Role> GetListRole(int pageSize, int pageNumber);
-        public ResponseObject<DTO_Role> GetRoleById(Guid roleId);
-        public ResponseObject<DTO_Role> DeleteRole(Guid roleId);
+        Task<ResponseBase> CreateRole(Request_CreateRole request);
+        Task<ResponseObject<DTO_Role>> DeleteRole(Guid roleId);
+        Task<List<DTO_Role>> GetListRole(int pageSize, int pageNumber);
+        Task<ResponseObject<DTO_Role>> GetRoleById(Guid roleId);
+        Task<ResponseObject<DTO_Role>> UpdateRole(Request_UpdateRole request);
     }
 }

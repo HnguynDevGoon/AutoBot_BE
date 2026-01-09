@@ -33,6 +33,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseObject<DTO_User>> UpdateUserInfo(Request_UpdateUserInfo request);
         Task<ResponseObject<DTO_User>> OnOffTwoStep(Request_OnOffTwoStep request);
         Task<ResponseObject<ResponsePagination<DTO_User>>> SearchUserByAdmin(Request_SearchUserByAdmin request);
+        Task<ResponseObject<DTO_User>> UpdateRoleByAdmin(Request_UpdateRoleByAdmin request);
 
     }
 }

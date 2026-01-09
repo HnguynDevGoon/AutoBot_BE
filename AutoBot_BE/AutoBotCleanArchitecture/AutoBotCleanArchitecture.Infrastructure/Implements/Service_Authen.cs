@@ -1263,5 +1263,35 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
+        public async Task<ResponseObject<DTO_User>> UpdateRoleByAdmin(Request_UpdateRoleByAdmin request)
+        {
+            var user = await dbContext.users.FirstOrDefaultAsync(x => x.Id == request.Id);
+
+            if (user == null)
+            {
+                return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
+            }
+
+            if (!string.IsNullOrEmpty(request.RoleName))
+            {
+                var roleEntity = await dbContext.roles.FirstOrDefaultAsync(r => r.RoleName == request.RoleName);
+
+                if (roleEntity != null)
+                {
+                    user.RoleId = roleEntity.Id;
+                }
+                else
+                {
+                    return responseObject.responseObjectError(StatusCodes.Status400BadRequest, "Quyền hạn không hợp lệ", null);
+                }
+            }
+
+            dbContext.users.Update(user);
+            await dbContext.SaveChangesAsync();
+
+            var userDto = converter_Authen.EntityToDTO(user);
+
+            return responseObject.responseObjectSuccess("Cập nhật thông tin người dùng thành công", userDto);
+        }
     }
 }

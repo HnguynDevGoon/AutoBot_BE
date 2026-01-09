@@ -292,6 +292,22 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
+    "Method": "UpdateRoleByAdmin",
+    "RelativePath": "api/Authen/UpdateRoleByAdmin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.User.Request_UpdateRoleByAdmin",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
     "Method": "UpdateUserInfo",
     "RelativePath": "api/Authen/UpdateUserInfo",
     "HttpMethod": "POST",
@@ -1204,6 +1220,158 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ProfitLossController",
+    "Method": "CreateProfitLoss",
+    "RelativePath": "api/ProfitLoss/CreateProfitLoss",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.ProfitLoss.Request_CreateProfitLoss",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ProfitLossController",
+    "Method": "DeleteProfitLoss",
+    "RelativePath": "api/ProfitLoss/DeleteProfitLoss",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ProfitLossController",
+    "Method": "GetProfitLossAll",
+    "RelativePath": "api/ProfitLoss/GetProfitLossAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ProfitLossController",
+    "Method": "GetProfitLossByDay",
+    "RelativePath": "api/ProfitLoss/GetProfitLossByDay",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "day",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "month",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ProfitLossController",
+    "Method": "GetProfitLossByMonth",
+    "RelativePath": "api/ProfitLoss/GetProfitLossByMonth",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "month",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ProfitLossController",
+    "Method": "GetProfitLossByYear",
+    "RelativePath": "api/ProfitLoss/GetProfitLossByYear",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ProfitLossController",
+    "Method": "GetProfitLosses",
+    "RelativePath": "api/ProfitLoss/GetProfitLosses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ProfitLossController",
+    "Method": "UpdateProfitLoss",
+    "RelativePath": "api/ProfitLoss/UpdateProfitLoss",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.ProfitLoss.Request_UpdateProfitLoss",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
     "Method": "Delete",
     "RelativePath": "api/PurchaseHistory/DeletePurchaseHistory",
@@ -1465,6 +1633,80 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ReviewController",
+    "Method": "CreateReview",
+    "RelativePath": "api/Review/CreateReview",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Review.Request_CreateReview",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ReviewController",
+    "Method": "DeleteReview",
+    "RelativePath": "api/Review/DeleteReview",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ReviewController",
+    "Method": "GetAllReviews",
+    "RelativePath": "api/Review/GetAllReviews",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ReviewController",
+    "Method": "GetReviewById",
+    "RelativePath": "api/Review/GetReviewById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.ReviewController",
+    "Method": "UpdateReview",
+    "RelativePath": "api/Review/UpdateReview",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Review.Request_UpdateReview",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.RoleController",
     "Method": "CreateRole",
     "RelativePath": "api/Role/CreateRole",
@@ -1537,7 +1779,7 @@
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.RoleController",
     "Method": "UpdateRole",
     "RelativePath": "api/Role/UpdateRole",
-    "HttpMethod": "PUT",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [

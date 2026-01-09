@@ -6,6 +6,7 @@ using AutoBotCleanArchitecture.Application.Responses;
 using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Persistence.DBContext;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,73 +30,78 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             this.converter_Role = converter_Role;
         }
 
-        public ResponseBase CreateRole(Request_CreateRole request)
+        // 1. CreateRole
+        public async Task<ResponseBase> CreateRole(Request_CreateRole request)
         {
             var role = new Role()
             {
                 RoleName = request.RoleName,
             };
-            /* role.Rolename=request.RoleName;*/
-            dbContext.roles.Add(role);
-            dbContext.SaveChanges();
+
+            await dbContext.roles.AddAsync(role);
+            await dbContext.SaveChangesAsync();
 
             return responseBase.ResponseSuccess("Thêm quyền thành công !");
-
         }
 
-        public ResponseObject<DTO_Role> DeleteRole(Guid roleId)
+        // 2. DeleteRole
+        public async Task<ResponseObject<DTO_Role>> DeleteRole(Guid roleId)
         {
-            var role = dbContext.roles.FirstOrDefault(r => r.Id == roleId);
+            var role = await dbContext.roles.FirstOrDefaultAsync(r => r.Id == roleId);
+
             if (role == null)
             {
                 return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Role không tồn tại.", null);
             }
+
             dbContext.roles.Remove(role);
-            dbContext.SaveChanges();
+
+            await dbContext.SaveChangesAsync();
             return responseObject.responseObjectSuccess("Xóa thành công !", null);
         }
 
-        public IQueryable<DTO_Role> GetListRole(int pageSize, int pageNumber)
+        // 3. GetListRole
+        public async Task<List<DTO_Role>> GetListRole(int pageSize, int pageNumber)
         {
-            return dbContext.roles.Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => converter_Role.EntityToDTO(x));
+            return await dbContext.roles
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(x => converter_Role.EntityToDTO(x))
+                .ToListAsync();
         }
 
-        public ResponseObject<DTO_Role> GetRoleById(Guid roleId)
+        // 4. GetRoleById
+        public async Task<ResponseObject<DTO_Role>> GetRoleById(Guid roleId)
         {
-            // Tìm role theo Id
-            var role = dbContext.roles.FirstOrDefault(r => r.Id == roleId);
+            var role = await dbContext.roles.FirstOrDefaultAsync(r => r.Id == roleId);
 
             if (role == null)
             {
-                // Trả về lỗi nếu không tìm thấy role
                 return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Role không tồn tại.", null);
             }
 
-            // Chuyển đổi role entity thành DTO
             var roleDto = converter_Role.EntityToDTO(role);
 
-            // Trả về thành công
             return responseObject.responseObjectSuccess("Lấy thông tin role thành công.", roleDto);
-
         }
 
-
-        public ResponseObject<DTO_Role> UpdateRole(Request_UpdateRole request)
+        // 5. UpdateRole
+        public async Task<ResponseObject<DTO_Role>> UpdateRole(Request_UpdateRole request)
         {
-            var role = dbContext.roles.FirstOrDefault(x => x.Id == request.Id);
+            var role = await dbContext.roles.FirstOrDefaultAsync(x => x.Id == request.Id);
+
             if (role == null)
             {
                 return responseObject.responseObjectError(StatusCodes.Status404NotFound, "Không tìm thấy !", null);
             }
+
             role.RoleName = request.RoleName;
+
             dbContext.roles.Update(role);
-            dbContext.SaveChanges();
-
-
+            await dbContext.SaveChangesAsync();
 
             return responseObject.responseObjectSuccess("Sửa thành công !", converter_Role.EntityToDTO(role));
-
-
         }
+
     }
 }

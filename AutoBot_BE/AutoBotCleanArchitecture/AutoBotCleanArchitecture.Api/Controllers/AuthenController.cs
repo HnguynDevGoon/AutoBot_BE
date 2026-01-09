@@ -152,6 +152,13 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         {
             return Ok(await service_Authen.SearchUserByAdmin(request));
         }
+
+        [HttpPost("UpdateRoleByAdmin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateRoleByAdmin(Request_UpdateRoleByAdmin request)
+        {
+            return Ok(await service_Authen.UpdateRoleByAdmin(request));
+        }
     }
 
 }
