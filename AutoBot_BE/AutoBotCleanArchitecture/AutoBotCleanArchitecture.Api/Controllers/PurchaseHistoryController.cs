@@ -25,7 +25,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
 
         [HttpGet("GetMyHistoryDynamic")]
         [Authorize]
-        public async Task<IActionResult> GetMyHistoryDynamic(string orderType, string paymentMethod, int pageSize, int pageNumber)
+        public async Task<IActionResult> GetMyHistoryDynamic(string? orderType, string? paymentMethod, int pageSize, int pageNumber)
         {
             var result = await servicePurchaseHistory.GetMyHistoryDynamic(orderType, paymentMethod, pageSize, pageNumber);
             return Ok(result);
@@ -123,7 +123,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
 
         [HttpGet("GetAllHistoryDynamicForAdmin")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllHistoryDynamicForAdmin(string orderType, string paymentMethod, int pageSize, int pageNumber)
+        public async Task<IActionResult> GetAllHistoryDynamicForAdmin(string? orderType, string? paymentMethod, int pageSize, int pageNumber)
         {
             return Ok(await servicePurchaseHistory.GetAllHistoryDynamicForAdmin(orderType, paymentMethod, pageSize, pageNumber));
         }

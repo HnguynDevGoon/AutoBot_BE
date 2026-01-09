@@ -46,73 +46,67 @@
                 this.responseBase = responseBase;
             }
 
-            // =================================================================================
-            // PHẦN 1: USER (CÁ NHÂN) - TỰ ĐỘNG CHECK TOKEN
-            // (Logic lấy ID được viết trực tiếp trong hàm)
-            // =================================================================================
+        // =================================================================================
+        // PHẦN 1: USER (CÁ NHÂN) - TỰ ĐỘNG CHECK TOKEN
+        // (Logic lấy ID được viết trực tiếp trong hàm)
+        // =================================================================================
 
-            public async Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetMyHistoryDynamic(string orderType, string paymentMethod, int pageSize, int pageNumber)
+        public async Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetMyHistoryDynamic(string? orderType, string? paymentMethod, int pageSize, int pageNumber)
+        {
+            try
             {
-                try
+                // 1. Check User
+                var user = httpContextAccessor.HttpContext?.User;
+                var userIdString = user?.FindFirst("Id")?.Value ?? user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
                 {
-                    // --- 1. LẤY USER ID TỪ TOKEN (GIỮ NGUYÊN FORM CỦA ÔNG) ---
-                    var user = httpContextAccessor.HttpContext?.User;
-                    var userIdString = user?.FindFirst("Id")?.Value;
-                    if (string.IsNullOrEmpty(userIdString)) userIdString = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-                    if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
-                    {
-                        return responseObjectPaginationPurchase.responseObjectError(StatusCodes.Status401Unauthorized, "Vui lòng đăng nhập.", null);
-                    }
-
-                    // --- 2. PHÂN TRANG ---
-                    if (pageNumber < 1) pageNumber = 1;
-                    if (pageSize < 1) pageSize = 10;
-
-                    // --- 3. QUERY LINH HOẠT ---
-                    var query = dbContext.purchaseHistories
-                        .Include(x => x.User).Include(x => x.BotTrading)
-                        .Where(x => x.UserId == userId) // Luôn lọc theo thằng đang login
-                        .AsQueryable();
-
-                    // Nếu có truyền orderType thì mới lọc
-                    if (!string.IsNullOrEmpty(orderType))
-                    {
-                        query = query.Where(x => x.OrderType == orderType);
-                    }
-
-                    // Nếu có truyền paymentMethod thì mới lọc
-                    if (!string.IsNullOrEmpty(paymentMethod))
-                    {
-                        query = query.Where(x => x.PaymentMethod == paymentMethod);
-                    }
-
-                    query = query.OrderByDescending(x => x.Date);
-
-                    // --- 4. THỰC THI ---
-                    var totalItems = await query.CountAsync();
-                    var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-                    var dtos = items.Select(x => converter.EntityToDTO(x)).ToList();
-
-                    var pagedResult = new ResponsePagination<DTO_PurchaseHistory>
-                    {
-                        Items = dtos,
-                        CurrentPage = pageNumber,
-                        PageSize = pageSize,
-                        TotalItems = totalItems,
-                        TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
-                    };
-
-                    return responseObjectPaginationPurchase.responseObjectSuccess("Lấy lịch sử thành công.", pagedResult);
+                    return responseObjectPaginationPurchase.responseObjectError(StatusCodes.Status401Unauthorized, "Vui lòng đăng nhập.", null);
                 }
-                catch (Exception ex)
+
+                if (pageNumber < 1) pageNumber = 1;
+                if (pageSize < 1) pageSize = 10;
+
+                var query = dbContext.purchaseHistories
+                    .Include(x => x.User).Include(x => x.BotTrading)
+                    .Where(x => x.UserId == userId)
+                    .AsQueryable();
+
+
+                if (!string.IsNullOrEmpty(orderType) && orderType != "All")
                 {
-                    return responseObjectPaginationPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
+                    query = query.Where(x => x.OrderType == orderType);
                 }
+
+                if (!string.IsNullOrEmpty(paymentMethod) && paymentMethod != "All")
+                {
+                    query = query.Where(x => x.PaymentMethod == paymentMethod);
+                }
+
+                query = query.OrderByDescending(x => x.Date);
+
+                var totalItems = await query.CountAsync();
+                var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+                var dtos = items.Select(x => converter.EntityToDTO(x)).ToList();
+
+                var pagedResult = new ResponsePagination<DTO_PurchaseHistory>
+                {
+                    Items = dtos,
+                    CurrentPage = pageNumber,
+                    PageSize = pageSize,
+                    TotalItems = totalItems,
+                    TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
+                };
+
+                return responseObjectPaginationPurchase.responseObjectSuccess("Lấy lịch sử thành công.", pagedResult);
             }
+            catch (Exception ex)
+            {
+                return responseObjectPaginationPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
+            }
+        }
 
         // Hàm này chỉ Get + Phân trang + Lọc cơ bản (Bỏ Search Keyword)
-        public async Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetAllHistoryDynamicForAdmin(string orderType, string paymentMethod, int pageSize, int pageNumber)
+        public async Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetAllHistoryDynamicForAdmin(string? orderType, string? paymentMethod, int pageSize, int pageNumber)
         {
             try
             {
@@ -124,27 +118,22 @@
                     .Include(x => x.BotTrading)
                     .AsQueryable();
 
-                // 1. Lọc theo OrderType (Deposit / Withdraw / All)
                 if (!string.IsNullOrEmpty(orderType) && orderType != "All")
                 {
                     query = query.Where(x => x.OrderType == orderType);
                 }
                 else
                 {
-                    // Mặc định chỉ lấy Nạp & Rút (Bỏ qua BuyBot)
                     query = query.Where(x => x.OrderType == "Deposit" || x.OrderType == "Withdraw");
                 }
 
-                // 2. Lọc theo PaymentMethod (PayOS / BankTransfer / All)
                 if (!string.IsNullOrEmpty(paymentMethod) && paymentMethod != "All")
                 {
                     query = query.Where(x => x.PaymentMethod == paymentMethod);
                 }
 
-                // 3. Sắp xếp mới nhất lên đầu
                 query = query.OrderByDescending(x => x.Date);
 
-                // 4. Thực thi & Phân trang
                 var totalItems = await query.CountAsync();
                 var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 

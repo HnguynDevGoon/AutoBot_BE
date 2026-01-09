@@ -1152,6 +1152,22 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PaymentController",
+    "Method": "ConfirmWithdrawTransfer",
+    "RelativePath": "api/Payment/ConfirmWithdrawTransfer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "withdrawId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PaymentController",
     "Method": "CreateBuyBotLink",
     "RelativePath": "api/Payment/CreateBuyBotLink",
     "HttpMethod": "POST",
@@ -1411,6 +1427,37 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
+    "Method": "GetAllHistoryDynamicForAdmin",
+    "RelativePath": "api/PurchaseHistory/GetAllHistoryDynamicForAdmin",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "paymentMethod",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {

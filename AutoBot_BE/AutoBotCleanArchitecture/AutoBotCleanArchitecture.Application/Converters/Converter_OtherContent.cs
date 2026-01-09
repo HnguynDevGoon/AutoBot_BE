@@ -18,6 +18,7 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 Description = otherContent.Description,
                 Icon = otherContent.Icon,
                 Title = otherContent.Title,
+                OtherType = otherContent.OtherType,
             };
         }
     }
