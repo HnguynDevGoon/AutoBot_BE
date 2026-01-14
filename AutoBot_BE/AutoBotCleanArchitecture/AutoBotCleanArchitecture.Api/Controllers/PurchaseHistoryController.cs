@@ -31,14 +31,6 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(result);
         }
 
-        // 2. Xem giao dịch gần nhất của tôi
-        [HttpGet("GetMyLastPurchase")]
-        [Authorize]
-        public async Task<IActionResult> GetMyLastPurchase()
-        {
-            return Ok(await servicePurchaseHistory.GetMyLastPurchase());
-        }
-
         // 3. Lọc theo tháng (Của tôi)
         [HttpGet("GetMyHistoryByMonth")]
         [Authorize]
@@ -72,6 +64,14 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         // =================================================================================
         // PHẦN 2: ADMIN API (QUẢN LÝ - CẦN USERID)
         // =================================================================================
+
+        // Xem giao dịch gần nhất của user gửi admin
+        [HttpGet("GetNewestTransactionForAdmin")]
+        [Authorize]
+        public async Task<IActionResult> GetNewestTransactionForAdmin()
+        {
+            return Ok(await servicePurchaseHistory.GetNewestTransactionForAdmin());
+        }
 
         // 1. Xóa lịch sử (Chỉ Admin)
         [HttpDelete("DeletePurchaseHistory")]
@@ -123,9 +123,9 @@ namespace AutoBotCleanArchitecture.Api.Controllers
 
         [HttpGet("GetAllHistoryDynamicForAdmin")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllHistoryDynamicForAdmin(string? orderType, string? paymentMethod, int pageSize, int pageNumber)
+        public async Task<IActionResult> GetAllHistoryDynamicForAdmin(string? orderType, string? paymentMethod, string? searchKeyword, int pageSize, int pageNumber)
         {
-            return Ok(await servicePurchaseHistory.GetAllHistoryDynamicForAdmin(orderType, paymentMethod, pageSize, pageNumber));
+            return Ok(await servicePurchaseHistory.GetAllHistoryDynamicForAdmin(orderType, paymentMethod, searchKeyword, pageSize, pageNumber));
         }
 
         // =================================================================================

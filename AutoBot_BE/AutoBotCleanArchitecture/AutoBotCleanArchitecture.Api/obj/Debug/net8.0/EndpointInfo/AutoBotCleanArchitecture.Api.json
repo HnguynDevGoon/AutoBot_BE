@@ -2631,6 +2631,13 @@
             }
           },
           {
+            "name": "searchKeyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "pageSize",
             "in": "query",
             "schema": {

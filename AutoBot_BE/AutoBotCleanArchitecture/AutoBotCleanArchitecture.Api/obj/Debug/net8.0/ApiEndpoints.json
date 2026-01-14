@@ -1448,6 +1448,11 @@
         "IsRequired": false
       },
       {
+        "Name": "searchKeyword",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "pageSize",
         "Type": "System.Int32",
         "IsRequired": false

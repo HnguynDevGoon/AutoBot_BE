@@ -11,7 +11,6 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         // =======================================================
         // 1. GROUP USER (CÁ NHÂN - TOKEN)
         // =======================================================
-        Task<ResponseObject<DTO_PurchaseHistory>> GetMyLastPurchase();
         Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyHistoryByMonth(int month, int year);
         Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyHistoryByYear(int year);
         Task<ResponseObject<double>> GetTotalSpentOnBots();
@@ -22,12 +21,13 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         // =======================================================
         // 2. GROUP ADMIN (QUẢN TRỊ - CẦN USERID)
         // =======================================================
+        Task<ResponseObject<List<DTO_PurchaseHistory>>> GetNewestTransactionForAdmin();
         Task<ResponseBase> DeletePurchaseHistory(Guid id);
 
         Task<ResponseObject<List<DTO_PurchaseHistory>>> GetAll();
 
         Task<ResponseObject<List<DTO_PurchaseHistory>>> GetByUser(Guid userId);
-        Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetAllHistoryDynamicForAdmin(string? orderType, string? paymentMethod, int pageSize, int pageNumber);
+        Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetAllHistoryDynamicForAdmin(string? orderType, string? paymentMethod, string? searchKeyword, int pageSize, int pageNumber);
 
         // --- [ĐÂY NÈ, ÔNG ĐANG THIẾU 3 DÒNG NÀY NÊN NÓ BÁO LỖI NÈ] ---
 

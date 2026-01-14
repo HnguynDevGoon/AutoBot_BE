@@ -79,7 +79,7 @@
 
                 if (!string.IsNullOrEmpty(paymentMethod) && paymentMethod != "All")
                 {
-                    query = query.Where(x => x.PaymentMethod == paymentMethod);
+                    query = query.Where(x => x.PaymentMethod == paymentMethod); 
                 }
 
                 query = query.OrderByDescending(x => x.Date);
@@ -105,8 +105,8 @@
             }
         }
 
-        // Hàm này chỉ Get + Phân trang + Lọc cơ bản (Bỏ Search Keyword)
-        public async Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetAllHistoryDynamicForAdmin(string? orderType, string? paymentMethod, int pageSize, int pageNumber)
+        // Thêm string searchKeyword vào tham số
+        public async Task<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>> GetAllHistoryDynamicForAdmin(string? orderType, string? paymentMethod, string? searchKeyword, int pageSize, int pageNumber)
         {
             try
             {
@@ -117,6 +117,7 @@
                     .Include(x => x.User)
                     .Include(x => x.BotTrading)
                     .AsQueryable();
+
 
                 if (!string.IsNullOrEmpty(orderType) && orderType != "All")
                 {
@@ -132,11 +133,22 @@
                     query = query.Where(x => x.PaymentMethod == paymentMethod);
                 }
 
+                // --- LOGIC TÌM KIẾM (SEARCH) ---
+                if (!string.IsNullOrEmpty(searchKeyword))
+                {
+                    var k = searchKeyword.Trim().ToLower(); 
+                    query = query.Where(x =>
+                        x.User.UserName.ToLower().Contains(k) || 
+                        x.User.Email.ToLower().Contains(k) ||    
+                        x.User.FullName.ToLower().Contains(k) ||    
+                        x.OrderCode.ToString().Contains(k)          
+                    );
+                }
+
                 query = query.OrderByDescending(x => x.Date);
 
                 var totalItems = await query.CountAsync();
                 var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-
                 var dtos = items.Select(x => converter.EntityToDTO(x)).ToList();
 
                 var pagedResult = new ResponsePagination<DTO_PurchaseHistory>
@@ -156,34 +168,46 @@
             }
         }
 
-        // 2. Xem giao dịch gần nhất của tôi
-        public async Task<ResponseObject<DTO_PurchaseHistory>> GetMyLastPurchase()
+        // Sửa kiểu trả về thành List<DTO_PurchaseHistory>
+        public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetNewestTransactionForAdmin()
+        {
+            try
             {
-                try
+                var entities = await dbContext.purchaseHistories
+                    .Include(x => x.User)
+                    .Include(x => x.BotTrading)
+                    .Where(x => x.OrderType != "BuyBot")
+                    .OrderByDescending(x => x.Date)      
+                    .Take(2)                          
+                    .ToListAsync();
+
+                if (entities == null || entities.Count == 0)
                 {
-                    var user = httpContextAccessor.HttpContext?.User;
-                    var userIdString = user?.FindFirst("Id")?.Value;
-                    if (string.IsNullOrEmpty(userIdString)) userIdString = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-                    if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
-                    {
-                        return responseObjectPurchase.responseObjectError(StatusCodes.Status401Unauthorized, "Vui lòng đăng nhập.", null);
-                    }
-
-                    var entity = await dbContext.purchaseHistories
-                        .Include(x => x.User).Include(x => x.BotTrading)
-                        .Where(x => x.UserId == userId)
-                        .OrderByDescending(x => x.Date)
-                        .FirstOrDefaultAsync();
-
-                    if (entity == null) return responseObjectPurchase.responseObjectError(StatusCodes.Status404NotFound, "Bạn chưa có giao dịch nào.", null);
-                    return responseObjectPurchase.responseObjectSuccess("Thành công.", converter.EntityToDTO(entity));
+                    return responseObjectListPurchase.responseObjectError(StatusCodes.Status404NotFound, "Chưa có giao dịch nào.", null);
                 }
-                catch (Exception ex) { return responseObjectPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
-            }
 
-            // 3. Lọc lịch sử theo tháng của tôi
-            public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyHistoryByMonth(int month, int year)
+                var dtos = entities.Select(x => converter.EntityToDTO(x)).ToList();
+
+                return new ResponseObject<List<DTO_PurchaseHistory>>
+                {
+                    Status = StatusCodes.Status200OK,
+                    Message = "Lấy 2 giao dịch mới nhất thành công.",
+                    Data = dtos
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseObject<List<DTO_PurchaseHistory>>
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Message = ex.Message,
+                    Data = null
+                };
+            }
+        }
+
+        // 3. Lọc lịch sử theo tháng của tôi
+        public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetMyHistoryByMonth(int month, int year)
             {
                 try
                 {
