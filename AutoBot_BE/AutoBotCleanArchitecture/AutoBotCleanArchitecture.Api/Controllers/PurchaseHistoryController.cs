@@ -73,6 +73,13 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(await servicePurchaseHistory.GetNewestTransactionForAdmin());
         }
 
+        [HttpGet("GetAllActiveBotsSystemWide")]
+        [Authorize]
+        public async Task<IActionResult> GetAllActiveBotsSystemWide()
+        {
+            return Ok(await servicePurchaseHistory.GetAllActiveBotsSystemWide());
+        }
+
         // 1. Xóa lịch sử (Chỉ Admin)
         [HttpDelete("DeletePurchaseHistory")]
         [Authorize(Roles = "Admin")]

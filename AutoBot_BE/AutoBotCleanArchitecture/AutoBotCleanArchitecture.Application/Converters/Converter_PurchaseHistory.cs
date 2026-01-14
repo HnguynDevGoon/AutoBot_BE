@@ -23,6 +23,7 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 Date = entity.Date,
                 OrderCode = entity.OrderCode,       
                 NameBot = entity.BotTrading?.NameBot,
+                OrderType = entity.OrderType,
                 UserId = entity.UserId,
                 UserName = entity.User != null ? entity.User.FullName : "Unknown User"
             };

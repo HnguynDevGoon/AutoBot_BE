@@ -315,11 +315,41 @@
                 }
             }
 
-            // =================================================================================
-            // PHẦN 2: ADMIN (QUẢN LÝ) - CẦN TRUYỀN USERID VÀO
-            // =================================================================================
+        public async Task<ResponseObject<List<DTO_PurchaseHistory>>> GetAllActiveBotsSystemWide()
+        {
+            try
+            {
+                var now = DateTime.Now;
 
-            public async Task<ResponseBase> DeletePurchaseHistory(Guid id)
+                // Query lấy tất cả bot còn hạn trên hệ thống
+                var list = await dbContext.purchaseHistories
+                    .Include(x => x.User)       
+                    .Include(x => x.BotTrading)
+                    .Where(x => x.StartDate != null && x.EndDate != null) 
+                    .Where(x => x.EndDate >= now)
+                    .OrderByDescending(x => x.EndDate) 
+                    .ToListAsync();
+
+                if (list == null || list.Count == 0)
+                {
+                    return responseObjectListPurchase.responseObjectSuccess("Hiện không có bot nào đang hoạt động.", new List<DTO_PurchaseHistory>());
+                }
+
+                var dtos = list.Select(x => converter.EntityToDTO(x)).ToList();
+
+                return responseObjectListPurchase.responseObjectSuccess($"Lấy thành công {list.Count} bot đang hoạt động.", dtos);
+            }
+            catch (Exception ex)
+            {
+                return responseObjectListPurchase.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
+            }
+        }
+
+        // =================================================================================
+        // PHẦN 2: ADMIN (QUẢN LÝ) - CẦN TRUYỀN USERID VÀO
+        // =================================================================================
+
+        public async Task<ResponseBase> DeletePurchaseHistory(Guid id)
             {
                 try
                 {

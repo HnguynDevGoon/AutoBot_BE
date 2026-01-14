@@ -13,6 +13,7 @@ namespace AutoBotCleanArchitecture.Application.DTOs
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string PaymentMethod { get; set; }
+        public string OrderType { get; set; }
         public string Status { get; set; }
         public long OrderCode { get; set; }
         public DateTime Date { get; set; }

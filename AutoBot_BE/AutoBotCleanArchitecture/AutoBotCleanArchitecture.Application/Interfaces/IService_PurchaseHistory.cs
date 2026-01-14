@@ -22,6 +22,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         // 2. GROUP ADMIN (QUẢN TRỊ - CẦN USERID)
         // =======================================================
         Task<ResponseObject<List<DTO_PurchaseHistory>>> GetNewestTransactionForAdmin();
+        Task<ResponseObject<List<DTO_PurchaseHistory>>> GetAllActiveBotsSystemWide();
         Task<ResponseBase> DeletePurchaseHistory(Guid id);
 
         Task<ResponseObject<List<DTO_PurchaseHistory>>> GetAll();
