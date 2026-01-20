@@ -388,28 +388,28 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.BotSignalController",
-    "Method": "AddSignal",
-    "RelativePath": "api/BotSignal/AddSignal",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "text",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.BotSignalController",
     "Method": "GetSignals",
     "RelativePath": "api/BotSignal/GetSignals",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.BotSignalController",
+    "Method": "SendMessage",
+    "RelativePath": "api/BotSignal/SendMessage",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.BotSignal.Request_AddSignal",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

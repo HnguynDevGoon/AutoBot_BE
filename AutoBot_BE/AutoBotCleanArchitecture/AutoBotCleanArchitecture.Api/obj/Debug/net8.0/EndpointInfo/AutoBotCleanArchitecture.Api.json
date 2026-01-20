@@ -720,7 +720,7 @@
         }
       }
     },
-    "/api/BotSignal/AddSignal": {
+    "/api/BotSignal/SendMessage": {
       "post": {
         "tags": [
           "BotSignal"
@@ -729,17 +729,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/Request_AddSignal"
               }
             },
             "text/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/Request_AddSignal"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/Request_AddSignal"
               }
             }
           }
@@ -3214,6 +3214,20 @@
         },
         "additionalProperties": false
       },
+      "Request_AddSignal": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Request_BotTrading": {
         "type": "object",
         "properties": {
@@ -3467,6 +3481,10 @@
         "type": "object",
         "properties": {
           "idToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "fingerprint": {
             "type": "string",
             "nullable": true
           }

@@ -10,7 +10,9 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
 {
     public interface IService_BotSignal
     {
-        Task<ResponseBase> AddSignal(string text);
         Task<ResponseObject<List<DTO_BotSignal>>> GetSignals();
+        ResponseObject<string> CacheSignal(string rawText);
+        Task<ResponseBase> AddSignal(string rawText);
+
     }
 }

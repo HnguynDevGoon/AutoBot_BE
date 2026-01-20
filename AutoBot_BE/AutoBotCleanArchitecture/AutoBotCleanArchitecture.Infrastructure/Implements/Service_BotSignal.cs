@@ -5,93 +5,107 @@ using AutoBotCleanArchitecture.Application.Responses;
 using AutoBotCleanArchitecture.Domain.Entities;
 using AutoBotCleanArchitecture.Persistence.DBContext;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory; // Dùng cái gốc của Microsoft luôn
 using System.Globalization;
 
-public class Service_BotSignal : IService_BotSignal
+namespace AutoBotCleanArchitecture.Infrastructure.Implements
 {
-    private readonly AppDbContext dbContext;
-    private readonly Converter_BotSignal converter;
-    private readonly IMemoryCache memoryCache;
-    private readonly ResponseObject<List<DTO_BotSignal>> responseObjectList;
-    private readonly ResponseBase responseBase;
-
-    public Service_BotSignal(
-        AppDbContext dbContext,
-        Converter_BotSignal converter,
-        IMemoryCache memoryCache,
-        ResponseObject<List<DTO_BotSignal>> responseObjectList,
-        ResponseBase responseBase)
+    public class Service_BotSignal : IService_BotSignal
     {
-        this.dbContext = dbContext;
-        this.converter = converter;
-        this.memoryCache = memoryCache;
-        this.responseObjectList = responseObjectList;
-        this.responseBase = responseBase;
-    }
+        private readonly AppDbContext _dbContext;
+        private readonly Converter_BotSignal _converter;
+        private readonly IMemoryCache _memoryCache; // <--- Xài hàng chính chủ, khỏi tạo Interface lạ
+        private readonly ResponseBase _responseBase;
+        private readonly ResponseObject<string> _responseString;
+        private readonly ResponseObject<List<DTO_BotSignal>> _responseList;
 
-    // 1. Thêm tín hiệu - Bóc tách chuỗi theo đúng format của người ta
-    public async Task<ResponseBase> AddSignal(string text)
-    {
-        try
+        public Service_BotSignal(
+            AppDbContext dbContext,
+            Converter_BotSignal converter,
+            IMemoryCache memoryCache,
+            ResponseBase responseBase,
+            ResponseObject<string> responseString,
+            ResponseObject<List<DTO_BotSignal>> responseList)
         {
-            var message = text.Split('\n');
+            _dbContext = dbContext;
+            _converter = converter;
+            _memoryCache = memoryCache;
+            _responseBase = responseBase;
+            _responseString = responseString;
+            _responseList = responseList;
+        }
 
-            // Lấy chuỗi ngày tháng: message[0] là "Date: 2025-12-25 18:00:00" chẳng hạn
-            var datetimeParts = message[0].Trim().Split(" ");
-            var datetimeStr = datetimeParts[2] + " " + datetimeParts[3];
-
-            var tinhieu = message[1].Trim().Contains("Manh") ? "LONG" : "SHORT";
-            var gia = message[2].Trim().Split(":")[1].Trim();
-
-            // Logic Cache để check đảo chiều (Reverse)
-            CacheSignal(tinhieu);
-
-            var signal = new BotSignal
+        public ResponseObject<string> CacheSignal(string rawText)
+        {
+            try
             {
-                Signal = tinhieu,
-                Price = double.Parse(gia),
-                DateTime = DateTime.ParseExact(datetimeStr, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-            };
+                var message = rawText.Split('\n');
+                var signalType = message[1].Trim().Contains("long") ? "LONG" : "SHORT";
 
-            await dbContext.botSignals.AddAsync(signal);
-            await dbContext.SaveChangesAsync();
+                var now = TimeOnly.FromDateTime(DateTime.Now);
+                var noon = new TimeOnly(12, 00);
 
-            return responseBase.ResponseSuccess("Thêm tín hiệu thành công.");
+                string sessionKey = (now < noon) ? "Morning" : "Afternoon";
+
+                string finalMessage = rawText;
+
+                if (_memoryCache.TryGetValue(sessionKey, out string oldSignal))
+                {
+                    if (!string.IsNullOrEmpty(oldSignal) && oldSignal != signalType)
+                    {
+                        finalMessage += "\nREVERSE";
+                    }
+                }
+
+                _memoryCache.Set(sessionKey, signalType, TimeSpan.FromHours(3));
+
+                return _responseString.responseObjectSuccess("Cache thành công", finalMessage);
+            }
+            catch
+            {
+                return _responseString.responseObjectSuccess("Lỗi cache", rawText);
+            }
         }
-        catch (Exception ex)
+
+        public async Task<ResponseBase> AddSignal(string rawText)
         {
-            return responseBase.ResponseError(StatusCodes.Status500InternalServerError, "Lỗi: " + ex.Message);
-        }
-    }
+            try
+            {
+                var message = rawText.Split('\n');
+                var dateParts = message[0].Trim().Split(" ");
+                var datetimeStr = dateParts[2] + " " + dateParts[3];
+                var signalType = message[1].Trim().Contains("long") ? "LONG" : "SHORT";
+                var priceStr = message[2].Trim().Split(":")[1].Trim();
 
-    // 2. Lấy 10 tín hiệu mới nhất
-    public async Task<ResponseObject<List<DTO_BotSignal>>> GetSignals()
-    {
-        try
+                var entity = new BotSignal
+                {
+                    Id = Guid.NewGuid(),
+                    DateTime = DateTime.ParseExact(datetimeStr, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                    Signal = signalType,
+                    Price = double.Parse(priceStr)
+                };
+
+                await _dbContext.botSignals.AddAsync(entity);
+                await _dbContext.SaveChangesAsync();
+
+                return _responseBase.ResponseSuccess("Lưu DB thành công");
+            }   
+            catch (Exception ex)
+            {
+                return _responseBase.ResponseError(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        public async Task<ResponseObject<List<DTO_BotSignal>>> GetSignals()
         {
-            var list = await dbContext.botSignals
-                .OrderByDescending(e => e.DateTime)
-                .Take(10)
-                .ToListAsync();
-
-            var dtos = list.Select(x => converter.EntityToDTO(x)).ToList();
-            return responseObjectList.responseObjectSuccess("Thành công.", dtos);
+            try
+            {
+                var list = await _dbContext.botSignals.OrderByDescending(x => x.DateTime).Take(10).ToListAsync();
+                var dtos = list.Select(x => _converter.EntityToDTO(x)).ToList();
+                return _responseList.responseObjectSuccess("Thành công", dtos);
+            }
+            catch (Exception ex) { return _responseList.responseObjectError(500, ex.Message, null); }
         }
-        catch (Exception ex)
-        {
-            return responseObjectList.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null);
-        }
-    }
-
-    // 3. Hàm Cache phụ trợ
-    private void CacheSignal(string signal)
-    {
-        var now = TimeOnly.FromDateTime(DateTime.Now);
-        var noon = new TimeOnly(12, 00);
-        string key = now < noon ? "Morning" : "Afternoon";
-
-        memoryCache.Set(key, signal, TimeSpan.FromHours(3));
     }
 }

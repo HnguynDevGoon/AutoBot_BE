@@ -2,6 +2,7 @@
 using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Responses;
+using AutoBotCleanArchitecture.Data;
 using AutoBotCleanArchitecture.Infrastructure.Hubs;
 using AutoBotCleanArchitecture.Infrastructure.Implements;
 using AutoBotCleanArchitecture.Persistence.DBContext;
@@ -147,6 +148,8 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSignalR();
 
+builder.Services.AddSingleton<UserConnectionManager>();
+
 builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ResponseBase>();
@@ -236,6 +239,7 @@ builder.Services.AddScoped<IService_Review, Service_Review>();
 
 
 
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -245,6 +249,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.MapHub<ChatHub>("/chatHub");
+app.MapHub<MessageHub>("/messageHub");
 
 app.UseHttpsRedirection();
 

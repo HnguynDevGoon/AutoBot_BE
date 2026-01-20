@@ -1,7 +1,8 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+using AutoBotCleanArchitecture.Application.Requests.BotSignal;
+using AutoBotCleanArchitecture.Data;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
 
 namespace AutoBotCleanArchitecture.Api.Controllers
 {
@@ -9,24 +10,43 @@ namespace AutoBotCleanArchitecture.Api.Controllers
     [ApiController]
     public class BotSignalController : ControllerBase
     {
-        private readonly IService_BotSignal service_BotSignal;
+        private readonly IService_BotSignal _serviceBotSignal;
+        private readonly IHubContext<MessageHub> _hubContext;
+        private readonly IConfiguration _configuration;
 
-        public BotSignalController(IService_BotSignal service_BotSignal)
+        public BotSignalController(
+            IService_BotSignal serviceBotSignal,
+            IHubContext<MessageHub> hubContext,
+            IConfiguration configuration)
         {
-            this.service_BotSignal = service_BotSignal;
+            _serviceBotSignal = serviceBotSignal;
+            _hubContext = hubContext;
+            _configuration = configuration;
         }
 
         [HttpGet("GetSignals")]
         public async Task<IActionResult> GetSignals()
         {
-            return Ok(await service_BotSignal.GetSignals());
+            return Ok(await _serviceBotSignal.GetSignals());
         }
 
-        [HttpPost("AddSignal")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddSignal([FromBody] string text)
+        [HttpPost("SendMessage")]
+        public async Task<IActionResult> SendMessage([FromForm] Request_AddSignal request)
         {
-            return Ok(await service_BotSignal.AddSignal(text));
+            if (request.Key != _configuration["SecretKey"])
+            {
+                return Unauthorized(new { message = "Sai Key bảo mật!" });
+            }
+
+            var cacheResult = _serviceBotSignal.CacheSignal(request.Text);
+            string messageToSend = cacheResult.Data;
+
+            await _hubContext.Clients.All.SendAsync("Signal", messageToSend);
+
+            var dbResult = await _serviceBotSignal.AddSignal(request.Text);
+
+            if (dbResult.Status != 200) return StatusCode(dbResult.Status, dbResult);
+            return Ok(dbResult);
         }
     }
 }
