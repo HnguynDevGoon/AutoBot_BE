@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AutoBotCleanArchitecture.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class haha : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,6 +72,21 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_otherContents", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "reviews",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UrlAvatar = table.Column<string>(type: "text", nullable: false),
+                    FullName = table.Column<string>(type: "text", nullable: false),
+                    Rate = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_reviews", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -425,30 +440,6 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "walletTransactions",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Amount = table.Column<double>(type: "double precision", nullable: false),
-                    TransactionType = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    OrderCode = table.Column<long>(type: "bigint", nullable: false),
-                    TransactionStatus = table.Column<string>(type: "text", nullable: false),
-                    WalletId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_walletTransactions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_walletTransactions_wallets_WalletId",
-                        column: x => x.WalletId,
-                        principalTable: "wallets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "roles",
                 columns: new[] { "Id", "RoleName" },
@@ -461,7 +452,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDay", "CreatedDate", "Email", "FullName", "IsActive", "LockoutEnable", "LockoutEnd", "PassWord", "PhoneNumber", "RoleId", "TwoStep", "UrlAvatar", "UserName" },
-                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(2026, 1, 7, 8, 14, 1, 592, DateTimeKind.Utc).AddTicks(8654), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a", "0123456789", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), true, "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg", "Admin" });
+                values: new object[] { new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"), 0, new DateOnly(2000, 1, 1), new DateTime(2026, 1, 19, 7, 5, 16, 631, DateTimeKind.Utc).AddTicks(3403), "huynhnguyen13122005@gmail.com", "Quản Trị Viên", true, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "$2a$11$HQe0hJnHsGz3dabdY6FUw.uMrfNVK/w11bVywJ2A3H39tkYPbm80a", "0123456789", new Guid("c3f08f62-b9b2-4d14-b8e7-3f3d5b0c7a6c"), true, "https://res.cloudinary.com/drpxjqd47/image/upload/v1763051875/xusxceivnufh4ncc8peb.jpg", "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_chatMessages_ChatRoomId",
@@ -557,11 +548,6 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_walletTransactions_WalletId",
-                table: "walletTransactions",
-                column: "WalletId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_withdrawMoneys_UserId",
                 table: "withdrawMoneys",
                 column: "UserId");
@@ -604,13 +590,13 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 name: "refreshTokens");
 
             migrationBuilder.DropTable(
+                name: "reviews");
+
+            migrationBuilder.DropTable(
                 name: "userBots");
 
             migrationBuilder.DropTable(
                 name: "userDevices");
-
-            migrationBuilder.DropTable(
-                name: "walletTransactions");
 
             migrationBuilder.DropTable(
                 name: "withdrawMoneys");
@@ -619,10 +605,10 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                 name: "chatRooms");
 
             migrationBuilder.DropTable(
-                name: "botTradings");
+                name: "wallets");
 
             migrationBuilder.DropTable(
-                name: "wallets");
+                name: "botTradings");
 
             migrationBuilder.DropTable(
                 name: "users");

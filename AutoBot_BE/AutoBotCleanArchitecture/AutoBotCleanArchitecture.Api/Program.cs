@@ -158,7 +158,6 @@ builder.Services.AddScoped<ResponseObject<DTO_Token>>();
 builder.Services.AddScoped<ResponseObject<DTO_LogHistory>>();
 builder.Services.AddScoped<ResponseObject<DTO_Wallet>>();
 builder.Services.AddScoped<ResponseObject<DTO_ChatRoom>>();
-builder.Services.AddScoped<ResponseObject<DTO_WalletTransaction>>();
 builder.Services.AddScoped<ResponseObject<DTO_ChatMessage>>();
 builder.Services.AddScoped<ResponseObject<DTO_Content>>();
 builder.Services.AddScoped<ResponseObject<DTO_WithdrawMoney>>();
@@ -177,7 +176,6 @@ builder.Services.AddScoped<ResponseObject<bool>>();
 
 // Response Object Pagination
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_User>>>();
-builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WalletTransaction>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_Content>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_BotTrading>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WithdrawMoney>>>();
@@ -186,7 +184,6 @@ builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PurchaseHistory
 
 // Response Object List, IList
 builder.Services.AddScoped<ResponseObject<IList<DTO_LogHistory>>>();
-builder.Services.AddScoped<ResponseObject<IList<DTO_WalletTransaction>>>();
 builder.Services.AddScoped<ResponseObject<IList<DTO_ChatMessage>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_UserDevice>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_ChatRoom>>>();
@@ -207,7 +204,6 @@ builder.Services.AddScoped<Converter_Role>();
 builder.Services.AddScoped<Converter_User>();
 builder.Services.AddScoped<Converter_LogHistory>();
 builder.Services.AddScoped<Converter_Wallet>();
-builder.Services.AddScoped<Converter_WalletTransaction>();
 builder.Services.AddScoped<Converter_ChatMessage>();
 builder.Services.AddScoped<Converter_Content>();
 builder.Services.AddScoped<Converter_BotTrading>();
@@ -226,7 +222,6 @@ builder.Services.AddScoped<IService_Authen, Service_Authen>();
 builder.Services.AddScoped<IService_LogHistory, Service_LogHistory>();
 builder.Services.AddScoped<IService_Payment, Service_Payment>();
 builder.Services.AddScoped<IService_Wallet, Service_Wallet>();
-builder.Services.AddScoped<IService_WalletTransaction, Service_WalletTransaction>();
 builder.Services.AddScoped<IService_Chat, Service_Chat>();
 builder.Services.AddScoped<IService_Device, Service_Device>();
 builder.Services.AddScoped<IService_Content, Service_Content>();

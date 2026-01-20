@@ -1431,6 +1431,16 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
+    "Method": "GetAllActiveBotsSystemWide",
+    "RelativePath": "api/PurchaseHistory/GetAllActiveBotsSystemWide",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
     "Method": "GetAllHistoryDynamicForAdmin",
     "RelativePath": "api/PurchaseHistory/GetAllHistoryDynamicForAdmin",
     "HttpMethod": "GET",
@@ -1577,8 +1587,8 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.PurchaseHistoryController",
-    "Method": "GetMyLastPurchase",
-    "RelativePath": "api/PurchaseHistory/GetMyLastPurchase",
+    "Method": "GetNewestTransactionForAdmin",
+    "RelativePath": "api/PurchaseHistory/GetNewestTransactionForAdmin",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -1966,85 +1976,6 @@
       {
         "Name": "request",
         "Type": "AutoBotCleanArchitecture.Application.Requests.Wallet.Request_SendOtpResetPin",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletTransactionController",
-    "Method": "GetAllTransactionsAdmin",
-    "RelativePath": "api/WalletTransaction/GetAllTransactionsAdmin",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "pageSize",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "pageNumber",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletTransactionController",
-    "Method": "GetHistory",
-    "RelativePath": "api/WalletTransaction/GetHistory",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Guid",
-        "IsRequired": false
-      },
-      {
-        "Name": "pageNumber",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "pageSize",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletTransactionController",
-    "Method": "SearchMyTransactions",
-    "RelativePath": "api/WalletTransaction/SearchMyTransactions",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.WalletTransaction.Request_SearchTransaction",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.WalletTransactionController",
-    "Method": "SearchTransactionsByAdmin",
-    "RelativePath": "api/WalletTransaction/SearchTransactionsByAdmin",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.WalletTransaction.Request_SearchTransaction",
         "IsRequired": true
       }
     ],

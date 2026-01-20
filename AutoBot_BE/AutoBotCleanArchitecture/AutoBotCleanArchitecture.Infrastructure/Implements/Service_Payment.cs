@@ -442,7 +442,29 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         {
             try
             {
-                if (request.BankAmount <= 0) return new ResponseObject<bool>(StatusCodes.Status400BadRequest, "Số tiền rút không hợp lệ", false);
+                bool hasPendingRequest = await _context.withdrawMoneys
+                    .AnyAsync(x => x.UserId == request.UserId && x.Status == "Pending");
+
+                if (hasPendingRequest)
+                {
+                    return new ResponseObject<bool>(StatusCodes.Status400BadRequest, "Bạn đang có lệnh rút tiền chờ duyệt. Vui lòng đợi hoàn tất trước khi rút tiếp.", false);
+                }
+
+                if (request.BankAmount < 2000)
+                {
+                    return new ResponseObject<bool>(StatusCodes.Status400BadRequest, "Số tiền rút tối thiểu là 2.000 VNĐ", false);
+                }
+
+                var wallet = await _context.wallets.FirstOrDefaultAsync(x => x.UserId == request.UserId);
+                if (wallet == null)
+                {
+                    return new ResponseObject<bool>(StatusCodes.Status404NotFound, "Không tìm thấy ví.", false);
+                }
+
+                if (wallet.Balance < request.BankAmount)
+                {
+                    return new ResponseObject<bool>(StatusCodes.Status400BadRequest, "Số dư không đủ.", false);
+                }
 
                 var withdraw = new WithdrawMoney
                 {
@@ -451,20 +473,23 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     BankCode = request.BankCode,
                     UserBankName = request.UserBankName,
                     CreatedAt = DateTime.UtcNow,
-                    Status = "Pending",
+                    Status = "Pending", 
                     QrCode = request.QrCode,
                     Note = request.Note,
                     UserId = request.UserId
                 };
 
+                wallet.Balance -= request.BankAmount;
+
                 await _context.withdrawMoneys.AddAsync(withdraw);
+                _context.wallets.Update(wallet);
                 await _context.SaveChangesAsync();
 
                 return new ResponseObject<bool>(StatusCodes.Status200OK, "Gửi yêu cầu rút tiền thành công", true);
             }
             catch (Exception ex)
             {
-                return new ResponseObject<bool>(StatusCodes.Status400BadRequest, "Lỗi", false);
+                return new ResponseObject<bool>(StatusCodes.Status500InternalServerError, "Lỗi hệ thống: " + ex.Message, false);
             }
         }
 

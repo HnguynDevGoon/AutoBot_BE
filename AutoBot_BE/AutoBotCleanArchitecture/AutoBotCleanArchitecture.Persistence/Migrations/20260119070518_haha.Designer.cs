@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AutoBotCleanArchitecture.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260107081403_init")]
-    partial class init
+    [Migration("20260119070518_haha")]
+    partial class haha
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -435,6 +435,32 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.ToTable("refreshTokens");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Review", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UrlAvatar")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("reviews");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -528,7 +554,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
-                            CreatedDate = new DateTime(2026, 1, 7, 8, 14, 1, 592, DateTimeKind.Utc).AddTicks(8654),
+                            CreatedDate = new DateTime(2026, 1, 19, 7, 5, 16, 631, DateTimeKind.Utc).AddTicks(3403),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,
@@ -621,43 +647,6 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("wallets");
-                });
-
-            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.WalletTransaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long>("OrderCode")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("TransactionStatus")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TransactionType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("WalletId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WalletId");
-
-                    b.ToTable("walletTransactions");
                 });
 
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.WithdrawMoney", b =>
@@ -847,17 +836,6 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.WalletTransaction", b =>
-                {
-                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.Wallet", "Wallet")
-                        .WithMany()
-                        .HasForeignKey("WalletId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.WithdrawMoney", b =>

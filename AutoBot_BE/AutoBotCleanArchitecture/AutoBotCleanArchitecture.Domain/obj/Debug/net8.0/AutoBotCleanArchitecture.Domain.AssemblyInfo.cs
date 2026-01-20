@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutoBotCleanArchitecture.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8470c108365c42263c83ad669791cd42f6853bc1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+04c7cf2360355756aaf7643e9120ec13314a32a8")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoBotCleanArchitecture.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoBotCleanArchitecture.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

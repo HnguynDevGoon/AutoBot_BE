@@ -2376,18 +2376,6 @@
         }
       }
     },
-    "/api/PurchaseHistory/GetMyLastPurchase": {
-      "get": {
-        "tags": [
-          "PurchaseHistory"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/PurchaseHistory/GetMyHistoryByMonth": {
       "get": {
         "tags": [
@@ -2453,6 +2441,30 @@
       }
     },
     "/api/PurchaseHistory/GetTotalSpentOnBots": {
+      "get": {
+        "tags": [
+          "PurchaseHistory"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/PurchaseHistory/GetNewestTransactionForAdmin": {
+      "get": {
+        "tags": [
+          "PurchaseHistory"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/PurchaseHistory/GetAllActiveBotsSystemWide": {
       "get": {
         "tags": [
           "PurchaseHistory"
@@ -3188,140 +3200,6 @@
           }
         }
       }
-    },
-    "/api/WalletTransaction/GetHistory": {
-      "get": {
-        "tags": [
-          "WalletTransaction"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "pageNumber",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 1
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/WalletTransaction/GetAllTransactionsAdmin": {
-      "get": {
-        "tags": [
-          "WalletTransaction"
-        ],
-        "parameters": [
-          {
-            "name": "pageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
-            "name": "pageNumber",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 1
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/WalletTransaction/SearchTransactionsByAdmin": {
-      "post": {
-        "tags": [
-          "WalletTransaction"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_SearchTransaction"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_SearchTransaction"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_SearchTransaction"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/WalletTransaction/SearchMyTransactions": {
-      "post": {
-        "tags": [
-          "WalletTransaction"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_SearchTransaction"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_SearchTransaction"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_SearchTransaction"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
     }
   },
   "components": {
@@ -3727,42 +3605,6 @@
           },
           "discount": {
             "type": "boolean",
-            "nullable": true
-          },
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Request_SearchTransaction": {
-        "type": "object",
-        "properties": {
-          "keyword": {
-            "type": "string",
-            "nullable": true
-          },
-          "transactionType": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "string",
-            "nullable": true
-          },
-          "fromDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "toDate": {
-            "type": "string",
-            "format": "date-time",
             "nullable": true
           },
           "pageNumber": {

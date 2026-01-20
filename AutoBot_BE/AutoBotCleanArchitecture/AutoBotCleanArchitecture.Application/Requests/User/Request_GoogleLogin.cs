@@ -10,5 +10,6 @@ namespace AutoBotCleanArchitecture.Application.Requests.User
     {
         // Frontend sẽ gửi idToken lấy từ Google lên đây
         public string IdToken { get; set; }
+        public string Fingerprint { get; set; }
     }
 }

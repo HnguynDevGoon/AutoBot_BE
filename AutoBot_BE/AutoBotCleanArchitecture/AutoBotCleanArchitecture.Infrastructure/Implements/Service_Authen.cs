@@ -827,15 +827,12 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     Audience = new[] { googleClientId }
                 };
 
-                // 1. Xác thực idToken với Google (bắt buộc async)
                 var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken, settings);
 
-                // 2. Tìm user trong DB (dùng async)
                 var user = await dbContext.users
-                                .Include(u => u.Role) 
-                                .FirstOrDefaultAsync(u => u.Email == payload.Email);
+                                        .Include(u => u.Role)
+                                        .FirstOrDefaultAsync(u => u.Email == payload.Email);
 
-                // 3. Nếu User chưa tồn tại -> Tạo mới (dùng async)
                 if (user == null)
                 {
                     var defaultRole = await dbContext.roles.FirstOrDefaultAsync(r => r.RoleName == "User");
@@ -868,14 +865,83 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                     user.Role = defaultRole;
                 }
 
-                // 4. Kiểm tra nếu user bị khóa
                 if (user.LockoutEnable == true || user.IsActive == false)
                 {
                     return responseObjectToken.responseObjectError(StatusCodes.Status403Forbidden, "Tài khoản của bạn đã bị khóa.", null);
                 }
 
-                // 5. GỌI HÀM CÓ SẴN CỦA BẠN (SYNC)
                 var dtoToken = await GenerateAccessToken(user);
+
+                var clientFingerprint = request.Fingerprint?.Trim();
+
+                if (!string.IsNullOrEmpty(clientFingerprint))
+                {
+                    var device = await dbContext.userDevices
+                        .FirstOrDefaultAsync(d => d.UserId == user.Id && d.Fingerprint == clientFingerprint);
+
+                    if (device != null)
+                    {
+                        device.AccessToken = dtoToken.AccessToken;
+                        device.RefreshToken = dtoToken.RefreshToken;
+                        device.LastUpdatedAt = DateTime.UtcNow;
+
+                        await dbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        var newDevice = new UserDevice
+                        {
+                            Id = Guid.NewGuid(),
+                            UserId = user.Id,
+                            Fingerprint = clientFingerprint,
+                            AccessToken = dtoToken.AccessToken,
+                            RefreshToken = dtoToken.RefreshToken,
+                            CreatedAt = DateTime.UtcNow,
+                            LastUpdatedAt = DateTime.UtcNow
+                        };
+
+                        try
+                        {
+                            await dbContext.userDevices.AddAsync(newDevice);
+                            await dbContext.SaveChangesAsync();
+                        }
+                        catch (DbUpdateException ex)
+                        {
+                            bool isDuplicate = false;
+                            if (ex.InnerException is Npgsql.PostgresException pgEx && pgEx.SqlState == "23505")
+                            {
+                                isDuplicate = true;
+                            }
+
+                            if (isDuplicate)
+                            {
+                                dbContext.Entry(newDevice).State = EntityState.Detached;
+
+                                var existingRetry = await dbContext.userDevices
+                                    .FirstOrDefaultAsync(d => d.UserId == user.Id && d.Fingerprint == clientFingerprint);
+
+                                if (existingRetry != null)
+                                {
+                                    existingRetry.AccessToken = dtoToken.AccessToken;
+                                    existingRetry.RefreshToken = dtoToken.RefreshToken;
+                                    existingRetry.LastUpdatedAt = DateTime.UtcNow;
+
+                                    dbContext.userDevices.Update(existingRetry);
+                                    await dbContext.SaveChangesAsync();
+                                }
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
+                    }
+                }
+
+                if (dbContext.ChangeTracker.HasChanges())
+                {
+                    await dbContext.SaveChangesAsync();
+                }
 
                 return responseObjectToken.responseObjectSuccess("Đăng nhập Google thành công.", dtoToken);
             }
