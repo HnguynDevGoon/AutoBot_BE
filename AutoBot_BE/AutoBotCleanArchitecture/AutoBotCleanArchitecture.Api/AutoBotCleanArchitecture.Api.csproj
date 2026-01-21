@@ -31,4 +31,8 @@
     <ProjectReference Include="..\AutoBotCleanArchitecture.Persistence\AutoBotCleanArchitecture.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\js\script.js" />
+  </ItemGroup>
+
 </Project>

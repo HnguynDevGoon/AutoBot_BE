@@ -2,7 +2,6 @@
 using AutoBotCleanArchitecture.Application.DTOs;
 using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Responses;
-using AutoBotCleanArchitecture.Data;
 using AutoBotCleanArchitecture.Infrastructure.Hubs;
 using AutoBotCleanArchitecture.Infrastructure.Implements;
 using AutoBotCleanArchitecture.Persistence.DBContext;
@@ -254,6 +253,8 @@ app.MapHub<MessageHub>("/messageHub");
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
+
+app.UseStaticFiles();
 
 app.UseAuthentication();
 

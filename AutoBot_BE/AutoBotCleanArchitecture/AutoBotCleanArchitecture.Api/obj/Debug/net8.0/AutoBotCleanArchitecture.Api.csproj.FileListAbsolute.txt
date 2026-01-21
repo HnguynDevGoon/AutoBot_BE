@@ -692,3 +692,4 @@ D:\Types_of_work\Project\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotClea
 D:\Types_of_work\Project\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\obj\Debug\net8.0\AutoBotC.973B54BA.Up2Date
 D:\Types_of_work\Project\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\obj\Debug\net8.0\AutoBotCleanArchitecture.Api.genruntimeconfig.cache
 D:\Types_of_work\Project\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\obj\Debug\net8.0\ref\AutoBotCleanArchitecture.Api.dll
+D:\Types_of_work\Project\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Api\bin\Debug\net8.0\AutoBotCleanArchitecture.Api.staticwebassets.runtime.json

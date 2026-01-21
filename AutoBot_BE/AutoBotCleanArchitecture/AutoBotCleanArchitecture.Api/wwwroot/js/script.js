@@ -4,7 +4,9 @@
 // Configure backend URL via:
 //   localStorage.setItem("AUTO_BOT_API_URL", "http://localhost:8080")
 // Fallback: http://localhost:8080
-const baseURL = localStorage.getItem("AUTO_BOT_API_URL") || "http://localhost:8080"
+//const baseURL = localStorage.getItem("AUTO_BOT_API_URL") || "http://localhost:8080"
+const baseURL = "https://x067w4x7-7291.asse.devtunnels.ms";
+
 
 const api_auth = `${baseURL}/api/Authen`
 const api_signal = `${baseURL}/api/BotSignal`
@@ -370,9 +372,11 @@ const botSettings = {
     }
 }
 
+// Sửa lại đoạn này trong script.js
 const scripts = [
-    `${baseURL}/assets/js/common.js`,
-    `${baseURL}/assets/js/signalr/dist/browser/signalr.js`
+    "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js",
+    `${baseURL}/js/common.js` // <--- THÊM DÒNG NÀY (Trỏ vào file common.js trên server bạn)
 ];
 
 
@@ -1271,50 +1275,62 @@ window.addEventListener('load', async () => {
     }
 
     const autobotps_user = getCurrentUser()
-    if (autobotps_user && getCookie("USER")) {
-        loggingAndBot(false, autobotps_user.userId)
-    }
-    else {
+    if (autobotps_user && getCookie("auth_token")) {
+        loggingAndBot(false, autobotps_user.userId || autobotps_user.UserId)
+    } else {
+        // UI Đăng nhập
         $('#cb_showPassword').on('change', function () {
-            const showPassword = $(this).is(':checked');
-            $('#cb_password').attr('type', showPassword ? 'text' : 'password');
+            $('#cb_password').attr('type', $(this).is(':checked') ? 'text' : 'password');
         });
+
         $('#cb_login').click(function () {
             const $statusElement = $('#cb_loginStatus');
             try {
                 $statusElement.text('').removeClass('alert-danger alert-info');
-
                 const username = $('#cb_username').val();
-                if (!username) {
-                    throw new Error("Vui lòng nhập tên đăng nhập");
-                }
                 const password = $('#cb_password').val();
-                if (!password) {
-                    throw new Error("Mật khẩu không được để trống");
-                }
+                if (!username || !password) throw new Error("Vui lòng nhập đủ thông tin");
+
                 $statusElement.removeClass('alert-danger').addClass('alert-info').text('Đang đăng nhập...');
                 $(this).attr("disabled", true)
 
-                const data = JSON.stringify({ username, password });
+                const data = JSON.stringify({
+                    loginIdentifier: username,
+                    password: password,
+                    fingerprint: "browser-ext"
+                });
+
                 $.ajax({
                     url: api_auth + "/UserLogin",
                     method: "POST",
                     data: data
-                }).done((data) => {
-                    if (data.access_token) {
-                        setCookie("auth_token", data.access_token, 5);
-                        delete data.access_token
-                        setCookie("bot_data", JSON.stringify(data), 1 * 24 * 60)
-                        loggingAndBot(true, data.userId)
-                    } else $statusElement.text(data.error).removeClass('alert-info').addClass('alert-danger')
-                }).fail((e, error) => {
-                    error === 'timeout'
-                        ? $statusElement.text("Mạng yếu, vui lòng thử lại.").removeClass('alert-info').addClass('alert-danger')
-                        : $statusElement.text(e.responseText ?? "Có lỗi xảy ra").removeClass('alert-info').addClass('alert-danger')
-                    $(this).attr("disabled", false)
+                }).done((res) => {
+                    console.log("Server Login Response:", res);
+
+                    // --- ĐOẠN CODE SỬA QUAN TRỌNG NHẤT ---
+                    const tokenData = res.data || res.Data || {};
+                    const accessToken = tokenData.accessToken || tokenData.AccessToken || tokenData.access_token;
+                    const userId = tokenData.userId || tokenData.UserId;
+
+                    if (accessToken) {
+                        setCookie("auth_token", accessToken, 5);
+
+                        let saveData = { ...tokenData };
+                        delete saveData.accessToken; delete saveData.AccessToken; delete saveData.access_token;
+
+                        setCookie("bot_data", JSON.stringify(saveData), 1 * 24 * 60)
+                        loggingAndBot(true, userId)
+                    } else {
+                        const msg = res.message || res.Message || "Đăng nhập thất bại (Không tìm thấy token)";
+                        $statusElement.text(msg).removeClass('alert-info').addClass('alert-danger')
+                        $('#cb_login').attr("disabled", false)
+                    }
+                }).fail((e) => {
+                    $statusElement.text(e.responseJSON?.message || "Lỗi kết nối").removeClass('alert-info').addClass('alert-danger')
+                    $('#cb_login').attr("disabled", false)
                 })
             } catch (error) {
-                $statusElement.text(error.message ?? "Có lỗi xảy ra").removeClass('alert-info').addClass('alert-danger');
+                $statusElement.text(error.message).removeClass('alert-info').addClass('alert-danger');
                 $(this).attr("disabled", false)
             }
         });

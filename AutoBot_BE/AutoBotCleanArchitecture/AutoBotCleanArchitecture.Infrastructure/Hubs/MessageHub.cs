@@ -3,7 +3,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace AutoBotCleanArchitecture.Data
+namespace AutoBotCleanArchitecture.Infrastructure.Hubs
 {
     public class MessageHub : Hub
     {

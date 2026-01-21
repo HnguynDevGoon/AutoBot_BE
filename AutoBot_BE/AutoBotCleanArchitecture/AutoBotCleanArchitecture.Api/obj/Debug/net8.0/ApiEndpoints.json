@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AdminsController",
+    "Method": "AddSignal",
+    "RelativePath": "api/admin/signal/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Api.Controllers.AdminsController\u002BAdminSignalRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AuthenController",
     "Method": "AccountVerification",
     "RelativePath": "api/Authen/AccountVerification",
@@ -405,9 +421,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.BotSignal.Request_AddSignal",
-        "IsRequired": true
+        "Name": "Text",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Key",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -899,6 +920,22 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
+    "Method": "Compat_Add",
+    "RelativePath": "api/logHistory/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.LogHistory.Request_LogHistory",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
     "Method": "AddLogHistory",
     "RelativePath": "api/LogHistory/AddLogHistory",
     "HttpMethod": "POST",
@@ -931,6 +968,16 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
+    "Method": "Compat_GetAll",
+    "RelativePath": "api/logHistory/getAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
     "Method": "GetLogHistory",
     "RelativePath": "api/LogHistory/GetLogHistory",
     "HttpMethod": "GET",
@@ -950,6 +997,37 @@
       {
         "Name": "userId",
         "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
+    "Method": "Compat_GetDay",
+    "RelativePath": "api/logHistory/getLogHistoryDay",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "day",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "month",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],
@@ -988,6 +1066,32 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
+    "Method": "Compat_GetMonth",
+    "RelativePath": "api/logHistory/getLogHistoryMonth",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "month",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
     "Method": "GetLogHistoryMonth",
     "RelativePath": "api/LogHistory/GetLogHistoryMonth",
     "HttpMethod": "GET",
@@ -1007,6 +1111,27 @@
       {
         "Name": "userId",
         "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
+    "Method": "Compat_GetYear",
+    "RelativePath": "api/logHistory/getLogHistoryYear",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],

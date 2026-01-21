@@ -5,6 +5,37 @@
     "version": "v1"
   },
   "paths": {
+    "/api/admin/signal/add": {
+      "post": {
+        "tags": [
+          "Admins"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminSignalRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminSignalRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminSignalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Authen/CreateUser": {
       "post": {
         "tags": [
@@ -727,19 +758,25 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Request_AddSignal"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_AddSignal"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request_AddSignal"
+                "type": "object",
+                "properties": {
+                  "Text": {
+                    "type": "string"
+                  },
+                  "Key": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Text": {
+                  "style": "form"
+                },
+                "Key": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -1528,6 +1565,160 @@
       "get": {
         "tags": [
           "LogHistory"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/logHistory/getAll": {
+      "get": {
+        "tags": [
+          "LogHistory"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/logHistory/add": {
+      "post": {
+        "tags": [
+          "LogHistory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_LogHistory"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_LogHistory"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request_LogHistory"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/logHistory/getLogHistoryDay": {
+      "get": {
+        "tags": [
+          "LogHistory"
+        ],
+        "parameters": [
+          {
+            "name": "day",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/logHistory/getLogHistoryMonth": {
+      "get": {
+        "tags": [
+          "LogHistory"
+        ],
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/logHistory/getLogHistoryYear": {
+      "get": {
+        "tags": [
+          "LogHistory"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -3204,24 +3395,32 @@
   },
   "components": {
     "schemas": {
-      "Request_AccountVerification": {
+      "AdminSignalRequest": {
         "type": "object",
         "properties": {
-          "code": {
+          "status": {
             "type": "string",
             "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "orderNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stopOrderValue": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
       },
-      "Request_AddSignal": {
+      "Request_AccountVerification": {
         "type": "object",
         "properties": {
-          "text": {
-            "type": "string",
-            "nullable": true
-          },
-          "key": {
+          "code": {
             "type": "string",
             "nullable": true
           }

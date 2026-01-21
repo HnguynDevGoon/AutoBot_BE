@@ -1,6 +1,6 @@
 ﻿using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Requests.BotSignal;
-using AutoBotCleanArchitecture.Data;
+using AutoBotCleanArchitecture.Infrastructure.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 

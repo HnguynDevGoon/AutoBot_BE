@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace AutoBotCleanArchitecture.Data
+namespace AutoBotCleanArchitecture.Infrastructure.Hubs
 {
     public class UserConnectionManager
     {
