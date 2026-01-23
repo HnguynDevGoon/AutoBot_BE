@@ -1,231 +1,68 @@
-﻿function debounce(func, delay) {
+﻿// ================================================================
+// 1. CÁC HÀM TIỆN ÍCH DÙNG CHUNG
+// ================================================================
+function debounce(func, delay) {
     let timeout;
-
     return function executedFunc(...args) {
-        if (timeout) {
-            clearTimeout(timeout);
-        }
-
+        if (timeout) clearTimeout(timeout);
         timeout = setTimeout(() => {
             func(...args);
             timeout = null;
         }, delay);
     };
 }
+
 function setCookie(cname, cvalue, exMinutes) {
     const d = new Date();
     d.setTime(d.getTime() + (exMinutes * 60 * 1000));
     let expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+
 function getCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
     for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
     }
     return null;
 }
+
+// ================================================================
+// 2. CÁC BIẾN HTML GIAO DIỆN (EXPORT CHO SCRIPT.JS DÙNG)
+// ================================================================
 
 const packageHtml = `
     <div id='sat-content'>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.6/dist/bootstrap-table.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <style>
-            .modal-backdrop {
-                z-index: -1;
+            .modal-backdrop { z-index: -1; }
+            .bot-section .row, .bot-section .col { margin: 0; padding: 0; }
+            .text-long, .text-buy { color: #3a9d5d; }
+            .btn-long, td.long, td.buy { background: #3a9d5d; }
+            .text-short { color: #f63c3a; }
+            .btn-short, td.short { background: #f63c3a; }
+            td.sell, td.cover { background: #e1c608; }
+            #tbl-bot-signals td.long, #tbl-bot-signals td.buy, 
+            #tbl-bot-signals td.short, #tbl-bot-signals td.sell, 
+            #tbl-bot-signals td.cover { font-weight: bold !important; color: white !important; }
+            #tbl-bot-signals span.time { font-size: 0.9rem; }
+            #tbl-bot-signals span.price { font-weight: 600; }
+            #ulPanel a.nav-link { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            label.form-label { font-size: 0.75rem; margin-bottom: 0; margin-top: 0.5rem; }
+            #bot-panel, 
+            #bot-signal, 
+            #bot-tbl-signals, 
+            .bot-signal-refresh { 
+                display: none !important; 
             }
-
-         .bot-section .row,
-         .bot-section .col {
-             margin: 0;
-             padding: 0;
-         }
-
-         .text-long,
-         .text-buy {
-             color: #3a9d5d;
-         }
-
-         .btn-long,
-         td.long,
-         td.buy {
-             background: #3a9d5d;
-         }
-
-         .text-short {
-             color: #f63c3a;
-         }
-
-         .btn-short,
-         td.short {
-             background: #f63c3a;
-         }
-
-         td.sell,
-         td.cover {
-             background: #e1c608;
-         }
-
-         #tbl-bot-signals td.long,
-         #tbl-bot-signals td.buy,
-         #tbl-bot-signals td.short,
-         #tbl-bot-signals td.sell,
-         #tbl-bot-signals td.cover {
-             font-weight: bold !important;
-             color: white !important;
-         }
-
-         #tbl-bot-signals span.time {
-             font-size: 0.9rem;
-         }
-
-         #tbl-bot-signals span.price {
-             font-weight: 600;
-         }
-
-         #ulPanel a.nav-link {
-             white-space: nowrap;
-             overflow: hidden;
-             text-overflow: ellipsis;
-         }
-
-         label.form-label {
-             font-size: 0.75rem;
-             margin-bottom: 0;
-             margin-top: 0.5rem;
-         }
-     </style>
-     <style>
-        td.bot-img,
-        td.bot-img img {
-            width: 80px;
-        }
-
-        td.bot-item {
-            vertical-align: top !important;
-        }
-
-        div.updated {
-            font-size: 0.75rem;
-            font-style: italic;
-            color: var(--gray-400);
-            display: flex;
-            align-items: end;
-        }
-
-        div.search.btn-group {
-            width: 100%;
-        }
-
-        .modal-title {
-            color: black;
-        }
-
-        .modal .close {
-            font-size: 2rem !important;
-        }
-
-        #bot-select .tab-content {
-            background-color: transparent;
-            height: auto;
-        }
-
-        #bot-select .nav-item {
-            padding: 0;
-            font-size: 1rem;
-            text-transform: uppercase;
-        }
-
-        .bot-item {
-            color: black;
-            padding: 4px 0 4px 0 !important;
-        }
-
-        .bot-item .text-info {
-            color: #262cef !important;
-        }
-
-        .bot-item .text-warning {
-            color: #d9be00 !important;
-        }
-
-        .bot-item .text-danger {
-            color: #b00006 !important;
-        }
-
-        .star-yellow {
-            color: #ffc107 !important;
-        }
-
-        .bot-item img.thumb {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 0px;
-            box-shadow: 0 0 5px 5px #e7e7e7;
-        }
-
-        .bot-item .title {
-            font-weight: bold;
-            font-size: 1rem;
-        }
-
-        .bot-item .subtitle {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: baseline;
-        }
-
-        .bot-item .subtitle .small {
-            font-size: 90%;
-        }
-
-        .bot-item .result {
-            padding-top: 0.25rem;
-            padding-bottom: 0.25rem;
-            display: flex;
-            justify-content: center;
-            font-size: 0.95rem;
-        }
-
-        .bot-item .result span {
-            font-weight: bold;
-        }
-
-        .bot-item .description {
-            color: #333;
-            text-align: justify;
-            font-size: 0.9rem;
-        }
-
-        .bot-item .price {
-            font-size: 1rem;
-        }
-
-        .bot-item .link {
-            font-size: 0.9rem;
-        }
-
-        .bot-activate-message,
-        .bot-extend-message {
-            text-align: center;
-            font-size: 1rem;
-        }
-
-        #bot-select div.fixed-table-container {
-            max-height: 50vh !important;
-        }
-    </style>
+        </style>
     </div>
-`
+`;
 
 const loginFormHtml = `
 <div id='ext-content' class='list-group-item list-group-item-accent-danger m-0 p-1'>
@@ -251,17 +88,17 @@ const loginFormHtml = `
                 <button id="cb_login" type="button" class="btn btn-primary">Đăng nhập</button>
             </div>
             <div class="form-group mb-1">
-                <a href="https://autobotps.com/register" target="_blank" title="Đăng ký tài khoản mới">
+                <a href="http://localhost:3000/auth/signup" target="_blank" title="Đăng ký tài khoản mới">
                     Chưa có tài khoản? Đăng ký tại đây
                 </a>
             </div>
             <div class="form-group mb-1">
-                <a href="https://autobotps.com/forgetPass" target="_blank" title="Quên mật khẩu? Click vào đây">
+                <a href="http://localhost:3000/auth/forgot" target="_blank" title="Quên mật khẩu? Click vào đây">
                     Quên mật khẩu?
                 </a>
             </div>
         </div>
-     </div>`
+     </div>`;
 
 const loggingHtml = `
          <div class="text-left border-bottom mb-2">
@@ -300,14 +137,12 @@ const loggingHtml = `
          <div class="container-fluid m-0 p-0">
              <textarea id="bot-logs" class="form-controls w-100" rows="10" readonly="" style="font-size: 0.75rem;font-style:italic;border-color:#c8ced3;color:var(--gray-700) !important;"></textarea>
          </div>
-    `
+    `;
 
 const tabExtContent = `
 <div id="tab-ext" class="div-tab tab-pane fade in text-white" role="tabpanel">
     <div id="ext-tab-content">
-         <div id="bot-settings" class="container-fluid m-0 p-2 bot-section">
-
-             <div class="d-flex justify-content-between border-bottom">
+         <div id="bot-panel" class="container-fluid m-0 p-2 bot-section" style="display: none;"> <div class="d-flex justify-content-between border-bottom">
                  <div class="d-flex align-items-center">
                      <i class="fa fa-list mr-1"></i>
                      <b>Hỗ trợ Đặt lệnh</b>
@@ -346,7 +181,7 @@ const tabExtContent = `
              </div>
          </div>
 
-         <div id="bot-signal" class="container m-0 p-2">
+         <div id="bot-signal" class="container m-0 p-2" style="display: none;">
              <div class="d-flex justify-content-between text-left border-bottom m-0 p-0">
                  <div class="p-0">
                      <i class="fa fa-list"></i>
@@ -374,10 +209,11 @@ const tabExtContent = `
              </div>
          </div>
      </div>
-    </div>`
+    </div>
+</div>`;
 
 const liPanel = `<li class="nav-item text-center">
                         <a class="nav-link tab-copytrade" data-toggle="tab" href="#tab-ext" role="tab" aria-controls="tab-copytrade" aria-selected="false">
                                 AUTO BOT
                         </a>
-                    </li>`
+                    </li>`;

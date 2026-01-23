@@ -41,7 +41,20 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             var cacheResult = _serviceBotSignal.CacheSignal(request.Text);
             string messageToSend = cacheResult.Data;
 
-            await _hubContext.Clients.All.SendAsync("Signal", messageToSend);
+            // ======================================================
+            // SỬA ĐÚNG DÒNG NÀY THÌ NGƯỜI THƯỜNG MỚI KHÔNG NHẬN ĐƯỢC
+            // ======================================================
+
+            // SAI (Code cũ): Gửi cho tất cả mọi người đang kết nối
+            // await _hubContext.Clients.All.SendAsync("Signal", messageToSend);
+
+            // ĐÚNG (Code mới): Chỉ gửi cho nhóm VIP đã được lọc ở MessageHub
+            await _hubContext.Clients.Group("VIP_USERS").SendAsync("Signal", messageToSend);
+
+            // Gửi thêm tín hiệu Admin nếu có
+            await _hubContext.Clients.Group("VIP_USERS").SendAsync("AdminSignal", request.Text);
+
+            // ======================================================
 
             var dbResult = await _serviceBotSignal.AddSignal(request.Text);
 

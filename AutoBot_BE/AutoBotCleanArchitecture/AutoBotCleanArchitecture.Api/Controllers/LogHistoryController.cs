@@ -27,15 +27,6 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(result);
         }
 
-        // -----------------------------
-        // Compat endpoints (match older frontend paths)
-        // Frontend_Autobot currently calls:
-        //   GET  /api/logHistory/getAll
-        //   POST /api/logHistory/add
-        //   GET  /api/logHistory/getLogHistoryDay|Month|Year
-        // and expects { logHistory: [...], countSL } or { logHistoryList: [...], countSL }.
-        // -----------------------------
-
         [HttpGet("/api/logHistory/getAll")]
         [AllowAnonymous]
         public async Task<IActionResult> Compat_GetAll()

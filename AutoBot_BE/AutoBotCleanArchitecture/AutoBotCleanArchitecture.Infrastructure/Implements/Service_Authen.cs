@@ -395,6 +395,22 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 return responseObjectToken.responseObjectError(StatusCodes.Status412PreconditionFailed, "Tài khoản đã bật xác thực 2 bước. Vui lòng nhập mã OTP được gửi qua email.", null);
             }
 
+            // Tìm gói Bot có ngày hết hạn xa nhất
+            //var userBot = await dbContext.userBots
+            //    .Where(x => x.UserId == user.Id)
+            //    .OrderByDescending(x => x.ExpiredDate)
+            //    .FirstOrDefaultAsync();
+
+            //if (userBot == null)
+            //{
+            //    return responseObjectToken.responseObjectError(StatusCodes.Status403Forbidden, "Tài khoản chưa đăng ký gói Bot nào!", null);
+            //}
+
+            //if (userBot.ExpiredDate < DateTime.UtcNow)
+            //{
+            //    return responseObjectToken.responseObjectError(StatusCodes.Status403Forbidden, $"Gói Bot đã hết hạn vào ngày {userBot.ExpiredDate:dd/MM/yyyy HH:mm}. Vui lòng gia hạn.", null);
+            //}
+
             // 7. Tạo Token
             var dtoToken = await GenerateAccessToken(user);
 

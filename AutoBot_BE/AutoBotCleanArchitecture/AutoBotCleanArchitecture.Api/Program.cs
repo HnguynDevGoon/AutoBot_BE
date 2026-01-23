@@ -93,19 +93,32 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidateAudience = false,
             ValidateIssuer = false,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(jwtSecretKey)
-            )
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey))
         };
 
         options.Events = new JwtBearerEvents
         {
+            // === ĐOẠN CẦN THÊM MỚI TẠI ĐÂY ===
+            OnMessageReceived = context =>
+            {
+                // SignalR gửi token qua query string "access_token"
+                var accessToken = context.Request.Query["access_token"];
+
+                // Nếu là request đến Hub thì gán Token để hệ thống giải mã
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/messageHub"))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            },
+            // ================================
+
             OnChallenge = async context =>
             {
                 context.HandleResponse();
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.ContentType = "application/json";
-
                 await context.Response.WriteAsync(JsonSerializer.Serialize(new
                 {
                     StatusCode = 401,
