@@ -10,5 +10,6 @@ namespace AutoBotCleanArchitecture.Application.Requests.UserBot
     {
         public Guid UserId { get; set; }
         public Guid BotTradingId { get; set; }
+        public DateTime ExpiredDate { get; set; }
     }
 }

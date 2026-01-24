@@ -13,5 +13,6 @@ namespace AutoBotCleanArchitecture.Application.DTOs
         public string UserName { get; set; }
         public Guid BotTradingId { get; set; } 
         public string BotName { get; set; }
+        public DateTime ExpiredDate { get; set; }
     }
 }

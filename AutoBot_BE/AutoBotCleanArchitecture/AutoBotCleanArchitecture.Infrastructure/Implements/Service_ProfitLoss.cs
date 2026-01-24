@@ -37,19 +37,24 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             this.responseObjectList = responseObjectList;
         }
 
-        // GET ALL
-        public async Task<ResponseObject<List<DTO_ProfitLoss>>> GetProfitLosses()
+        public async Task<ResponseObject<List<DTO_ProfitLoss>>> GetProfitLosses(int pageNumber, int pageSize)
         {
             try
             {
-                var profitLosses = await dbContext.profitLosses
+                if (pageNumber < 1) pageNumber = 1;
+
+                var query = dbContext.profitLosses
                     .Include(p => p.User)
-                    .OrderByDescending(p => p.Date)
+                    .OrderByDescending(p => p.Date);
+
+                var profitLosses = await query
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
                     .ToListAsync();
 
                 var dtoList = profitLosses.Select(x => converter_ProfitLoss.EntityToDTO(x)).ToList();
 
-                return responseObjectList.responseObjectSuccess("Lấy danh sách thành công", dtoList);
+                return responseObjectList.responseObjectSuccess($"Lấy danh sách trang {pageNumber} thành công", dtoList);
             }
             catch (Exception ex)
             {
@@ -57,7 +62,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        // CREATE
         public async Task<ResponseObject<DTO_ProfitLoss>> CreateProfitLoss(Request_CreateProfitLoss request)
         {
             try
@@ -66,14 +70,18 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 {
                     Price = request.Price,
                     Date = request.Date,
-                    UserId = request.UserId
+                    UserId = request.UserId,
                 };
 
                 await dbContext.profitLosses.AddAsync(entity);
                 await dbContext.SaveChangesAsync();
 
-                var dto = converter_ProfitLoss.EntityToDTO(entity);
-                return responseObject.responseObjectError(StatusCodes.Status201Created, "Tạo mới thành công", dto);
+                var result = await dbContext.profitLosses
+                    .Include(p => p.User)
+                    .FirstOrDefaultAsync(p => p.Id == entity.Id);
+
+                var dto = converter_ProfitLoss.EntityToDTO(result);
+                return responseObject.responseObjectSuccess("Tạo mới thành công", dto);
             }
             catch (Exception ex)
             {
@@ -81,7 +89,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        // UPDATE
         public async Task<ResponseObject<DTO_ProfitLoss>> UpdateProfitLoss(Request_UpdateProfitLoss request)
         {
             try
@@ -108,7 +115,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        // DELETE
         public async Task<ResponseBase> DeleteProfitLoss(Guid id)
         {
             try
@@ -130,7 +136,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        // GET BY DAY
         public async Task<ResponseObject<List<DTO_ProfitLoss>>> GetProfitLossByDay(int day, int month, int year, Guid userId)
         {
             try
@@ -151,7 +156,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        // GET BY MONTH
         public async Task<ResponseObject<List<DTO_ProfitLoss>>> GetProfitLossByMonth(int month, int year, Guid userId)
         {
             try
@@ -172,7 +176,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        // GET BY YEAR
         public async Task<ResponseObject<List<DTO_ProfitLoss>>> GetProfitLossByYear(int year, Guid userId)
         {
             try
@@ -193,7 +196,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             }
         }
 
-        // GET ALL BY USER
         public async Task<ResponseObject<List<DTO_ProfitLoss>>> GetProfitLossAll(Guid userId)
         {
             try

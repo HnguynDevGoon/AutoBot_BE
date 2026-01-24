@@ -54,7 +54,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 var totalItems = await query.CountAsync();
                 var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
-                // Nhớ update Converter map thêm Id nhé
                 var dtos = items.Select(x => converter.EntityToDTO(x)).ToList();
                 var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 
@@ -103,7 +102,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 {
                     Id = Guid.NewGuid(),
                     UserId = request.UserId,
-                    BotTradingId = request.BotTradingId
+                    BotTradingId = request.BotTradingId,
+                    ExpiredDate = request.ExpiredDate
                 };
 
                 await dbContext.userBots.AddAsync(entity);
@@ -121,12 +121,12 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
                 var entity = await dbContext.userBots.FindAsync(request.Id);
                 if (entity == null) return responseBase.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy dữ liệu.");
 
-                // Check trùng lặp (trừ chính nó ra)
                 bool isDuplicate = await dbContext.userBots.AnyAsync(x => x.Id != request.Id && x.UserId == request.UserId && x.BotTradingId == request.BotTradingId);
                 if (isDuplicate) return responseBase.ResponseError(StatusCodes.Status400BadRequest, "Cặp User-Bot này đã tồn tại.");
 
                 entity.UserId = request.UserId;
                 entity.BotTradingId = request.BotTradingId;
+                entity.ExpiredDate = request.ExpiredDate;
 
                 await dbContext.SaveChangesAsync();
                 return responseBase.ResponseSuccess("Cập nhật thành công.");

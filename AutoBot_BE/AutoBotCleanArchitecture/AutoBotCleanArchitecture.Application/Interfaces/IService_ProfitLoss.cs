@@ -9,7 +9,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
 {
     public interface IService_ProfitLoss
     {
-        Task<ResponseObject<List<DTO_ProfitLoss>>> GetProfitLosses();
+        Task<ResponseObject<List<DTO_ProfitLoss>>> GetProfitLosses(int pageNumber, int pageSize);
         Task<ResponseObject<DTO_ProfitLoss>> CreateProfitLoss(Request_CreateProfitLoss request);
         Task<ResponseObject<DTO_ProfitLoss>> UpdateProfitLoss(Request_UpdateProfitLoss request);
         Task<ResponseBase> DeleteProfitLoss(Guid id);

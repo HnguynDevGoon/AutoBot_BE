@@ -21,6 +21,7 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 Price = salaries.Price,
                 Year = salaries.Year,
                 FullName = salaries.User.FullName,
+                UserId = salaries.User.Id
             };
         }
     }

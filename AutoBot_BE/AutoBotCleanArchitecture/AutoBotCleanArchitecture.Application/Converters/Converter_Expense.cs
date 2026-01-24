@@ -18,7 +18,7 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 Date = expenses.Date,
                 Description = expenses.Description,
                 Name = expenses.Name,
-                Price = expenses.Price  
+                Price = expenses.Price
             };
         }
     }

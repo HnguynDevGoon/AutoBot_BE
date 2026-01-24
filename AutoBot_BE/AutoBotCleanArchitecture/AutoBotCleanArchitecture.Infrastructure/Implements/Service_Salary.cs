@@ -96,11 +96,11 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             catch (Exception ex) { return responseObject.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
-        public async Task<ResponseBase> DeleteSalary(int month, int year, Guid userId)
+        public async Task<ResponseBase> DeleteSalary(Guid Id)
         {
             try
             {
-                var salary = await dbContext.salaries.FirstOrDefaultAsync(s => s.Month == month && s.Year == year && s.UserId == userId);
+                var salary = await dbContext.salaries.FirstOrDefaultAsync(s => s.Id == Id);
                 if (salary == null) return responseBase.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy.");
 
                 dbContext.salaries.Remove(salary);
@@ -115,6 +115,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             try
             {
                 var existingSalary = await dbContext.salaries
+                    .Include(s => s.User)
                     .FirstOrDefaultAsync(s => s.Month == request.Month &&
                                               s.Year == request.Year &&
                                               s.UserId == request.UserId);

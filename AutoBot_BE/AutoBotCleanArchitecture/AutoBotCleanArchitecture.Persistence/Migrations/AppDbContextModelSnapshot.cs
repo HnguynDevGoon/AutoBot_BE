@@ -609,7 +609,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
-                            CreatedDate = new DateTime(2026, 1, 24, 8, 28, 15, 231, DateTimeKind.Utc).AddTicks(6663),
+                            CreatedDate = new DateTime(2026, 1, 24, 13, 5, 3, 140, DateTimeKind.Utc).AddTicks(9929),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,

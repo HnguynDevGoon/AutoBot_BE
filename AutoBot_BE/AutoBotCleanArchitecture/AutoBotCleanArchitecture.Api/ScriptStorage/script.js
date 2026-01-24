@@ -1,4 +1,5 @@
-﻿const baseURL = "https://x067w4x7-7291.asse.devtunnels.ms"; 
+﻿const baseURL = "https://x067w4x7-7291.asse.devtunnels.ms"; // HBN
+//const baseURL = "https://m1n9ckgf-7291.asse.devtunnels.ms"; // PGL
 
 const api_auth = `${baseURL}/api/Authen`;
 const api_signal = `${baseURL}/api/BotSignal`;
@@ -43,7 +44,6 @@ const getUserIdFromToken = () => {
     const token = getAccessToken();
     if (!token) return null;
     const decoded = parseJwt(token);
-    // Lấy trường "Id" đúng như JSON bạn gửi
     if (decoded)
         return decoded.Id || decoded.id || decoded.UserId || decoded.userId;
     return null;

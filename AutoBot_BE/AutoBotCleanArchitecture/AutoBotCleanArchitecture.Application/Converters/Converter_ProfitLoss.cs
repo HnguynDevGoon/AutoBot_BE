@@ -18,7 +18,7 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 Price = profitLoss.Price,
                 Date = profitLoss.Date,
                 UserId = profitLoss.UserId,
-                FullName = profitLoss.User?.FullName
+                FullName = profitLoss.User.FullName
             };
         }
     }

@@ -69,3 +69,15 @@ C:\Users\huynh\Downloads\AutoBot\AutoBot_BE\AutoBot_BE\AutoBotCleanArchitecture\
 C:\Users\huynh\Downloads\AutoBot\AutoBot_BE\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\refint\AutoBotCleanArchitecture.Domain.dll
 C:\Users\huynh\Downloads\AutoBot\AutoBot_BE\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\AutoBotCleanArchitecture.Domain.pdb
 C:\Users\huynh\Downloads\AutoBot\AutoBot_BE\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\ref\AutoBotCleanArchitecture.Domain.dll
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\bin\Debug\net8.0\AutoBotCleanArchitecture.Domain.deps.json
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\bin\Debug\net8.0\AutoBotCleanArchitecture.Domain.dll
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\bin\Debug\net8.0\AutoBotCleanArchitecture.Domain.pdb
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\AutoBotCleanArchitecture.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\AutoBotCleanArchitecture.Domain.AssemblyInfoInputs.cache
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\AutoBotCleanArchitecture.Domain.AssemblyInfo.cs
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\AutoBotCleanArchitecture.Domain.csproj.CoreCompileInputs.cache
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\AutoBotCleanArchitecture.Domain.sourcelink.json
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\AutoBotCleanArchitecture.Domain.dll
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\refint\AutoBotCleanArchitecture.Domain.dll
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\AutoBotCleanArchitecture.Domain.pdb
+D:\workspace\type_work\project\AutoBot\AutoBot\AutoBot_BE\AutoBotCleanArchitecture\AutoBotCleanArchitecture.Domain\obj\Debug\net8.0\ref\AutoBotCleanArchitecture.Domain.dll

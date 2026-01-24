@@ -12,7 +12,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
         Task<ResponseObject<ResponsePagination<DTO_Salary>>> GetSalaries(int pageNumber, int pageSize);
         Task<ResponseObject<DTO_Salary>> AddSalary(Request_AddSalary request);
         Task<ResponseObject<DTO_Salary>> UpdateSalary(Request_UpdateSalary request);
-        Task<ResponseBase> DeleteSalary(int month, int year, Guid userId);
+        Task<ResponseBase> DeleteSalary(Guid Id);
         Task<ResponseObject<List<DTO_Salary>>> GetSalaryByMonth(int month, int year);
         Task<ResponseObject<List<DTO_Salary>>> GetSalaryByYear(int year);
         Task<ResponseObject<List<DTO_Salary>>> GetSalaryDate(DateTime from, DateTime to);

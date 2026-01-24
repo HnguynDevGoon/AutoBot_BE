@@ -9,10 +9,52 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Api.Controllers.AdminsController\u002BAdminSignalRequest",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.AdminFile.Request_AddSignal",
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AdminsController",
+    "Method": "UploadExt",
+    "RelativePath": "api/admin/upload-ext",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AdminsController",
+    "Method": "Upload",
+    "RelativePath": "api/admin/upload-script",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.AdminsController",
+    "Method": "GetRouterScript",
+    "RelativePath": "api/auth/router",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -1558,7 +1600,18 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -2067,16 +2120,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "month",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "year",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
       {
         "Name": "userId",
         "Type": "System.Guid",

@@ -19,9 +19,10 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpGet("GetProfitLosses")]
-        public async Task<IActionResult> GetProfitLosses()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetProfitLosses(int pageNumber, int pageSize)
         {
-            return Ok(await service_ProfitLoss.GetProfitLosses());
+            return Ok(await service_ProfitLoss.GetProfitLosses(pageNumber,pageSize));
         }
 
         [HttpPost("CreateProfitLoss")]
@@ -46,24 +47,28 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         }
 
         [HttpGet("GetProfitLossByDay")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetProfitLossByDay(int day, int month, int year, Guid userId)
         {
             return Ok(await service_ProfitLoss.GetProfitLossByDay(day, month, year, userId));
         }
 
         [HttpGet("GetProfitLossByMonth")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetProfitLossByMonth(int month, int year, Guid userId)
         {
             return Ok(await service_ProfitLoss.GetProfitLossByMonth(month, year, userId));
         }
 
         [HttpGet("GetProfitLossByYear")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetProfitLossByYear(int year, Guid userId)
         {
             return Ok(await service_ProfitLoss.GetProfitLossByYear(year, userId));
         }
 
         [HttpGet("GetProfitLossAll")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetProfitLossAll(Guid userId)
         {
             return Ok(await service_ProfitLoss.GetProfitLossAll(userId));

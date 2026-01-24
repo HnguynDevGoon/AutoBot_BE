@@ -4,6 +4,7 @@ using AutoBotCleanArchitecture.Application.Interfaces;
 using AutoBotCleanArchitecture.Application.Responses;
 using AutoBotCleanArchitecture.Infrastructure.Hubs;
 using AutoBotCleanArchitecture.Infrastructure.Implements;
+using AutoBotCleanArchitecture.Infrastructure.Services;
 using AutoBotCleanArchitecture.Persistence.DBContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -259,7 +260,7 @@ builder.Services.AddScoped<IService_Review, Service_Review>();
 builder.Services.AddScoped<IService_Salary, Service_Salary>();
 builder.Services.AddScoped<IService_Expense, Service_Expense>();
 builder.Services.AddScoped<IService_UserBot, Service_UserBot>();
-
+builder.Services.AddScoped<IService_AdminFile, Service_AdminFile>();
 
 
 builder.Services.AddControllers();

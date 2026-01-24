@@ -14,21 +14,97 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AdminSignalRequest"
+                "$ref": "#/components/schemas/Request_AddSignal"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AdminSignalRequest"
+                "$ref": "#/components/schemas/Request_AddSignal"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AdminSignalRequest"
+                "$ref": "#/components/schemas/Request_AddSignal"
               }
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/upload-script": {
+      "post": {
+        "tags": [
+          "Admins"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/upload-ext": {
+      "post": {
+        "tags": [
+          "Admins"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/auth/router": {
+      "get": {
+        "tags": [
+          "Admins"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2378,6 +2454,24 @@
         "tags": [
           "ProfitLoss"
         ],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -3385,22 +3479,6 @@
         ],
         "parameters": [
           {
-            "name": "month",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "year",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
             "name": "userId",
             "in": "query",
             "schema": {
@@ -3829,28 +3907,6 @@
   },
   "components": {
     "schemas": {
-      "AdminSignalRequest": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "nullable": true
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "orderNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "stopOrderValue": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
       "Request_AccountVerification": {
         "type": "object",
         "properties": {
@@ -3913,6 +3969,28 @@
         },
         "additionalProperties": false
       },
+      "Request_AddSignal": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "orderNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stopOrderValue": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "Request_AddUserBot": {
         "type": "object",
         "properties": {
@@ -3923,6 +4001,10 @@
           "botTradingId": {
             "type": "string",
             "format": "uuid"
+          },
+          "expiredDate": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -4708,6 +4790,10 @@
           "botTradingId": {
             "type": "string",
             "format": "uuid"
+          },
+          "expiredDate": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false

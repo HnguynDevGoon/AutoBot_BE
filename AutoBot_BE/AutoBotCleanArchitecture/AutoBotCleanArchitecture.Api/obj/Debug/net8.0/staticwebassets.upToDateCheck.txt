@@ -1,2 +1,2 @@
+wwwroot\ext.rar
 wwwroot\js\common.js
-wwwroot\js\script.js

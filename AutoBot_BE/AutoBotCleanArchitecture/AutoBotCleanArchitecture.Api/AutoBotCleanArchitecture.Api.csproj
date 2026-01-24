@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="ScriptStorage\script.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CloudinaryDotNet" Version="1.27.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.21" />
@@ -29,10 +33,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AutoBotCleanArchitecture.Infrastructure\AutoBotCleanArchitecture.Infrastructure.csproj" />
     <ProjectReference Include="..\AutoBotCleanArchitecture.Persistence\AutoBotCleanArchitecture.Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\js\script.js" />
   </ItemGroup>
 
 </Project>

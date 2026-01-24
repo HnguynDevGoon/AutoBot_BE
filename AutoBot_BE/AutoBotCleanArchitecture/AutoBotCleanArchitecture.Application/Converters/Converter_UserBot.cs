@@ -18,7 +18,8 @@ namespace AutoBotCleanArchitecture.Application.Converters
                 UserId = entity.UserId,
                 UserName = entity.User?.UserName ?? "Unknown User",
                 BotTradingId = entity.BotTradingId,
-                BotName = entity.BotTrading?.NameBot ?? "Unknown Bot"
+                BotName = entity.BotTrading?.NameBot ?? "Unknown Bot",
+                ExpiredDate = entity.ExpiredDate
             };
         }
     }
