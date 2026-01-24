@@ -8,6 +8,7 @@ namespace AutoBotCleanArchitecture.Application.DTOs
 {
     public class DTO_UserBot
     {
+        public Guid Id { get; set; }
         public Guid? UserId { get; set; }
         public string UserName { get; set; }
         public Guid BotTradingId { get; set; } 

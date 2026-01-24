@@ -185,6 +185,8 @@ builder.Services.AddScoped<ResponseObject<DTO_ProfitLoss>>();
 builder.Services.AddScoped<ResponseObject<DTO_Review>>();
 builder.Services.AddScoped<ResponseObject<DTO_Salary>>();
 builder.Services.AddScoped<ResponseObject<DTO_Expense>>();
+builder.Services.AddScoped<ResponseObject<DTO_UserBot>>();
+
 
 
 // Response Object DataType
@@ -200,6 +202,8 @@ builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PriceBots>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_Salary>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_Expense>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_UserBot>>>();
+
 
 // Response Object List, IList
 builder.Services.AddScoped<ResponseObject<IList<DTO_LogHistory>>>();
@@ -254,6 +258,7 @@ builder.Services.AddScoped<IService_ProfitLoss, Service_ProfitLoss>();
 builder.Services.AddScoped<IService_Review, Service_Review>();
 builder.Services.AddScoped<IService_Salary, Service_Salary>();
 builder.Services.AddScoped<IService_Expense, Service_Expense>();
+builder.Services.AddScoped<IService_UserBot, Service_UserBot>();
 
 
 

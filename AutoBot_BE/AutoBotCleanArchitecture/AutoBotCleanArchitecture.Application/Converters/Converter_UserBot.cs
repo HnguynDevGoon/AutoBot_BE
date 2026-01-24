@@ -14,10 +14,9 @@ namespace AutoBotCleanArchitecture.Application.Converters
         {
             return new DTO_UserBot
             {
+                Id = entity.Id,
                 UserId = entity.UserId,
-                // Dùng toán tử ?. và ?? để tránh lỗi Null nếu lỡ không Include kịp
                 UserName = entity.User?.UserName ?? "Unknown User",
-
                 BotTradingId = entity.BotTradingId,
                 BotName = entity.BotTrading?.NameBot ?? "Unknown Bot"
             };

@@ -9,7 +9,7 @@ namespace AutoBotCleanArchitecture.Application.Interfaces
 {
     public interface IService_Expense
     {
-        Task<ResponseObject<ResponsePagination<DTO_Expense>>> GetExpenses(int pageIndex, int pageSize);
+        Task<ResponseObject<ResponsePagination<DTO_Expense>>> GetExpenses(int pageNumber, int pageSize);
         Task<ResponseObject<DTO_Expense>> AddExpense(Request_AddExpense request);
         Task<ResponseObject<DTO_Expense>> UpdateExpense(Request_UpdateExpense request);
         Task<ResponseBase> DeleteExpense(Guid id);

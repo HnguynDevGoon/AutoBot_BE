@@ -105,7 +105,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             catch (Exception ex) { return responseObject.responseObjectError(StatusCodes.Status500InternalServerError, ex.Message, null); }
         }
 
-        // 4. DELETE
         public async Task<ResponseBase> DeleteExpense(Guid id)
         {
             try
@@ -120,7 +119,6 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             catch (Exception ex) { return responseBase.ResponseError(StatusCodes.Status500InternalServerError, ex.Message); }
         }
 
-        // 5. GET BY DATE (DAY/MONTH/YEAR)
         public async Task<ResponseObject<List<DTO_Expense>>> GetExpenseByDate(int day, int month, int year)
         {
             try
