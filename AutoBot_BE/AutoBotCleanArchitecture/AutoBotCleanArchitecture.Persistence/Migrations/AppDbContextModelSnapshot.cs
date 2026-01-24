@@ -193,6 +193,31 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.ToTable("contents");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Expense", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("expenses");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.LogHistory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -485,6 +510,39 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Salary", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Bonus")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Month", "Year")
+                        .IsUnique();
+
+                    b.ToTable("salaries");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -551,7 +609,7 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                             Id = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c"),
                             AccessFailedCount = 0,
                             BirthDay = new DateOnly(2000, 1, 1),
-                            CreatedDate = new DateTime(2026, 1, 19, 7, 5, 16, 631, DateTimeKind.Utc).AddTicks(3403),
+                            CreatedDate = new DateTime(2026, 1, 24, 8, 28, 15, 231, DateTimeKind.Utc).AddTicks(6663),
                             Email = "huynhnguyen13122005@gmail.com",
                             FullName = "Quản Trị Viên",
                             IsActive = true,
@@ -798,6 +856,17 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.Salary", b =>
+                {
+                    b.HasOne("AutoBotCleanArchitecture.Domain.Entities.User", "User")
+                        .WithMany("Salaries")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AutoBotCleanArchitecture.Domain.Entities.User", b =>
                 {
                     b.HasOne("AutoBotCleanArchitecture.Domain.Entities.Role", "Role")
@@ -878,6 +947,8 @@ namespace AutoBotCleanArchitecture.Persistence.Migrations
                     b.Navigation("ProfitLoss");
 
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("Salaries");
 
                     b.Navigation("UserBots");
 

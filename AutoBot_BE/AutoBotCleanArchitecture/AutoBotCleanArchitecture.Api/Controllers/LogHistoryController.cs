@@ -27,66 +27,6 @@ namespace AutoBotCleanArchitecture.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("/api/logHistory/getAll")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Compat_GetAll()
-        {
-            var result = await _logHistoryService.GetLogHistory();
-            var list = result?.Data ?? [];
-            var countSL = list.Count(x => x.IsSL);
-            return Ok(new { logHistory = list, countSL });
-        }
-
-        [HttpPost("/api/logHistory/add")]
-        [Authorize]
-        public async Task<IActionResult> Compat_Add([FromBody] Request_LogHistory request)
-        {
-            var result = await _logHistoryService.AddLogHistory(request);
-            return Ok(result);
-        }
-
-        [HttpGet("/api/logHistory/getLogHistoryDay")]
-        [Authorize]
-        public async Task<IActionResult> Compat_GetDay([FromQuery] int day, [FromQuery] int month, [FromQuery] int year, [FromQuery] string userId)
-        {
-            if (!Guid.TryParse(userId, out var uid))
-            {
-                return BadRequest("userId must be a GUID");
-            }
-            var result = await _logHistoryService.GetLogHistoryDay(day, month, year, uid);
-            var list = result?.Data ?? [];
-            var countSL = list.Count(x => x.IsSL);
-            return Ok(new { logHistoryList = list, countSL });
-        }
-
-        [HttpGet("/api/logHistory/getLogHistoryMonth")]
-        [Authorize]
-        public async Task<IActionResult> Compat_GetMonth([FromQuery] int month, [FromQuery] int year, [FromQuery] string userId)
-        {
-            if (!Guid.TryParse(userId, out var uid))
-            {
-                return BadRequest("userId must be a GUID");
-            }
-            var result = await _logHistoryService.GetLogHistoryMonth(month, year, uid);
-            var list = result?.Data ?? [];
-            var countSL = list.Count(x => x.IsSL);
-            return Ok(new { logHistoryList = list, countSL });
-        }
-
-        [HttpGet("/api/logHistory/getLogHistoryYear")]
-        [Authorize]
-        public async Task<IActionResult> Compat_GetYear([FromQuery] int year, [FromQuery] string userId)
-        {
-            if (!Guid.TryParse(userId, out var uid))
-            {
-                return BadRequest("userId must be a GUID");
-            }
-            var result = await _logHistoryService.GetLogHistoryYear(year, uid);
-            var list = result?.Data ?? [];
-            var countSL = list.Count(x => x.IsSL);
-            return Ok(new { logHistoryList = list, countSL });
-        }
-
         [HttpGet("GetLogHistoryById")]
         [Authorize]
         public async Task<IActionResult> GetLogHistoryById([FromQuery] Guid userId)

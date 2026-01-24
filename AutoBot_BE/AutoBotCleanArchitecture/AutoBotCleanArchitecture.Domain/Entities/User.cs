@@ -34,6 +34,8 @@ namespace AutoBotCleanArchitecture.Domain.Entities
         public ICollection<UserBot>? UserBots { get; set; }
         public ICollection<PaymentOrder>? PaymentOrders { get; set; }
         public ICollection<ProfitLoss>? ProfitLoss { get; set; }
+        public ICollection<Salary>? Salaries { get; set; }
+            
 
 
     }

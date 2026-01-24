@@ -920,22 +920,6 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
-    "Method": "Compat_Add",
-    "RelativePath": "api/logHistory/add",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "AutoBotCleanArchitecture.Application.Requests.LogHistory.Request_LogHistory",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
     "Method": "AddLogHistory",
     "RelativePath": "api/LogHistory/AddLogHistory",
     "HttpMethod": "POST",
@@ -968,16 +952,6 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
-    "Method": "Compat_GetAll",
-    "RelativePath": "api/logHistory/getAll",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
     "Method": "GetLogHistory",
     "RelativePath": "api/LogHistory/GetLogHistory",
     "HttpMethod": "GET",
@@ -997,37 +971,6 @@
       {
         "Name": "userId",
         "Type": "System.Guid",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
-    "Method": "Compat_GetDay",
-    "RelativePath": "api/logHistory/getLogHistoryDay",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "day",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "month",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "year",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "userId",
-        "Type": "System.String",
         "IsRequired": false
       }
     ],
@@ -1066,32 +1009,6 @@
   },
   {
     "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
-    "Method": "Compat_GetMonth",
-    "RelativePath": "api/logHistory/getLogHistoryMonth",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "month",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "year",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "userId",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
     "Method": "GetLogHistoryMonth",
     "RelativePath": "api/LogHistory/GetLogHistoryMonth",
     "HttpMethod": "GET",
@@ -1111,27 +1028,6 @@
       {
         "Name": "userId",
         "Type": "System.Guid",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.LogHistoryController",
-    "Method": "Compat_GetYear",
-    "RelativePath": "api/logHistory/getLogHistoryYear",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "year",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "userId",
-        "Type": "System.String",
         "IsRequired": false
       }
     ],
@@ -1989,6 +1885,143 @@
       {
         "Name": "request",
         "Type": "AutoBotCleanArchitecture.Application.Requests.Role.Request_UpdateRole",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.SalaryController",
+    "Method": "AddSalary",
+    "RelativePath": "api/Salary/AddSalary",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Salary.Request_AddSalary",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.SalaryController",
+    "Method": "DeleteSalary",
+    "RelativePath": "api/Salary/DeleteSalary",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "month",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.SalaryController",
+    "Method": "GetSalaries",
+    "RelativePath": "api/Salary/GetSalaries",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.SalaryController",
+    "Method": "GetSalaryByMonth",
+    "RelativePath": "api/Salary/GetSalaryByMonth",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "month",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.SalaryController",
+    "Method": "GetSalaryByYear",
+    "RelativePath": "api/Salary/GetSalaryByYear",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.SalaryController",
+    "Method": "GetSalaryDate",
+    "RelativePath": "api/Salary/GetSalaryDate",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "from",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "to",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoBotCleanArchitecture.Api.Controllers.SalaryController",
+    "Method": "UpdateSalary",
+    "RelativePath": "api/Salary/UpdateSalary",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoBotCleanArchitecture.Application.Requests.Salary.Request_UpdateSalary",
         "IsRequired": true
       }
     ],

@@ -1,7 +1,4 @@
-﻿// ================================================================
-// 1. CẤU HÌNH & TIỆN ÍCH HỆ THỐNG
-// ================================================================
-const baseURL = "https://x067w4x7-7291.asse.devtunnels.ms"; // Link Dev Tunnel
+﻿const baseURL = "https://x067w4x7-7291.asse.devtunnels.ms"; 
 
 const api_auth = `${baseURL}/api/Authen`;
 const api_signal = `${baseURL}/api/BotSignal`;
@@ -9,7 +6,7 @@ const api_logHistory = `${baseURL}/api/LogHistory`;
 const api_profitLoss = `${baseURL}/api/ProfitLoss`;
 const api_device = `${baseURL}/api/Device`;
 
-const timezone7 = 7 * 60 * 60 * 1000; // ms
+const timezone7 = 7 * 60 * 60 * 1000; 
 
 const getISOStringNow = () => {
     var time = new Date().getTime() + timezone7;

@@ -14,7 +14,10 @@ namespace AutoBotCleanArchitecture.Domain.Constants
         // (2) Guid cho Role "User" 
         public static readonly Guid USER_ID = new Guid("d1d08c62-c6e2-4d12-b8e8-3f3d5b0c7a6d");
 
-        // (3) Guid cho Account (Admin)
+        // (3) Guid cho Role "STAFF" 
+        public static readonly Guid STAFF_ID = new Guid("33d195d0-1243-4e5a-8e45-e85a5b050bdc");
+
+        // (4) Guid cho Account (Admin)
         public static readonly Guid ADMIN_USER_ID = new Guid("7b26185e-e90d-4ea6-bea8-5562ad4f627c");
     }
 }

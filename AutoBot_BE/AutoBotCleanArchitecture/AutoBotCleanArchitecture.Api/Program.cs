@@ -183,6 +183,8 @@ builder.Services.AddScoped<ResponseObject<DTO_BotTrading>>();
 builder.Services.AddScoped<ResponseObject<DTO_OtherContent>>();
 builder.Services.AddScoped<ResponseObject<DTO_ProfitLoss>>();
 builder.Services.AddScoped<ResponseObject<DTO_Review>>();
+builder.Services.AddScoped<ResponseObject<DTO_Salary>>();
+builder.Services.AddScoped<ResponseObject<DTO_Expense>>();
 
 
 // Response Object DataType
@@ -196,6 +198,8 @@ builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_BotTrading>>>()
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_WithdrawMoney>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PriceBots>>>();
 builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_PurchaseHistory>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_Salary>>>();
+builder.Services.AddScoped<ResponseObject<ResponsePagination<DTO_Expense>>>();
 
 // Response Object List, IList
 builder.Services.AddScoped<ResponseObject<IList<DTO_LogHistory>>>();
@@ -210,8 +214,8 @@ builder.Services.AddScoped<ResponseObject<List<DTO_BotSignal>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_OtherContent>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_ProfitLoss>>>();
 builder.Services.AddScoped<ResponseObject<List<DTO_Review>>>();
-
-
+builder.Services.AddScoped<ResponseObject<List<DTO_Salary>>>();
+builder.Services.AddScoped<ResponseObject<List<DTO_Expense>>>();
 
 
 // Converter
@@ -228,7 +232,8 @@ builder.Services.AddScoped<Converter_BotSignal>();
 builder.Services.AddScoped<Converter_OtherContent>();
 builder.Services.AddScoped<Converter_ProfitLoss>();
 builder.Services.AddScoped<Converter_Review>();
-
+builder.Services.AddScoped<Converter_Salary>();
+builder.Services.AddScoped<Converter_Expense>();
 
 
 // Service
@@ -247,8 +252,8 @@ builder.Services.AddScoped<IService_BotSignal, Service_BotSignal>();
 builder.Services.AddScoped<IService_OtherContent, Service_OtherContent>();
 builder.Services.AddScoped<IService_ProfitLoss, Service_ProfitLoss>();
 builder.Services.AddScoped<IService_Review, Service_Review>();
-
-
+builder.Services.AddScoped<IService_Salary, Service_Salary>();
+builder.Services.AddScoped<IService_Expense, Service_Expense>();
 
 
 

@@ -34,6 +34,10 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
         public DbSet<BotSignal> botSignals { get; set; }
         public DbSet<OtherContent> otherContents { get; set; }
         public DbSet<Review> reviews { get; set; }
+        public DbSet<Salary> salaries { get; set; }
+        public DbSet<Expense> expenses { get; set; }
+
+
 
 
 
@@ -90,6 +94,11 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
             builder.Entity<UserDevice>()
             .HasIndex(d => new { d.UserId, d.Fingerprint })
             .IsUnique();
+
+            // Ràng buộc: Một User không được có 2 dòng lương trùng Tháng/Năm
+            builder.Entity<Salary>()
+                .HasIndex(s => new { s.UserId, s.Month, s.Year })
+                .IsUnique();
         }
     }
 }
