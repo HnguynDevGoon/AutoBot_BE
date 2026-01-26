@@ -8,6 +8,7 @@ namespace AutoBotCleanArchitecture.Application.DTOs
 {
     public class DTO_AdminDashboard
     {
+        public List<DTO_BotTrading> Bots { get; set; }
         public List<DTO_User> Users { get; set; }
         public List<DTO_BotSignal> BotSignals { get; set; }
         public List<DTO_PurchaseHistory> PurchaseHistories { get; set; }

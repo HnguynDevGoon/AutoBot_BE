@@ -18,6 +18,7 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         private readonly ResponseObject<DTO_AdminDashboard> responseObject;
 
         private readonly Converter_User _convUser;
+        private readonly Converter_BotTrading _convBot;
         private readonly Converter_BotSignal _convSignal;
         private readonly Converter_PurchaseHistory _convPurchase;
         private readonly Converter_Content _convContent;
@@ -26,11 +27,12 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
         private readonly Converter_Expense _convExpense;
         private readonly Converter_ProfitLoss _convProfitLoss;
 
-        public Service_AdminDashboard(AppDbContext dbContext, ResponseObject<DTO_AdminDashboard> responseObject, Converter_User convUser, Converter_BotSignal convSignal, Converter_PurchaseHistory convPurchase, Converter_Content convContent, Converter_OtherContent convOtherContent, Converter_Role convRole, Converter_Expense convExpense, Converter_ProfitLoss convProfitLoss)
+        public Service_AdminDashboard(AppDbContext dbContext, ResponseObject<DTO_AdminDashboard> responseObject, Converter_User convUser, Converter_BotTrading convBot, Converter_BotSignal convSignal, Converter_PurchaseHistory convPurchase, Converter_Content convContent, Converter_OtherContent convOtherContent, Converter_Role convRole, Converter_Expense convExpense, Converter_ProfitLoss convProfitLoss)
         {
             this.dbContext = dbContext;
             this.responseObject = responseObject;
             _convUser = convUser;
+            _convBot = convBot;
             _convSignal = convSignal;
             _convPurchase = convPurchase;
             _convContent = convContent;
@@ -46,7 +48,8 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
             {
                 var result = new DTO_AdminDashboard
                 {
-                    Users = new List<DTO_User>(), // <--- Init List User
+                    Users = new List<DTO_User>(),
+                    Bots = new List<DTO_BotTrading>(), // <--- Init List Bot
                     BotSignals = new List<DTO_BotSignal>(),
                     PurchaseHistories = new List<DTO_PurchaseHistory>(),
                     Contents = new List<DTO_Content>(),
@@ -61,71 +64,68 @@ namespace AutoBotCleanArchitecture.Infrastructure.Implements
 
                 string key = keyword.ToLower().Trim();
 
-                // 1. SEARCH USER (UserName, FullName, Email, PhoneNumber)
-                var users = await dbContext.users // Giả sử tên DbSet là 'users'
-                    .Where(x => x.UserName.ToLower().Contains(key) ||
-                                x.FullName.ToLower().Contains(key) ||
-                                x.Email.ToLower().Contains(key) ||
-                                (x.PhoneNumber != null && x.PhoneNumber.Contains(key)))
+                // 1. USER
+                var users = await dbContext.users
+                    .Where(x => x.UserName.ToLower().Contains(key) || x.Email.ToLower().Contains(key))
                     .Take(5).ToListAsync();
                 result.Users = users.Select(x => _convUser.EntityToDTO(x)).ToList();
 
-                // 2. BOT SIGNAL
+                // 2. BOT TRADING (Mới thêm - Tìm theo NameBot)
+                var bots = await dbContext.botTradings // Giả sử tên DbSet là 'botTradings'
+                    .Where(x => x.NameBot.ToLower().Contains(key))
+                    .Take(5).ToListAsync();
+                result.Bots = bots.Select(x => _convBot.EntityToDTO(x)).ToList();
+
+                // 3. BOT SIGNAL
                 var signals = await dbContext.botSignals
                     .Where(x => x.Signal.ToLower().Contains(key))
                     .Take(5).ToListAsync();
                 result.BotSignals = signals.Select(x => _convSignal.EntityToDTO(x)).ToList();
 
-                // 3. PURCHASE HISTORY
+                // 4. PURCHASE HISTORY
                 var purchases = await dbContext.purchaseHistories
-                    .Include(x => x.User).Include(x => x.BotTrading).Include(x => x.Wallet)
+                    .Include(x => x.User).Include(x => x.BotTrading)
                     .Where(x => x.OrderCode.ToString().Contains(key) ||
-                                x.PaymentMethod.ToLower().Contains(key) ||
-                                x.Status.ToLower().Contains(key) ||
                                 x.User.UserName.ToLower().Contains(key) ||
                                 (x.BotTrading != null && x.BotTrading.NameBot.ToLower().Contains(key)))
                     .Take(5).ToListAsync();
                 result.PurchaseHistories = purchases.Select(x => _convPurchase.EntityToDTO(x)).ToList();
 
-                // 4. CONTENT
-                var contents = await dbContext.contents
-                    .Where(x => x.Title.ToLower().Contains(key) ||
-                                x.Description.ToLower().Contains(key) ||
-                                (x.Link != null && x.Link.ToLower().Contains(key)))
-                    .Take(5).ToListAsync();
-                result.Contents = contents.Select(x => _convContent.EntityToDTO(x)).ToList();
-
-                // 5. OTHER CONTENT
-                var otherContents = await dbContext.otherContents
-                    .Where(x => x.Title.ToLower().Contains(key) ||
-                                x.Description.ToLower().Contains(key) ||
-                                x.OtherType.ToLower().Contains(key))
-                    .Take(5).ToListAsync();
-                result.OtherContents = otherContents.Select(x => _convOtherContent.EntityToDTO(x)).ToList();
-
-                // 6. ROLE
-                var roles = await dbContext.roles
-                    .Where(x => x.RoleName.ToLower().Contains(key))
-                    .Take(5).ToListAsync();
-                result.Roles = roles.Select(x => _convRole.EntityToDTO(x)).ToList();
-
-                // 7. EXPENSE
+                // 5. EXPENSE
                 var expenses = await dbContext.expenses
-                    .Where(x => x.Name.ToLower().Contains(key) || x.Description.ToLower().Contains(key))
+                    .Where(x => x.Name.ToLower().Contains(key))
                     .Take(5).ToListAsync();
                 result.Expenses = expenses.Select(x => _convExpense.EntityToDTO(x)).ToList();
 
-                // 8. PROFIT LOSS
+                // 6. PROFIT LOSS
                 var profitLosses = await dbContext.profitLosses
                     .Include(x => x.User)
                     .Where(x => x.User != null && x.User.UserName.ToLower().Contains(key))
                     .Take(5).ToListAsync();
                 result.ProfitLosses = profitLosses.Select(x => _convProfitLoss.EntityToDTO(x)).ToList();
 
+                // 7. CONTENT
+                var contents = await dbContext.contents
+                    .Where(x => x.Title.ToLower().Contains(key))
+                    .Take(5).ToListAsync();
+                result.Contents = contents.Select(x => _convContent.EntityToDTO(x)).ToList();
+
+                // 8. OTHER CONTENT
+                var otherContents = await dbContext.otherContents
+                    .Where(x => x.Title.ToLower().Contains(key))
+                    .Take(5).ToListAsync();
+                result.OtherContents = otherContents.Select(x => _convOtherContent.EntityToDTO(x)).ToList();
+
+                // 9. ROLE
+                var roles = await dbContext.roles
+                    .Where(x => x.RoleName.ToLower().Contains(key))
+                    .Take(5).ToListAsync();
+                result.Roles = roles.Select(x => _convRole.EntityToDTO(x)).ToList();
+
                 // Tính tổng
-                int total = result.Users.Count + result.BotSignals.Count + result.PurchaseHistories.Count +
-                            result.Contents.Count + result.OtherContents.Count +
-                            result.Roles.Count + result.Expenses.Count + result.ProfitLosses.Count;
+                int total = result.Users.Count + result.Bots.Count + result.BotSignals.Count +
+                            result.PurchaseHistories.Count + result.Expenses.Count + result.ProfitLosses.Count +
+                            result.Contents.Count + result.OtherContents.Count + result.Roles.Count;
 
                 return responseObject.responseObjectSuccess($"Tìm thấy {total} kết quả cho '{keyword}'", result);
             }
