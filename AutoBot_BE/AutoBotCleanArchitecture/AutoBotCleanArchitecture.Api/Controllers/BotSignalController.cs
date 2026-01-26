@@ -33,7 +33,7 @@ namespace AutoBotCleanArchitecture.Api.Controllers
         [HttpPost("SendMessage")]
         public async Task<IActionResult> SendMessage([FromForm] Request_AddSignal request)
         {
-            if (request.Key != _configuration["SecretKey"])
+            if (request.Key != _configuration["AppSettings:SecretKey"])
             {
                 return Unauthorized(new { message = "Sai Key bảo mật!" });
             }

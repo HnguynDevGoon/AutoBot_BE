@@ -59,6 +59,11 @@ namespace AutoBotCleanArchitecture.Persistence.DBContext
                 {
                     Id = DefaultRoles.USER_ID, // Dùng Guid hằng số
                     RoleName = "User",
+                },
+                new Role
+                {
+                Id = DefaultRoles.EMPLOYEE_ID, // Dùng Guid hằng số
+                    RoleName = "Employee",
                 }
             );
 

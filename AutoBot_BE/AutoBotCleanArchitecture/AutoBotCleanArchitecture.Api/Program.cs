@@ -187,6 +187,8 @@ builder.Services.AddScoped<ResponseObject<DTO_Review>>();
 builder.Services.AddScoped<ResponseObject<DTO_Salary>>();
 builder.Services.AddScoped<ResponseObject<DTO_Expense>>();
 builder.Services.AddScoped<ResponseObject<DTO_UserBot>>();
+builder.Services.AddScoped<ResponseObject<DTO_AdminDashboard>>();
+
 
 
 
@@ -261,6 +263,8 @@ builder.Services.AddScoped<IService_Salary, Service_Salary>();
 builder.Services.AddScoped<IService_Expense, Service_Expense>();
 builder.Services.AddScoped<IService_UserBot, Service_UserBot>();
 builder.Services.AddScoped<IService_AdminFile, Service_AdminFile>();
+builder.Services.AddScoped<IService_AdminDashboard, Service_AdminDashboard>();
+
 
 
 builder.Services.AddControllers();

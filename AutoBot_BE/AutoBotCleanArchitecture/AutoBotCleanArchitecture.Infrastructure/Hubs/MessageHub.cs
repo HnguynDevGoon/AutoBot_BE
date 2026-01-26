@@ -3,6 +3,7 @@ using Google;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AutoBotCleanArchitecture.Infrastructure.Hubs
@@ -22,34 +23,47 @@ namespace AutoBotCleanArchitecture.Infrastructure.Hubs
         {
             var userIdString = Context.User?.FindFirst("Id")?.Value ?? "";
 
+            // 2. LẤY ROLE CỦA USER RA (Thường key là ClaimTypes.Role hoặc "role")
+            var userRole = Context.User?.FindFirst(ClaimTypes.Role)?.Value
+                        ?? Context.User?.FindFirst("role")?.Value
+                        ?? "";
+
             if (!string.IsNullOrEmpty(userIdString) && Guid.TryParse(userIdString, out Guid userId))
             {
                 // =================================================================
-                // 1. KIỂM TRA HẠN SỬ DỤNG (ĐÂY LÀ ĐOẠN QUAN TRỌNG NHẤT)
+                // KIỂM TRA QUYỀN NHẬN TIN (ADMIN HOẶC ĐÃ MUA BOT)
                 // =================================================================
-                var isVip = await dbContext.userBots
-                    .AnyAsync(ub => ub.UserId == userId && ub.ExpiredDate > DateTime.UtcNow);
 
-                if (isVip)
+                // Check 1: Có phải Admin không?
+                bool isAdmin = userRole.Equals("Admin", StringComparison.OrdinalIgnoreCase);
+
+                // Check 2: Có gói Bot còn hạn không? (Nếu là Admin rồi thì khỏi query DB cho nhẹ)
+                bool hasValidBot = false;
+                if (!isAdmin)
                 {
-                    // NẾU CÒN HẠN: Add vào nhóm VIP để lát nữa Controller bắn tin cho nhóm này
+                    hasValidBot = await dbContext.userBots
+                        .AnyAsync(ub => ub.UserId == userId && ub.ExpiredDate > DateTime.UtcNow);
+                }
+
+                // LOGIC CHỐT: Là Admin HOẶC Có Bot -> Đều là VIP
+                if (isAdmin || hasValidBot)
+                {
+                    // Add vào nhóm VIP để nhận tín hiệu
                     await Groups.AddToGroupAsync(Context.ConnectionId, "VIP_USERS");
 
                     await Task.Delay(500);
 
-                    // Báo cho Client biết là màu xanh
+                    // Báo OK
                     await Clients.Caller.SendAsync("ServerMessage", "VIP_USERS");
                 }
                 else
                 {
-                    // NẾU KHÔNG CÓ HẠN: 
-                    // 1. KHÔNG add vào group VIP -> Nên Admin bắn lệnh sẽ KHÔNG nhận được.
-                    // 2. Báo EXPIRED để Frontend khóa nút lại.
+                    // Không phải Admin mà cũng không mua Bot -> Chặn
                     await Clients.Caller.SendAsync("ServerMessage", "EXPIRED");
                 }
                 // =================================================================
 
-                // Logic cũ: Quản lý thiết bị (Giữ nguyên)
+                // Logic quản lý thiết bị (Giữ nguyên)
                 if (connectionManager.TryGetConnection(userIdString, out string oldConnectionId))
                 {
                     if (!string.IsNullOrEmpty(oldConnectionId))

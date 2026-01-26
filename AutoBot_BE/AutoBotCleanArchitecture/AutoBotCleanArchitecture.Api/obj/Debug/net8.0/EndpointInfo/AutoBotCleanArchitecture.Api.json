@@ -5,6 +5,27 @@
     "version": "v1"
   },
   "paths": {
+    "/api/AdminDashboard/SearchGlobal": {
+      "get": {
+        "tags": [
+          "AdminDashboard"
+        ],
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/admin/signal/add": {
       "post": {
         "tags": [
