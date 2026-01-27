@@ -1,0 +1,310 @@
+_SECTION_BEGIN("Price");
+SetChartOptions(0,chartShowArrows|chartShowDates);
+_N(Title = StrFormat("{{NAME}} - {{INTERVAL}} {{DATE}} Open %g, Hi %g, Lo %g, Close %g (%.1f%%) {{VALUES}}", O, H, L, C, SelectedValue( ROC( C, 1 ) ) ));
+Plot( C, "Close", ParamColor("Color", colorDefault ), styleNoTitle | ParamStyle("Style") | GetPriceStyle() ); 
+_SECTION_END();
+
+_N(Title = StrFormat("{{NAME}} - {{INTERVAL}} {{DATE}} Open %g, Hi %g, Lo %g, Close %g (%.1f%%) {{VALUES}}", O, H, L, C, SelectedValue( ROC( C, 1 ) ) ));
+
+Style = ParamStyle("Line Style", styleThick);
+
+ResistanceColor = ParamColor("Resistance", colorRed);
+
+SupportColor = ParamColor( "Support", colorGreen);
+
+Multiplier=Optimize("Period",1,1,5,1);
+
+Period=Optimize("Multiplier",1,1,100,1);
+
+
+function calculateSupertrend(Period, Multiplier)
+{
+	ATR_Val=ATR(Period);
+
+	UpperBand=LowerBand=final_UpperBand=final_LowerBand=SuperTrend=0;
+	
+	for( i = Period; i < BarCount; i++ )
+	{
+		UpperBand[i]=((High[i] + Low[i])/2) + Multiplier*ATR_Val[i];
+		LowerBand[i]=((High[i] + Low[i])/2) - Multiplier*ATR_Val[i];
+		final_UpperBand[i] = IIf( ((UpperBand[i]<final_UpperBand[i-1]) OR (Close[i-1]>final_UpperBand[i-1])), (UpperBand[i]), final_UpperBand[i-1]);
+		final_LowerBand[i] = Iif( ((LowerBand[i]>final_LowerBand[i-1]) OR (Close[i-1]<final_LowerBand[i-1])), (LowerBand[i]), final_LowerBand[i-1]);
+			
+		SuperTrend[i] = IIf(((SuperTrend[i-1]==final_UpperBand[i-1]) AND (Close[i]<=final_UpperBand[i])),final_UpperBand[i],
+		IIf(((SuperTrend[i-1]==final_UpperBand[i-1]) AND (Close[i]>=final_UpperBand[i])),final_LowerBand[i],
+		IIf(((SuperTrend[i-1]==final_LowerBand[i-1]) AND (Close[i]>=final_LowerBand[i])),final_LowerBand[i],
+		IIf(((SuperTrend[i-1]==final_LowerBand[i-1]) AND (Close[i]<=final_LowerBand[i])),final_UpperBand[i],0))));
+
+	}
+	
+	Plot( SuperTrend, "SuperTrend", IIf( SuperTrend>Close, ResistanceColor, SupportColor), Style);
+	Return SuperTrend;  
+}
+
+
+
+function DateNow()
+{
+    dt_val = LastValue(DateTime()); // Lay thoi gian cay nen cuoi cung
+    dt_string = DateTimeFormat("%Y-%m-%d %H:%M:%S", dt_val);
+    return dt_string;
+}
+
+
+
+Supertrend = calculateSupertrend(Period,Multiplier);
+
+SupertrendSignal = Close > SuperTrend;
+
+// This will tell us whenever there is a change in signal
+SignalChanged = SupertrendSignal != Ref(SupertrendSignal, -1);
+
+ShortPrice = Close[BarCount - 2];
+BuyPrice = Close[BarCount - 2];
+
+Buy = SupertrendSignal AND SignalChanged AND V > MA(V,20);
+
+// If supertrend is sell and signal just changed
+Sell = (!SupertrendSignal) AND SignalChanged AND V > MA(V,20);
+// This is only added for backtesting
+
+
+Short=Sell;
+Cover=Buy;
+
+//Ve mui ten
+PlotShapes(IIf(Buy, shapeSquare, shapeNone),colorGreen, 0, L, Offset=-35);
+PlotShapes(IIf(Buy, shapeSquare, shapeNone),colorLime, 0,L, Offset=-45);
+PlotShapes(IIf(Buy, shapeUpArrow, shapeNone),colorWhite, 0,L, Offset=-40);
+PlotShapes(IIf(Short, shapeSquare, shapeNone),colorRed, 0, H, Offset=35);
+PlotShapes(IIf(Short, shapeSquare, shapeNone),colorOrange, 0,H, Offset=45);
+PlotShapes(IIf(Short, shapeDownArrow, shapeNone),colorWhite, 0,H, Offset=-40);
+//Hien thi gia v? vol
+for (i = 0; i < BarCount; i++)
+{
+    if (Buy[i])
+    {
+        PlotText("Buy @ " + C[i] + "\nVol: " + V[i], i-1, L[i]-7.5, colorWhite);
+    }
+    if (Short[i])
+    {
+        PlotText("Sell @ " + C[i] + "\nVol: " + V[i], i-1, H[i]+7.5, colorWhite);
+    }
+}
+
+AddColumn(Buy, "long", 1);
+AddColumn(Short, "short", 1);
+
+Filter = 1;
+
+
+
+_SECTION_BEGIN("Telegram Alerts");
+TelegramAlerts = ParamTrigger("Telegram Alert","Send Alert");
+TelegramAPI_ID = ParamStr("Telegram Bot API Key","");  //Get the Bot API key via BotFather in Telgram
+TelgramCHAT_ID = ParamStr("Telegram Channel ID","@tinhieunew"); //Channel ID example : @marketcalls_in
+My_Key = ParamStr("My Key","kS#mU@cT!fG&rA8pLwQz2^yJ7xVbN*eD");
+
+
+
+EnableScript("VBScript"); 
+
+
+DiscordWebhookURL = ParamStr("Discord Webhook URL", "https://discordapp.com/api/webhooks/1463067589696688243/NFSZQP4I5CCFXq0g37ZE6WLCFH1Rr-e8rV7hWh_2iEPgBj3TOl2mgLQ-9fyBiQJrJzo5");
+<% 
+
+Function UrlEncode(Str)
+    Dim i, c, ret
+    ret = ""
+    For i = 1 To Len(Str)
+        c = Asc(Mid(Str, i, 1))
+        If (c >= 48 And c <= 57) Or (c >= 65 And c <= 90) Or (c >= 97 And c <= 122) Then
+            ret = ret & Chr(c)
+        ElseIf c = 32 Then
+            ret = ret & "+"
+        Else
+            ret = ret & "%" & Right("0" & Hex(c), 2)
+        End If
+    Next
+    UrlEncode = ret
+End function
+
+Public Sub Telegram(Message_Text)
+sAPI_ID = AFL.Var("TelegramAPI_ID")
+sChat_ID = AFL.Var("TelgramCHAT_ID")
+sMSG = Message_Text
+
+'URL to open....
+sUrl = "https://api.telegram.org/bot" & sAPI_ID & "/sendMessage"
+'POST Request to send.
+sRequest = "text=" & sMSG & "&chat_id=" & sChat_ID
+
+set oHTTP = CreateObject("Microsoft.XMLHTTP")
+oHTTP.open "POST", sUrl,false
+oHTTP.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+oHTTP.setRequestHeader "Content-Length", Len(sRequest)
+oHTTP.send sRequest
+HTTPPost = oHTTP.responseText
+
+'Store response 
+'msgbox(objXmlHttpMain.responseText)
+'response.Write (objXmlHttpMain.responseText) 
+End Sub 
+Public Sub SendMessage(Message_Text)
+sMSG = Message_Text
+
+sMyKey = AFL.Var("My_Key")
+
+'URL to open....
+sUrl = "https://m1n9ckgf-7291.asse.devtunnels.ms/api/BotSignal/SendMessage"
+'POST Request to send.
+sRequest = "text=" & UrlEncode(sMSG) & "&key=" & UrlEncode(sMyKey)
+
+set oHTTP = CreateObject("Microsoft.XMLHTTP")
+oHTTP.open "POST", sUrl,false
+oHTTP.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+oHTTP.setRequestHeader "Content-Length", Len(sRequest)
+oHTTP.send sRequest
+HTTPPost = oHTTP.responseText
+
+'Store response 
+'msgbox(objXmlHttpMain.responseText)
+'response.Write (objXmlHttpMain.responseText) 
+End Sub
+Public Sub Discord(Message_Text)
+    Dim sUrl, sRequest, oHTTP
+    On Error Resume Next
+
+    sUrl = "https://discordapp.com/api/webhooks/1463067589696688243/NFSZQP4I5CCFXq0g37ZE6WLCFH1Rr-e8rV7hWh_2iEPgBj3TOl2mgLQ-9fyBiQJrJzo5"
+    sRequest = "{""content"":""" & Message_Text & """}"
+
+    Set oHTTP = CreateObject("Microsoft.XMLHTTP")
+    oHTTP.Open "POST", sUrl, False
+    oHTTP.setRequestHeader "Content-Type", "application/json"
+    oHTTP.Send sRequest
+End Sub 
+%>
+
+tg = GetScriptObject(); 
+
+NewDay = Day() != Ref(Day(), -1);
+if (LastValue(NewDay)) {
+    StaticVarSet(Name() + GetChartID() + "shortAlert", 0);
+    StaticVarSet(Name() + GetChartID() + "sendShortAlert", 0);
+    StaticVarSet(Name() + GetChartID() + "buyAlert", 0);
+    StaticVarSet(Name() + GetChartID() + "sendBuyAlert", 0);
+}
+
+// Phat hieu v  gui t n hieu Short
+if (LastValue(Short) == True AND StaticVarGet(Name() + GetChartID() + "shortAlert") == 0) {
+    StaticVarSet(Name() + GetChartID() + "sendShortAlert", 1);
+    //Say("Short detected at " + DateNow());
+}
+//GUI TIN HIEU SHORT
+// Kiem tra neu co canh b?o d? duoc dat v? nen hien tai d? d?ng cua
+if (StaticVarGet(Name() + GetChartID() + "sendShortAlert") == 1 AND 
+	Short[BarCount - 2] == True) {
+	//Say("   v o di?u ki?n g?i short Discord!");
+    tg.Discord(
+    
+		        
+        //---------
+		"#" + Name() + " Ngay " + DateNow() + " bot web" +
+		"\\n" + " Tin hieu short: Manh" +
+		"\\n" + " Gia ban: " + ShortPrice +
+		"\\n" + " Target 1: " + round((0.997 * ShortPrice) * 10) / 10 +
+		"\\n" + " Target 2: " + round((0.994 * ShortPrice) * 10) / 10 +
+		"\\n" + " Target 3: " + round((0.989 * ShortPrice) * 10) / 10 +
+		"\\n" + " Target 4: " + round((0.984 * ShortPrice) * 10) / 10 +
+        "\\n" + " Cat lo: " + round((1.003 * ShortPrice) * 10) / 10 // ?? ch?nh s?a cho d?ng gi? tr? c?t l?
+    );
+    
+    
+    //Gui tin hieu sang server
+    tg.SendMessage(
+    
+		        
+        //---------
+		"#" + Name() + " Ngay " + DateNow() + " bot web" +
+		"\n" + " Tin hieu short: Manh" +
+		"\n" + " Gia ban: " + ShortPrice +
+		"\n" + " Target 1: " + round((0.997 * ShortPrice) * 10) / 10 +
+		"\n" + " Target 2: " + round((0.994 * ShortPrice) * 10) / 10 +
+		"\n" + " Target 3: " + round((0.989 * ShortPrice) * 10) / 10 +
+		"\n" + " Target 4: " + round((0.984 * ShortPrice) * 10) / 10 +
+        "\n" + " Cat lo: " + round((1.003 * ShortPrice) * 10) / 10 // ?? ch?nh s?a cho d?ng gi? tr? c?t l?
+    );
+    
+        
+    //tg.Discord("?? TEST T? N T TH? C NG - " + DateNow());
+    // ?at trang th?i canh b?o da ngan gui th?m canh b?o trong nen n?y
+    StaticVarSet(Name() + GetChartID() + "shortAlert", 1); 
+    // ?at lai co de cho ph?p gui canh b?o moi trong nen tiep theo
+    StaticVarSet(Name() + GetChartID() + "sendShortAlert", 0);
+    Say("Short alert sent at " + DateNow());
+} else {
+    // ?at lai trang th?i canh b?o neu nen d? thay doi
+    StaticVarSet(Name() + GetChartID() + "shortAlert", 0);
+}
+
+
+
+// Ph t hi?n v  g?i t n hi?u Buy
+if (LastValue(Buy) == True AND StaticVarGet(Name() + GetChartID() + "buyAlert") == 0) {
+    StaticVarSet(Name() + GetChartID() + "sendBuyAlert", 1);
+    //Say("Buy detected at " + DateNow());	
+}
+//GUI TIN HIEU LONG
+// Kiem tra neu co canh b?o d? duoc dat v? nen hien tai d? d?ng cua
+if (StaticVarGet(Name() + GetChartID() + "sendBuyAlert") == 1 AND
+	Buy[BarCount - 2] == True) {
+    tg.Discord(
+    
+        //---------
+       	"#" + Name() + " Ngay " + DateNow() + " bot web" +
+		"\\n" + " Tin hieu long: Manh" +
+		"\\n" + " Gia ban: " + BuyPrice +
+		"\\n" + " Target 1: " + round((1.003 * BuyPrice) * 10) / 10 +
+		"\\n" + " Target 2: " + round((1.006 * BuyPrice) * 10) / 10 +
+		"\\n" + " Target 3: " + round((1.01 * BuyPrice) * 10) / 10 +
+		"\\n" + " Target 4: " + round((1.016 * BuyPrice) * 10) / 10 +
+        "\\n" + " Cat lo: " + round((0.997 * BuyPrice) * 10) / 10 // // ?? chinh sua cho d?ng gi? tri cat lo
+    );
+    
+    tg.SendMessage(
+		
+        
+        //---------
+       	"#" + Name() + " Ngay " + DateNow() + " bot web" +
+		"\n" + " Tin hieu long: Manh" +
+		"\n" + " Gia ban: " + BuyPrice +
+		"\n" + " Target 1: " + round((1.003 * BuyPrice) * 10) / 10 +
+		"\n" + " Target 2: " + round((1.006 * BuyPrice) * 10) / 10 +
+		"\n" + " Target 3: " + round((1.01 * BuyPrice) * 10) / 10 +
+		"\n" + " Target 4: " + round((1.016 * BuyPrice) * 10) / 10 +
+        "\n" + " Cat lo: " + round((0.997 * BuyPrice) * 10) / 10 // // ?? chinh sua cho d?ng gi? tri cat lo
+    );
+    
+    
+      
+    // ?at trang th?i canh b?o da ngan gui th?m canh b?o trong nen n?y
+    StaticVarSet(Name() + GetChartID() + "buyAlert", 1); 
+    // ?at lai co de cho ph?p gui canh b?o moi trong nen tiep theo
+    StaticVarSet(Name() + GetChartID() + "sendBuyAlert", 0);
+    Say("Buy alert sent at " + DateNow());
+} else {
+    // ?at lai trang th?i canh b?o neu nen d? thay doi
+    StaticVarSet(Name() + GetChartID() + "buyAlert", 0);
+}
+
+
+// Debug tr n bi?u d?
+Title = Title + "\nShortAlert: " + StaticVarGet(Name() + GetChartID() + "shortAlert") +
+                "\nSendShortAlert: " + StaticVarGet(Name() + GetChartID() + "sendShortAlert") +
+                "\nBuyAlert: " + StaticVarGet(Name() + GetChartID() + "buyAlert") +
+                "\nSendBuyAlert: " + StaticVarGet(Name() + GetChartID() + "sendBuyAlert") +
+                "\nLast Short: " + LastValue(Short) +
+                "\nLast Buy: " + LastValue(Buy);
+
+
+_SECTION_END();
